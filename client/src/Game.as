@@ -86,8 +86,7 @@ package
 		private var isLastRound:Boolean = false;
 		private var currentEgg:int = 0;
 		
-		// blabla..
-		// blabla...
+		// blabla... x2
 		
 		public function Game()
 		{
