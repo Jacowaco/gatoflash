@@ -1,0 +1,262 @@
+{
+    "default": {
+        "soundsEnable": true,
+        "debugB2d": false,
+        "maxBands": 5
+    },
+
+    "patterns": [
+  "assets::pat_0",
+  "assets::pat_1",
+  "assets::pat_2",
+  "assets::pat_3",
+  "assets::pat_4",
+  "assets::pat_5",
+  "assets::pat_6",
+  "assets::pat_7",
+  "assets::pat_8",
+  "assets::pat_9",
+  "assets::pat_10",
+  "assets::pat_11",
+  "assets::pat_12",
+  "assets::pat_13",
+  "assets::pat_14",
+  "assets::pat_15",
+  "assets::pat_16",
+  "assets::pat_17",
+  "assets::pat_18",
+  "assets::pat_19",
+  "assets::pat_20",
+  "assets::pat_21",
+  "assets::pat_22",
+  "assets::pat_23",
+  "assets::pat_24",
+  "assets::pat_25",
+  "assets::pat_26",
+  "assets::pat_27",
+  "assets::pat_28",
+  "assets::pat_29",
+  "assets::pat_30",
+  "assets::pat_31",
+  "assets::pat_32",
+  "assets::pat_33",
+  "assets::pat_34",
+  "assets::pat_35",
+  "assets::pat_36",
+  "assets::pat_37",
+  "assets::pat_38",
+  "assets::pat_39",
+  "assets::pat_40",
+  "assets::pat_41",
+  "assets::pat_42",
+  "assets::pat_43",
+  "assets::pat_44",
+  "assets::pat_45",
+  "assets::pat_46",
+  "assets::pat_47",
+  "assets::pat_48",
+  "assets::pat_49",
+  "assets::pat_50",
+  "assets::pat_51",
+  "assets::pat_52",
+  "assets::pat_53",
+  "assets::pat_54",
+  "assets::pat_55",
+  "assets::pat_56",
+  "assets::pat_57",
+  "assets::pat_58",
+  "assets::pat_59",
+  "assets::pat_60",
+  "assets::pat_61",
+  "assets::pat_62",
+  "assets::pat_63",
+  "assets::pat_64",
+  "assets::pat_65",
+  "assets::pat_66",
+  "assets::pat_67",
+  "assets::pat_68",
+  "assets::pat_69",
+  "assets::pat_70",
+  "assets::pat_71",
+  "assets::pat_72",
+  "assets::pat_73",
+  "assets::pat_74",
+  "assets::pat_75",
+  "assets::pat_76",
+  "assets::pat_77",
+  "assets::pat_78",
+  "assets::pat_79",
+  "assets::pat_80",
+  "assets::pat_81",
+  "assets::pat_82",
+  "assets::pat_83",
+  "assets::pat_84",
+  "assets::pat_85",
+  "assets::pat_86",
+  "assets::pat_87",
+  "assets::pat_88",
+  "assets::pat_89",
+  "assets::pat_90",
+  "assets::pat_91",
+  "assets::pat_92",
+  "assets::pat_93",
+  "assets::pat_94",
+  "assets::pat_95",
+  "assets::pat_96",
+  "assets::pat_97",
+  "assets::pat_98",
+  "assets::pat_99",
+  "assets::pat_100",
+  "assets::pat_101",
+  "assets::pat_102",
+  "assets::pat_103",
+  "assets::pat_104",
+  "assets::pat_105",
+  "assets::pat_106",
+  "assets::pat_107",
+  "assets::pat_108",
+  "assets::pat_109",
+  "assets::pat_110",
+  "assets::pat_111",
+  "assets::pat_112",
+  "assets::pat_113",
+  "assets::pat_114",
+  "assets::pat_115",
+  "assets::pat_116",
+  "assets::pat_117",
+  "assets::pat_118",
+  "assets::pat_119"
+    ],
+    "levels": {
+        "days": [
+          {
+            "rounds": 3,
+            "difficulty": 3,
+            "goal": "winner_1"
+          },
+          {
+            "rounds": 4,
+            "difficulty": 3,
+            "goal": "winner_2"
+          },
+           {
+            "rounds": 5,
+            "difficulty": 3,
+            "goal": "winner_3"
+          },
+          {
+            "rounds": 3,
+            "difficulty": 3,
+            "goal": "winner_4"
+          },
+           {
+            "rounds": 4,
+            "difficulty": 4,
+            "goal": "winner_5"
+          },
+          {
+            "rounds": 5,
+            "difficulty": 4,
+            "goal": "winner_6"
+          },
+           {
+            "rounds": 3,
+            "difficulty": 4,
+            "goal": "winner_7"
+          },
+          {
+            "rounds": 4,
+            "difficulty": 4,
+            "goal": "winner_8"
+          },
+           {
+            "rounds": 5,
+            "difficulty": 5,
+            "goal": "winner_9"
+          },
+          {
+            "rounds": 5,
+            "difficulty": 5,
+            "goal": "winner_10"
+          }
+        ]
+    },
+
+    "scoring": {
+        "star": 100,
+        "bonus": 100
+    },
+
+    "gui": {
+        "title": "PASCUAS ARTÍSTICAS",
+        "score": "PUNTOS",
+        "time": "TIEMPO",
+        "instructions": {
+            "details": [
+                "HAZ CLIC EN LAS FLECHAS HASTA CONSEGUIR UN DISEÑO IGUAL AL MODELO.",
+                "GANATE UNO...",
+                "COMPLETA LA COLECCION..."
+            ],
+            "nextBtn": ">",
+            "prevBtn": "<",
+            "playGame": "OK",
+            "title": "PASCUAS ARTÍSTICAS"
+        },
+        "confirmation": {
+            "noBtn": "NO",
+            "yesBtn": "SI",
+            "dialog": "¿QUIERES SALIR?",
+            "ok": "OK",
+            "play": "JUGAR",
+            "again": "JUGAR OTRA",
+            "help": "AYUDA",
+            "exit": "SALIR",
+            "back": "VOLVER",
+            "cancel": "VOLVER",
+            "next": "SIGUIENTE",
+            "retry": "OTRA VEZ",
+            "instructions": "INSTRUCCIONES"
+        },
+        "noScore": {
+            "exit": "SALIR",
+            "redo": "OTRA VEZ",
+            "txt1": "TXT 1",
+            "txt2": "TXT 2",
+            "txt3": "TXT 4",
+            "txt4": "TXT 5"
+        },
+        "win": {
+            "title": "¡LO LOGRASTE!",
+            "score": "PUNTOS:",
+            "bonus": "BONUS:",
+            "again": "JUGAR",
+            "exit": "SALIR",
+            "loose": "¡TE CAISTE!",
+            "end": "¡LOS DISEÑASTE TODOS!", 
+            "end2": "ERES UN ARTISTA MAGNÍFICO",                        
+            "lastRound": "¡LO LOGRASTE!",
+            "lastRound2": "RECLAMA TU HUEVO",
+            "gamePoints": "MEJOR PUNTAJE:",
+            "total": "TOTAL:",
+            "cutscene": "¡FELICIDADES!"
+        },
+        "tooltips": [
+            "TODAVÍA NO: AÚN TE FALTA VISITAR OBJETIVOS",
+            "¡LISTO, VE A LA ÚLTIMA META!",
+            "SI TE ALEJAS DE TUS OBJETIVOS, CHEQUEA EL MAPA"
+        ],
+        "gameOver": {}
+    },
+	"huevos":[
+		{"eggName":"easter2016.huevo1", "eggNumber": 1, "eggDescription":"PASCUAS DE AGRADECIMIENTO"},
+		{"eggName":"easter2016.huevo2", "eggNumber": 2, "eggDescription":"PASCUAS DE FESTEJO"},
+		{"eggName":"easter2016.huevo3", "eggNumber": 3, "eggDescription":"PASCUAS DE BUENA-INTENCIÓN"},
+		{"eggName":"easter2016.huevo4", "eggNumber": 4, "eggDescription":"PASCUAS DE FELICIDAD"},
+		{"eggName":"easter2016.huevo5", "eggNumber": 5, "eggDescription":"PASCUAS DE CELEBRACIÓN"},
+		{"eggName":"easter2016.huevo6", "eggNumber": 6, "eggDescription":"PASCUAS DE AMISTAD"},
+		{"eggName":"easter2016.huevo7", "eggNumber": 7, "eggDescription":"PASCUAS EN FAMILIA"},
+		{"eggName":"easter2016.huevo8", "eggNumber": 8, "eggDescription":"PASCUAS DE TRANSFORMACIÓN"},
+		{"eggName":"easter2016.huevo9", "eggNumber": 9, "eggDescription":"PASCUAS DE ABUNDANCIA"},
+		{"eggName":"easter2016.huevo10", "eggNumber": 10, "eggDescription":"PASCUAS DE FELICIDAD"} 
+	]
+}
