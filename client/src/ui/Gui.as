@@ -26,7 +26,7 @@ package ui
 		private var power:MovieClip;
 		
 		private var sportsMenu:MovieClip;
-		
+		private var sportSelected:String;
 		
 		
 		public function Gui(asset:MovieClip)
@@ -53,8 +53,6 @@ package ui
 			power.stop();
 
 			
-		
-
 			// endgame popup
 			endGamePopup = new EndGamePopup();
 			addChild(endGamePopup);
@@ -62,7 +60,7 @@ package ui
 			endGamePopup.addEventListener(GuiEvents.PLAY, onPlay);
 			endGamePopup.addEventListener(GuiEvents.EXIT, onConfirmationExit);
 			
-			
+			// el menu que te deja elegir el juego			
 			sportsMenu = new McMenu();
 			sportsMenu.txt_title.text = settings.gui.title;
 			sportsMenu.txt_details.text = settings.gui.details;
@@ -72,12 +70,17 @@ package ui
 			sportsMenu.pg1.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ trace(e); sportsMenu.gotoAndStop("page1"); });
 			sportsMenu.exitGame.addEventListener(MouseEvent.CLICK, onExitBtn);
 			
-			for(var i:int = 0; i < settings.sports.sportsQty; i ++){
-				sportsMenu["game"+i].addEventListener("PLAY_GAME", function(e:Event):void{ playSport(e.currentTarget.name); });
+			
 				
+			// armo los botones para los primeros 4
+			
+			for(var i:int = 0; i < settings.sports.sportsQty; i ++){
+				sportsMenu["sport"+i].addEventListener("PLAY_GAME", playSportMenu)							
 			}
 			
 			addChild(sportsMenu);
+			
+			
 			
 			
 			// confirmation popup
@@ -93,10 +96,37 @@ package ui
 			
 		}
 		
-		private function playSport(name:String):void
+		private function resetMenu(e:Event):void
 		{
+			for(var i:int = 0; i < settings.sports.sportsQty; i ++){
+				sportsMenu["sport"+i].addEventListener("PLAY_GAME", playSportMenu)							
+			}
 			
-			trace(name);
+		}
+		
+		
+		private function playSport(e:Event):void
+		{
+			sportsMenu.visible = false;	
+//			dispatchEvent(blabla);
+			trace(sportSelected);
+		}
+		
+		private function playSportMenu(e:Event):void
+		{			
+			sportsMenu.gotoAndStop(e.currentTarget.name);
+			sportSelected = settings.sports[e.currentTarget.name].id;
+			sportsMenu.addEventListener( Event.ENTER_FRAME , ensureRendered );			
+			function ensureRendered( evt:Event ) : void
+			{
+				removeEventListener( Event.ENTER_FRAME , ensureRendered );
+				sportsMenu.playGameBtn.addEventListener(MouseEvent.CLICK, playSport);					
+			}
+			sportsMenu.txt_details.text = sportsMenu.currentLabel;
+			
+			
+			
+			
 		}
 		
 //		public function showWinScreen(result:int, score:Number, bonus:Number, endScore:Number, isLastLevel:Boolean = false):void

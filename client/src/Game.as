@@ -21,6 +21,10 @@ package
 	import com.qb9.flashlib.tasks.*;
 	import com.qb9.flashlib.utils.ObjectUtil;
 	
+	
+	
+	
+	
 	import flash.debugger.enterDebugger;
 	import flash.display.*;
 	import flash.events.*;
@@ -84,6 +88,7 @@ package
 		private var currentEgg:int = 0;
 		
 		// blabla... x2
+		
 		
 		
 		public function Game()
@@ -197,12 +202,14 @@ package
 			
 			//						audio.registerMusic("musica", "AmbienteNavidad");
 			
-			//if(!settings.default.soundsEnable){
-				//audio.gain(null, 0.001);
-			//}
+
 			
 			
 			audio.music.loop("inicio");
+			
+			if(!settings.default.soundsEnable){
+				audio.gain(null, 0.001);
+			}
 		}
 		
 		private function update(e:Event):void
