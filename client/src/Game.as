@@ -21,6 +21,10 @@ package
 	import com.qb9.flashlib.tasks.*;
 	import com.qb9.flashlib.utils.ObjectUtil;
 	
+	
+	
+	
+	
 	import flash.debugger.enterDebugger;
 	import flash.display.*;
 	import flash.events.*;
@@ -47,34 +51,31 @@ package
 	
 	import utils.Stopwatch;
 	import utils.Utils;
-
-	
 	
 	[SWF(width='800', height='480', backgroundColor='0xF9D611', frameRate='25')]
 	public class Game extends BaseGame
 	{		
 		// para interactuar con la bd del MMO
-		public static const GAME_ID:String = "eggDecoration";
+		public static const GAME_ID:String = "olimpiadasGatulimpicas";
 		public static const GAME_DATA:String = GAME_ID + "_data";			
 		public static const version:String = "version 0.1";
 		
 		public static const SCREEN_WIDTH:int = 800;
 		public static const SCREEN_HEIGHT:int = 480;
 		
-		//variable que contabiliza los huevos recibidos.
-		public static const PROFILE_ATTR_KEY_COUNT:String = "schoolYogurDay/easter16/count";
-		//variable que guarda la info del huevo a entregar.
-		public static const PROFILE_ATTR_KEY_EGG:String = "winToday";
+		public static const PROFILE_ATTR_KEY_TEAM:String = "defaultTeam";
+		public static const PROFILE_ATTR_KEY_REWARD:String = "none";
 		
 		// si estoy online carga el settings.json incrustado, sino lo levanta del disco para que el 
 		// gd lo pueda editar.
-		[Embed(source = './../deploy/settings.json', mimeType='application/octet-stream')]
-		private static const settingsFile:Class;		
+		[Embed(source = './../deploy/settings.json', mimeType='application/octet-stream')]		
+		private static const settingsFile:Class;				
 		
 		private static var tasks:TaskRunner;		
 		
-		private var level:game.LevelController;
 		private var gui:Gui;
+		
+		private var level:game.LevelController;
 		
 		private var round:int;
 		
@@ -87,6 +88,8 @@ package
 		private var currentEgg:int = 0;
 		
 		// blabla... x2
+		
+		
 		
 		public function Game()
 		{
@@ -126,39 +129,32 @@ package
 		
 		private function settingsLoaded():void
 		{									
-			createLevel();
-			createGui();
 			loadAudio();
+//			createLevel();
+			createGui();
 			
-			stage.addEventListener(Event.ENTER_FRAME, update);
 			
-			ready();
+			
+//			
+//			
+
+//			
+//			stage.addEventListener(Event.ENTER_FRAME, update);
+//			
+//			ready();
 			
 		}		
 		
 		private function createLevel():void
 		{
-			// primero que nada...
-			//if (online) {
-				//currentEgg = api.getProfileAttribute(PROFILE_ATTR_KEY_COUNT) ? api.getProfileAttribute(PROFILE_ATTR_KEY_COUNT) as int : 0;
-			//}
-			
 			level = new game.LevelController();				
-			addChild(level);
-			maxRound = settings.levels.days[currentEgg].rounds;
-			goal = settings.levels.days[currentEgg ].goal;
-			difficulty = settings.levels.days[currentEgg].difficulty;
-			
-			
-			round = 0;						
-			winner = false;
-			
-			
+			addChild(level);		
 		}
 		
 		
 		private function createGui():void
 		{
+			
 			// gui
 			gui = new Gui(new assets.guiMc());
 			gui.addEventListener(GuiEvents.EXIT, onPause);
@@ -206,12 +202,14 @@ package
 			
 			//						audio.registerMusic("musica", "AmbienteNavidad");
 			
-			//if(!settings.default.soundsEnable){
-				//audio.gain(null, 0.001);
-			//}
+
 			
 			
 			audio.music.loop("inicio");
+			
+			if(!settings.default.soundsEnable){
+				audio.gain(null, 0.001);
+			}
 		}
 		
 		private function update(e:Event):void
@@ -222,16 +220,16 @@ package
 		// -----------------------------------
 		private function onPause(e:Event):void
 		{
-			level.pause();		
+//			level.pause();		
 		}
 		
 		private function onResume(e:Event):void
 		{
-			setTimeout(level.resume, 100);			
+//			setTimeout(level.resume, 100);			
 		}
 		
-		private var rabbit:MovieClip = new popups.rabbit;
-		// -----------------------------------		
+//		private var rabbit:MovieClip = new popups.rabbit;
+//		// -----------------------------------		
 		private function onLevelWin(e:Event):void
 		{
 			logger.info("level win");
@@ -245,7 +243,7 @@ package
 				//addSessionScore(levelScore+levelBonus);			
 //				gui.showWinScreen(EndGamePopup.WIN, levelScore, levelBonus, maxSessionScore.value, false);				
 //				gui.showNext();
-				gui.showWinner(rabbit, false, false);
+//				gui.showWinner(rabbit, false, false);
 			//}else{
 				//winner = true;
 				//gameWon();	
@@ -274,7 +272,7 @@ package
 			//addSessionScore(levelScore+levelBonus);
 			
 			//gui.showWinScreen(EndGamePopup.LOSE, levelScore, levelBonus, maxSessionScore.value, false);
-			gui.showWinner(rabbit, false, false);
+//			gui.showWinner(rabbit, false, false);
 			audio.fx.play("lose");
 			//level.removeEventListener(LevelEvents.LEVEL_WIN, onLevelWin);
 			//level.removeEventListener(LevelEvents.LEVEL_LOST, onLevelLose);
@@ -295,22 +293,17 @@ package
 		// -----------------------------------
 		private function onExitGame(e:Event=null):void
 		{
-			level.pause();
+//			level.pause();
 			audio.fx.play("click");
 			logger.info("scoring: ", maxSessionScore.value);
-			if(online){
-				var key:String = "huevo" + currentEgg.toString();
-				api.setProfileAttribute(PROFILE_ATTR_KEY_EGG + "/eggName", settings.huevos[currentEgg].eggName);
-				logger.info(settings.huevos[currentEgg].eggDescription);
-				api.setProfileAttribute(PROFILE_ATTR_KEY_EGG + "/eggDescription", settings.huevos[currentEgg].eggDescription);
-				api.setProfileAttribute(PROFILE_ATTR_KEY_EGG + "/eggNumber", settings.huevos[currentEgg].eggNumber);
-				api.setProfileAttribute(PROFILE_ATTR_KEY_EGG + "/premio", true);
-			}
-			close(maxSessionScore.value);
 			
+			if(online){
+				// medallas ganadas a los teams		
+			}
+// TODO
+//			close(maxSessionScore.value);
+			close(0);
 		}
-		
-		
 		
 		
 		// eliminar bien el juego.
@@ -319,7 +312,7 @@ package
 		{
 			audio.music.stop();
 			stage.removeEventListener(Event.ENTER_FRAME, update);
-			removeChild(level); level = null;			
+//			removeChild(level); level = null;			
 			removeChild(gui); gui = null;			
 		}
 		

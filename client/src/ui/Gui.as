@@ -12,33 +12,27 @@ package ui
 	import popups.ConfirmationPopup;
 	import popups.EndGamePopup;
 	import popups.InstructionsPopup;
+	import popups.McMenu;
 
 	public class Gui extends Sprite
 	{
-		private var asset:MovieClip;
+		private var asset:MovieClip; // gui
 		
-		private var instructionsPopup:InstructionsPopup;		
 		private var confirmationPopup:ConfirmationPopup;
 		private var endGamePopup:EndGamePopup;
-		private var endCutscene:EndCutscene;
-
 		
 		private var exitBtn:MovieClip;		
-		private var score:MovieClip;
-		private var time:MovieClip;
+		private var info:MovieClip;
+		private var power:MovieClip;
+		
+		private var sportsMenu:MovieClip;
+		private var sportSelected:String;
 		
 		
 		public function Gui(asset:MovieClip)
 		{
 			super();
 			this.asset = asset;
-			
-			
-			// instrucciones
-			instructionsPopup = new InstructionsPopup();
-			addChild(instructionsPopup);			
-			instructionsPopup.addEventListener(GuiEvents.PLAY, onPlay);
-					
 			
 			// boton salir
 			exitBtn = asset.getChildByName("exit") as MovieClip;
@@ -49,14 +43,44 @@ package ui
 			exitBtn.visible = false;
 			
 			// score
-			score = asset.getChildByName("score") as MovieClip;
-			score.label.text = api.getText(settings.gui.score);
-			score.visible = false;
+			info = asset.getChildByName("display") as MovieClip;
+			info.label.text = api.getText(settings.sports.default.display.label);
+			info.visible = false;
 			
-			//time
-			time = asset.getChildByName("timer") as MovieClip;		
-			time.label.text = api.getText(settings.gui.time);
-			time.visible = false;
+			// power
+			power = asset.getChildByName("power") as MovieClip;
+			// TODO doesnt work
+			power.stop();
+
+			
+			// endgame popup
+			endGamePopup = new EndGamePopup();
+			addChild(endGamePopup);
+			endGamePopup.visible = false;
+			endGamePopup.addEventListener(GuiEvents.PLAY, onPlay);
+			endGamePopup.addEventListener(GuiEvents.EXIT, onConfirmationExit);
+			
+			// el menu que te deja elegir el juego			
+			sportsMenu = new McMenu();
+			sportsMenu.txt_title.text = settings.gui.title;
+			sportsMenu.txt_details.text = settings.gui.details;
+			
+			// las flechitas...
+			sportsMenu.pg2.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ trace(e); sportsMenu.gotoAndStop("page2"); });
+			sportsMenu.pg1.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ trace(e); sportsMenu.gotoAndStop("page1"); });
+			sportsMenu.exitGame.addEventListener(MouseEvent.CLICK, onExitBtn);
+			
+			
+				
+			// armo los botones para los primeros 4
+			
+			for(var i:int = 0; i < settings.sports.sportsQty; i ++){
+				sportsMenu["sport"+i].addEventListener("PLAY_GAME", playSportMenu)							
+			}
+			
+			addChild(sportsMenu);
+			
+			
 			
 			
 			// confirmation popup
@@ -65,23 +89,43 @@ package ui
 			confirmationPopup.addEventListener(GuiEvents.CONFIRMATION_EXIT, onConfirmationExit);
 			confirmationPopup.addEventListener(GuiEvents.RESUME, onResume);
 			addChild(confirmationPopup);
-
-			// endgame popup
-			endGamePopup = new EndGamePopup();
-			addChild(endGamePopup);
-			endGamePopup.visible = false;
-			endGamePopup.addEventListener(GuiEvents.PLAY, onPlay);
-			endGamePopup.addEventListener(GuiEvents.EXIT, onConfirmationExit);
-			
-			endCutscene = new EndCutscene();
-			addChild(endCutscene);
-			endCutscene.ballon.text.text = settings.gui.win.cutscene;
-			endCutscene.ballon.visible = false;
-			endCutscene.visible = false;
-			endCutscene.gotoAndStop(1);
 			
 			// asset tiene el marco amarillo
 			addChild(asset);
+		
+			
+		}
+		
+		private function resetMenu(e:Event):void
+		{
+			for(var i:int = 0; i < settings.sports.sportsQty; i ++){
+				sportsMenu["sport"+i].addEventListener("PLAY_GAME", playSportMenu)							
+			}
+			
+		}
+		
+		
+		private function playSport(e:Event):void
+		{
+			sportsMenu.visible = false;	
+//			dispatchEvent(blabla);
+			trace(sportSelected);
+		}
+		
+		private function playSportMenu(e:Event):void
+		{			
+			sportsMenu.gotoAndStop(e.currentTarget.name);
+			sportSelected = settings.sports[e.currentTarget.name].id;
+			sportsMenu.addEventListener( Event.ENTER_FRAME , ensureRendered );			
+			function ensureRendered( evt:Event ) : void
+			{
+				removeEventListener( Event.ENTER_FRAME , ensureRendered );
+				sportsMenu.playGameBtn.addEventListener(MouseEvent.CLICK, playSport);					
+			}
+			sportsMenu.txt_details.text = sportsMenu.currentLabel;
+			
+			
+			
 			
 		}
 		
@@ -120,7 +164,7 @@ package ui
 		
 		public function setScore(score:String):void
 		{
-			this.score.field.text = score;
+			this.info.field.text = score;
 		}
 		
 		// eventos
@@ -151,11 +195,11 @@ package ui
 
 		private function onPlay(e:Event):void
 		{
-				if(e.currentTarget == instructionsPopup){
-					e.currentTarget.removeEventListener(e.type, arguments.callee);
-					removeChild(instructionsPopup);
+//				if(e.currentTarget == instructionsPopup){
+//					e.currentTarget.removeEventListener(e.type, arguments.callee);
+//					removeChild(instructionsPopup);
 //					score.visible = true;
-				}
+//				}
 				
 				
 				dispatchEvent(new Event(GuiEvents.PLAY));
@@ -164,11 +208,11 @@ package ui
 		
 		public function runCutscene():void
 		{
-			endCutscene.visible = true;
-			score.visible = false;
-			exitBtn.visible = false;
-			endCutscene.gotoAndPlay(1);
-			endCutscene.addEventListener(Event.ENTER_FRAME, onCutsceneEnterFrame);			
+//			endCutscene.visible = true;
+//			score.visible = false;
+//			exitBtn.visible = false;
+//			endCutscene.gotoAndPlay(1);
+//			endCutscene.addEventListener(Event.ENTER_FRAME, onCutsceneEnterFrame);			
 		}
 		
 		
@@ -177,16 +221,17 @@ package ui
 		
 		private function onCutsceneEnterFrame(e:Event):void			
 		{
-			if((endCutscene as MovieClip).currentLabel == "showText"){
-				endCutscene.ballon.visible = true;
-			}
 			
-			
-			if((endCutscene as MovieClip).currentLabel == "end"){
-				endCutscene.visible = false;
-				endCutscene.removeEventListener(Event.ENTER_FRAME, onCutsceneEnterFrame);
-				dispatchEvent(new Event(GuiEvents.ANIMATION_END));
-			}
+//			if((endCutscene as MovieClip).currentLabel == "showText"){
+//				endCutscene.ballon.visible = true;
+//			}
+//			
+//			
+//			if((endCutscene as MovieClip).currentLabel == "end"){
+//				endCutscene.visible = false;
+//				endCutscene.removeEventListener(Event.ENTER_FRAME, onCutsceneEnterFrame);
+//				dispatchEvent(new Event(GuiEvents.ANIMATION_END));
+//			}
 		}
 	}
 }

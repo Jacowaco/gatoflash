@@ -17,9 +17,9 @@ package popups
 		public function EndGamePopup()
 		{
 			super();			
-			this.asset = new popups.WinScreen();
-			addChild(this.asset);				
-			init();
+//			this.asset = new popups.WinScreen();
+//			addChild(this.asset);				
+//			init();
 		}
 		
 		private function init():void
