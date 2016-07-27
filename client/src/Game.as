@@ -65,12 +65,10 @@ package
 		// si estoy online carga el settings.json incrustado, sino lo levanta del disco para que el 
 		// gd lo pueda editar.
 		[Embed(source = './../deploy/settings.json', mimeType='application/octet-stream')]		
-		private static const settingsFile:Class;				
 		
-		private static var tasks:TaskRunner;		
-		
-		private var gui:Gui;
-		
+		private static const settingsFile:Class;						
+		private static var tasks:TaskRunner;				
+		private var gui:Gui;		
 		private var currentSport:Sport;
 	
 		
