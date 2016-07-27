@@ -6,15 +6,15 @@
   <compiler>
     <define append="true">
       <name>CONFIG::debug</name>
-      <value>false</value>
-    </define>
-    <define append="true">
-      <name>CONFIG::release</name>
       <value>true</value>
     </define>
     <define append="true">
+      <name>CONFIG::release</name>
+      <value>false</value>
+    </define>
+    <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'26/07/2016'</value>
+      <value>'27/07/2016'</value>
     </define>
     <define append="true">
       <name>CONFIG::air</name>
@@ -28,9 +28,7 @@
       <name>CONFIG::desktop</name>
       <value>false</value>
     </define>
-    <optimize>true</optimize>
-    <omit-trace-statements>true</omit-trace-statements>
-    <verbose-stacktraces>false</verbose-stacktraces>
+    <verbose-stacktraces>true</verbose-stacktraces>
     <source-path append="true">
       <path-element>C:\Users\Joaco\Desktop\Jacowaco\Programming\gaturro minigames\decathlon\client\src</path-element>
       <path-element>C:\Users\Joaco\Desktop\Jacowaco\Programming\gaturro minigames\common\common\src</path-element>
