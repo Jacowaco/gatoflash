@@ -158,7 +158,7 @@ package ui
 					arrows(true);
 					instructions(false);
 					playbtn(false);
-					
+					sportsMenu.txt_details.text = settings.gui.details;					
 					sportsMenu.nextWeek.visible = false;
 					break;
 				
@@ -256,12 +256,12 @@ package ui
 		
 		public function setTime(time:String):void
 		{
-			asset.timer.field.text = time;
+//			asset.timer.field.text = time;
 		}
 		
 		public function setScore(score:String):void
 		{
-			this.info.field.text = score;
+//			this.info.field.text = score;
 		}
 		
 		// eventos
