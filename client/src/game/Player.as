@@ -44,9 +44,9 @@ package game
 			offset = new Point();
 		}
 		
-		override public function update():void 
+		public function update():void 
 		{
-			super.update();
+			super.run();
 			
 			if (!move) return;
 			

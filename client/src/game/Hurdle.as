@@ -1,32 +1,37 @@
 package game 
 {
 	import com.qb9.flashlib.geom.Vector2D;
+	
 	import flash.display.MovieClip;
-	import gameobject.GameObject;
+	import flash.display.Sprite;
+	
+//	import gameobject.GameObject;
 	
 	
-	public class Hurdle extends GameObject 
+	public class Hurdle extends MovingObject 
 	{
 		private var _collided:Boolean;
 		
 		public function Hurdle(mc:MovieClip=null) 
 		{
 			super(mc);
-			
-			debug(false);
+//			addChild(mc);	
+//			debug(false);
 			_collided = false;
 		}
 		
-		public function init(x:Number, y:Number):void
-		{
-			loc = new Vector2D(x, y);
-		}
+//		public function init(x:Number, y:Number):void
+//		{
+////			loc = new Vector2D(x, y);
+//			this.x = x;
+//			this.y = y;
+//		}
 		
 		public function collide():void
 		{
 			if (_collided) return;
 			_collided = true;
-			asset.rotation = 90;
+//			asset.rotation = 90;
 		}
 		
 		public function get collided():Boolean

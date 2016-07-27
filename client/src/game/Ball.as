@@ -45,7 +45,7 @@ package game
 			offset.x = offset.y = 0;
 			shot = false;
 			reached = false;
-			if (rotate) asset.rotation = START_ANGLE;
+			if (rotate) mc.rotation = START_ANGLE;
 		}
 		
 		public function setPlayerX(value:Number):void
@@ -53,9 +53,9 @@ package game
 			playerX = value;
 		}
 		
-		override public function update():void 
+		public function update():void 
 		{
-			super.update();
+			super.run();
 			
 			if (shot && !reached && offset.x == distance)
 			{
@@ -86,8 +86,8 @@ package game
 			
 			if (rotate)
 			{
-				var startRotate:Tween = new Tween(asset, distance, { rotation:0 },         { transition:"linear" } );
-				var endRotate:Tween   = new Tween(asset, distance, { rotation:END_ANGLE }, { transition:"linear" } );
+				var startRotate:Tween = new Tween(mc, distance, { rotation:0 },         { transition:"linear" } );
+				var endRotate:Tween   = new Tween(mc, distance, { rotation:END_ANGLE }, { transition:"linear" } );
 				var sequenceRotate:Sequence = new Sequence(startRotate, endRotate);
 				Game.taskRunner().add(sequenceRotate);
 			}

@@ -5,7 +5,7 @@ package game.sports
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
 	import game.Hurdle;
-	import gameobject.GameObject;
+//	import gameobject.GameObject;
 	
 	public class Hurdles extends Metres100
 	{
@@ -58,9 +58,9 @@ package game.sports
 				for (var i:int = 0; i < CANT_HURDLES; i++)
 				{
 					if (e == CANT_ENEMIES)
-						hurdles[e][i].init(start.loc.x + 2000 + i * 900, player.loc.y);
+						hurdles[e][i].initLoc(start.loc.x + 2000 + i * 900, player.loc.y);
 					else
-						hurdles[e][i].init(start.loc.x + 2000 + i * 900, enemies[e].loc.y);
+						hurdles[e][i].initLoc(start.loc.x + 2000 + i * 900, enemies[e].loc.y);
 					hurdles[e][i].run();
 				}
 			}

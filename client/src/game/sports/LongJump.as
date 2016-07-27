@@ -1,22 +1,27 @@
 package game.sports 
 {
 	import assets.*;
+	
 	import com.qb9.flashlib.geom.Vector2D;
+	
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
+	
 	import game.Ball;
 	import game.LevelEvents;
+	import game.MovingObject;
 	import game.Player;
 	import game.Sport;
-	import gameobject.GameObject;
+
+//	import gameobject.GameObject;
 	
 	
 	public class LongJump extends Sport 
 	{
-		protected var line:GameObject;
+		protected var line:MovingObject;
 		protected var throwMeters:int;
 		
 		public function LongJump() 
@@ -36,10 +41,10 @@ package game.sports
 		
 		override protected function addThingsBeforePlayer():void 
 		{
-			line = new GameObject(new assets.lineMC);
-			line.debug(false);
+			line = new MovingObject(new assets.lineMC);
+//			line.debug(false);
 			line.loc = new Vector2D(start.loc.x + throwMeters * UNITS_PER_METER, start.loc.y);
-			line.run();
+//			line.run();
 			camera.addChild(line.asset);
 		}
 		

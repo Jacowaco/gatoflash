@@ -1,15 +1,20 @@
 package game.sports 
 {
 	import assets.*;
+	
+	import com.qb9.flashlib.geom.Vector2D;
+	
+	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
+	
 	import game.Enemy;
 	import game.LevelEvents;
+	import game.MovingObject;
 	import game.Sport;
-	import com.qb9.flashlib.geom.Vector2D;
-	import gameobject.GameObject;
+	
 	import utils.Utils;
 	
 	
@@ -18,7 +23,7 @@ package game.sports
 		protected const CANT_ENEMIES:int = 4;
 		
 		protected var enemies:Array;
-		protected var end:GameObject;
+		protected var end:MovingObject;
 		protected var finalMetres:int;
 		protected var cantEnemiesReachedEnd:int;
 		
@@ -53,10 +58,10 @@ package game.sports
 		
 		override protected function addThingsBeforePlayer():void 
 		{
-			end = new GameObject(new assets.endMC);
-			end.debug(false);
-			end.loc = new Vector2D(start.loc.x + finalMetres * UNITS_PER_METER, start.loc.y);
-			end.run();
+//			end = new GameObject(new assets.endMC);
+			end = new MovingObject(new assets.endMC());
+			
+			end.init(new Vector2D(start.loc.x + finalMetres * UNITS_PER_METER, start.loc.y));
 			camera.addChild(end.asset);
 			
 			camera.addChild(enemies[0].asset);

@@ -37,9 +37,9 @@ package game
 			offset = new Point();
 		}
 		
-		override public function update():void 
+		public function update():void 
 		{
-			super.update();
+			super.run();
 			
 			speed = Math.min(speed + 0.10 + baseAccel + Math.random() * 0.01, maxSpeed);
 			loc = loc.add(new Vector2D(speed, 0));

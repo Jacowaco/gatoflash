@@ -1,16 +1,21 @@
 package game.sports 
 {
 	import assets.*;
+	
 	import com.qb9.flashlib.geom.Vector2D;
+	
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
+	
 	import game.Ball;
 	import game.LevelEvents;
+	import game.MovingObject;
 	import game.Sport;
-	import gameobject.GameObject;
+	
+//	import gameobject.GameObject;
 	
 	
 	public class DiscusThrow extends Sport 
@@ -21,7 +26,7 @@ package game.sports
 		protected var ballMovieClip:Class;
 		protected var rotate:Boolean;
 		
-		protected var line:GameObject;
+		protected var line:MovingObject;
 		protected var throwMeters:int;
 		
 		public function DiscusThrow() 
@@ -47,10 +52,10 @@ package game.sports
 		
 		override protected function addThingsBeforePlayer():void 
 		{
-			line = new GameObject(new assets.lineMC);
-			line.debug(false);
+			line = new MovingObject(new assets.lineMC);
+//			line.debug(false);
 			line.loc = new Vector2D(start.loc.x + throwMeters * UNITS_PER_METER, start.loc.y);
-			line.run();
+//			line.run();
 			camera.addChild(line.asset);
 		}
 		

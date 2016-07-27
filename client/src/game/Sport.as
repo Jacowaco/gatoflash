@@ -12,7 +12,7 @@ package game
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 	
-	import gameobject.GameObject;
+//	import gameobject.GameObject;
 	
 	
 	public class Sport extends Sprite 
@@ -26,7 +26,7 @@ package game
 		protected var level:MovieClip;
 		protected var camera:Sprite;
 		protected var bg:Background;
-		protected var start:GameObject;
+		protected var start:MovingObject;
 //		protected var speedBar:SpeedBar;
 		protected var player:Player;
 		protected var meters:int;
@@ -64,8 +64,7 @@ package game
 				if (getQualifiedClassName(level.getChildAt(i)).lastIndexOf("assets::startMC") != -1)
 				{
 					_asset = level.getChildAt(i) as MovieClip;
-					start = new GameObject(_asset);
-					start.debug(false);
+					start = new MovingObject(_asset);
 					camera.addChild(_asset);
 				}
 				if (getQualifiedClassName(level.getChildAt(i)).lastIndexOf("assets::phCartel") != -1)
@@ -104,7 +103,7 @@ package game
 			
 //			speedBar.reset();
 			
-			player.init(start.loc);
+			player.initLoc(start.loc.x, start.loc.y);
 			player.reset();
 			
 			hud.updateMeters(meters);
