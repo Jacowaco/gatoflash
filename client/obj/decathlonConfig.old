@@ -38,8 +38,6 @@
     </source-path>
     <library-path append="true">
       <path-element>C:\Users\Joaco\Desktop\Jacowaco\Programming\gaturro minigames\decathlon\client\assets\assets.swc</path-element>
-      <path-element>C:\Users\Joaco\Desktop\Jacowaco\Programming\gaturro minigames\decathlon\client\assets\popups.swc</path-element>
-      <path-element>C:\Users\Joaco\Desktop\Jacowaco\Programming\gaturro minigames\decathlon\client\assets\instrucciones.swc</path-element>
     </library-path>
   </compiler>
   <file-specs>

@@ -60,7 +60,7 @@ package ui
 			
 			// score
 			info = asset.getChildByName("display") as MovieClip;
-			info.label.text = api.getText(settings.sports.default.display.label);
+			info.label.text = api.getText(settings.sports.defaultValue.display.label);
 			info.visible = false;
 			
 			// power
@@ -158,7 +158,7 @@ package ui
 					arrows(true);
 					instructions(false);
 					playbtn(false);
-					
+					sportsMenu.txt_details.text = settings.gui.details;					
 					sportsMenu.nextWeek.visible = false;
 					break;
 				
@@ -204,7 +204,7 @@ package ui
 			arrows(false);
 			playbtn(true);
 			instructions(true);
-			sportSelected = settings.sports[e.currentTarget.name].id;
+			sportSelected = settings.sports[e.currentTarget.name].classID;
 			
 			sportsMenu.txt_details.text = settings.sports[e.currentTarget.name].name;
 						
@@ -256,12 +256,12 @@ package ui
 		
 		public function setTime(time:String):void
 		{
-			asset.timer.field.text = time;
+//			asset.timer.field.text = time;
 		}
 		
 		public function setScore(score:String):void
 		{
-			this.info.field.text = score;
+//			this.info.field.text = score;
 		}
 		
 		// eventos

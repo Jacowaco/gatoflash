@@ -9,6 +9,7 @@ package game.sports
 	import flash.ui.Keyboard;
 	import game.Ball;
 	import game.LevelEvents;
+	import game.Player;
 	import game.Sport;
 	import gameobject.GameObject;
 	
@@ -99,6 +100,13 @@ package game.sports
 				win();
 			else
 				lose();
+		}
+		
+		override public function assignBadge():void 
+		{
+			if (meters >= 0) 						  badgeObtained = BADGE_BRONCE;
+			if (meters >= Player.MAX_DISTANCE * 0.5)  badgeObtained = BADGE_SILVER;
+			if (meters >= Player.MAX_DISTANCE) 	      badgeObtained = BADGE_GOLD;
 		}
 		
 	}

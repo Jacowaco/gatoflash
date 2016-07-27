@@ -38,6 +38,7 @@ package
 	
 	import game.LevelEvents;
 	import game.Sport;
+	import game.sports.*;
 	
 	import popups.*;
 	import popups.ConfirmationPopup;
@@ -47,6 +48,7 @@ package
 	
 	import utils.Stopwatch;
 	import utils.Utils;
+	import flash.utils.getDefinitionByName;
 	
 	[SWF(width='800', height='480', backgroundColor='0xF9D611', frameRate='25')]
 	public class Game extends BaseGame
@@ -65,12 +67,10 @@ package
 		// si estoy online carga el settings.json incrustado, sino lo levanta del disco para que el 
 		// gd lo pueda editar.
 		[Embed(source = './../deploy/settings.json', mimeType='application/octet-stream')]		
-		private static const settingsFile:Class;				
 		
-		private static var tasks:TaskRunner;		
-		
-		private var gui:Gui;
-		
+		private static const settingsFile:Class;						
+		private static var tasks:TaskRunner;				
+		private var gui:Gui;		
 		private var currentSport:Sport;
 	
 		
@@ -170,7 +170,7 @@ package
 			
 			audio.music.loop("inicio");
 			
-			if(!settings.default.soundsEnable){
+			if(!settings.defaultValue.soundsEnable){
 				audio.gain(null, 0.001);
 			}
 		}
@@ -184,6 +184,8 @@ package
 		{
 			gui.setTime("0");
 			gui.setScore("0");
+			
+			if (currentSport) currentSport.update();
 		}
 		
 		// -----------------------------------
@@ -212,8 +214,46 @@ package
 		
 		private function onPlay(e:Event):void
 		{
-			var currentSport:String = gui.currentSport;
-			trace("crear el level con ese juego: " + currentSport);
+			trace("crear el level con ese juego: " + gui.currentSport);
+			
+			Metres100;
+			LongJump;
+			ShotPut;
+			HighJump;
+			Hurdles;
+			DiscusThrow;
+			Metres400;
+			Metres1500;
+			PoleVault;
+			JavelinThrow;
+			
+			var _sportClass:Class = getDefinitionByName("game.sports." + gui.currentSport) as Class;
+			currentSport = new _sportClass();
+			
+			createSport();
+			currentSport.reset();
+			stage.focus = this;
+		}
+		
+		private function createSport():void
+		{
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			
+			currentSport.addEventListener(LevelEvents.LEVEL_LOST, onSportLose);
+			currentSport.addEventListener(LevelEvents.LEVEL_WIN, onSportWin);
+			currentSport.create();
+			addChild(currentSport);
+		}
+		
+		private function onKeyDown(key:KeyboardEvent):void
+		{
+			if (currentSport) currentSport.onKeyDown(key);
+		}
+		
+		private function onKeyUp(key:KeyboardEvent):void
+		{
+			if (currentSport) currentSport.onKeyUp(key);
 		}
 		
 		private function onExitGame(e:Event=null):void

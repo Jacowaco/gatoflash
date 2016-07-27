@@ -25,6 +25,7 @@ package game
 		private var jumpingX:Number;
 		private var stopAtJump:Boolean;
 		public var nextJumpDist:int;
+		public var move:Boolean;
 		
 		public function Enemy(mc:MovieClip, speedFactor:Number) 
 		{
@@ -40,7 +41,7 @@ package game
 		{
 			super.update();
 			
-			speed = Math.min(speed + 0.07 + baseAccel + Math.random() * 0.03, maxSpeed);
+			speed = Math.min(speed + 0.10 + baseAccel + Math.random() * 0.01, maxSpeed);
 			loc = loc.add(new Vector2D(speed, 0));
 			
 			if (jumped)
@@ -56,17 +57,19 @@ package game
 		public function start():void
 		{
 			speed = 0;
-			asset.gotoAndPlay("walk");
+			asset.gotoAndPlay("stand");
+			asset.gotoAndPlay("run1");
 			
 			jumped = false;
 			reached = false;
+			move = true;
 			
 			randomizeNextJumpDist();
 		}
 		
 		public function stop():void
 		{
-			asset.gotoAndPlay("standBy");
+			asset.gotoAndPlay("stand");
 		}
 		
 		public function getMeters():int

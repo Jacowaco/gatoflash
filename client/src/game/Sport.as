@@ -17,6 +17,10 @@ package game
 	{
 		public static const UNITS_PER_METER:int = 100;
 		
+		public static const BADGE_BRONCE:int = 0;
+		public static const BADGE_SILVER:int = 1;
+		public static const BADGE_GOLD:int = 2;
+		
 		protected var level:MovieClip;
 		protected var camera:Sprite;
 		protected var bg:Background;
@@ -28,12 +32,13 @@ package game
 		protected var playing:Boolean;
 		protected var leftKeyPressed:Boolean;
 		protected var endCutScene:MovieClip;
+		protected var badgeObtained:int = 0;
 		
 		public function Sport() 
 		{
 			super();
 			
-//			level = new assets.level1MC();
+			level = new assets.level1MC();
 		}
 		
 		public function create():void
@@ -42,19 +47,16 @@ package game
 			addChild(camera);
 			
 			//Cargo los assets del SWC
+			
+			_asset = new assets.backgroundMC();
+			var _asset2:MovieClip = new assets.backgroundMC();
+			bg = new Background(_asset, _asset2);
+			camera.addChild(_asset);
+			camera.addChild(_asset2);
+			
 			for (var i:int = 0; i < level.numChildren; i++)
 			{
 				var _asset:MovieClip;
-				
-				if (getQualifiedClassName(level.getChildAt(i)).lastIndexOf("assets::backgroundMC") != -1)
-				{
-					_asset = level.getChildAt(i) as MovieClip;
-					//_asset = new assets.backgroundMC();
-					var _asset2:MovieClip = new assets.backgroundMC();
-					bg = new Background(_asset, _asset2);
-					camera.addChild(_asset);
-					camera.addChild(_asset2);
-				}
 				if (getQualifiedClassName(level.getChildAt(i)).lastIndexOf("assets::startMC") != -1)
 				{
 					_asset = level.getChildAt(i) as MovieClip;
@@ -72,15 +74,15 @@ package game
 			
 			addThingsBeforePlayer();
 			
-//			player = new Player(new assets.GaturroMC());
-//			camera.addChild(player.asset);
+			player = new Player(new assets.CorredorMC());
+			camera.addChild(player.asset);
 			
 			hud = new HUD();
 			addChild(hud);
 			
-//			endCutScene = new assets.endCutsceneMC();
-//			addChild(endCutScene);
-//			endCutScene.visible = false;
+			endCutScene = new assets.endCutsceneMC();
+			addChild(endCutScene);
+			endCutScene.visible = false;
 		}
 		
 		protected function addThingsBeforePlayer():void
@@ -123,8 +125,16 @@ package game
 			
 		}
 		
+		public function assignBadge():void
+		{
+			
+		}
+		
 		public function win():void
 		{
+			assignBadge();
+			trace("BADGE OBTAINED", badgeObtained);
+			
 			playing = false;
 			dispatchEvent(new Event(LevelEvents.LEVEL_WIN));
 			endCutScene.visible = true;

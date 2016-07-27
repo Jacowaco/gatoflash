@@ -12,13 +12,14 @@ package game
 	
 	public class Ball extends MovingObject 
 	{
+		public static const MIN_DISTANCE:int = 500;
+		public static const MAX_DISTANCE:int = 2500;
+		
 		private const START_ANGLE:int = -40;
 		private const END_ANGLE:int = 40;
 		
 		private var TIME:int = 2000;
 		private var DISTANCE_Y:int = 220;
-		private var MIN_DISTANCE:int = 500;
-		private var MAX_DISTANCE:int = 2500;
 		private var onReached:Event;
 		public var shot:Boolean;
 		private var offset:Point;
