@@ -60,7 +60,7 @@ package ui
 			
 			// score
 			info = asset.getChildByName("display") as MovieClip;
-			info.label.text = api.getText(settings.sports.default.display.label);
+			info.label.text = api.getText(settings.sports.defaultValue.display.label);
 			info.visible = false;
 			
 			// power
@@ -204,7 +204,7 @@ package ui
 			arrows(false);
 			playbtn(true);
 			instructions(true);
-			sportSelected = settings.sports[e.currentTarget.name].id;
+			sportSelected = settings.sports[e.currentTarget.name].classID;
 			
 			sportsMenu.txt_details.text = settings.sports[e.currentTarget.name].name;
 						

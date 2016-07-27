@@ -1,5 +1,5 @@
 {
-    "default": {
+    "defaultValue": {
         "soundsEnable": false
     },
     "sports": {
@@ -7,6 +7,7 @@
         "sport0": {
             "name": "CARRERA CON VALLAS",
             "id": "hurdles",
+            "classID": "Hurdles",
             "display": {
                 "label": "METROS"
             }
@@ -14,6 +15,7 @@
         "sport1": {
             "name": "CARRERA DE 400 METROS",
             "id": "fourHundreds",
+            "classID": "Metres400",
             "display": {
                 "label": "METROS"
             }
@@ -21,6 +23,7 @@
         "sport2": {
             "name": "LANZAMIENTO DE PIZZA",
             "id": "pizza",
+            "classID": "DiscusThrow",
             "display": {
                 "label": "METROS"
             }
@@ -28,12 +31,13 @@
         "sport3": {
             "name": "SALTO EN ALTO",
             "id": "highJump",
+            "classID": "HighJump",
             "display": {
                 "label": "METROS"
             }
         },
 
-        "default": {
+        "defaultValue": {
             "display": {
                 "label": "default"
             }

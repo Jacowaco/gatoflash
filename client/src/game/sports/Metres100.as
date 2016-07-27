@@ -20,6 +20,7 @@ package game.sports
 		protected var enemies:Vector.<Enemy>;
 		protected var end:GameObject;
 		protected var finalMetres:int;
+		protected var cantEnemiesReachedEnd:int;
 		
 		public function Metres100() 
 		{
@@ -40,7 +41,7 @@ package game.sports
 			enemies = new Vector.<Enemy>();
 			for (i = 0; i < CANT_ENEMIES; i++)
 			{
-				enemies[i] = new Enemy(new assets.GaturroMC, speedFactors[i]);
+				enemies[i] = new Enemy(new assets.CorredorMC, speedFactors[i]);
 			}
 			
 			super.create();
@@ -64,6 +65,8 @@ package game.sports
 		override public function reset():void 
 		{
 			super.reset();
+			
+			cantEnemiesReachedEnd = 0;
 			
 			enemies[0].init(new Vector2D(start.loc.x, start.loc.y - 40));
 			enemies[1].init(new Vector2D(start.loc.x, start.loc.y - 20));
@@ -114,13 +117,25 @@ package game.sports
 			{
 				for (i = 0; i < CANT_ENEMIES; i++)
 				{
-					if (enemies[i].getMeters() >= finalMetres)
+					if (enemies[i].move && enemies[i].getMeters() >= finalMetres)
 					{
-						player.stop();
-						lose();
+						enemies[i].stop();
+						cantEnemiesReachedEnd++;
+						if (cantEnemiesReachedEnd >= 3)
+						{
+							player.stop();
+							lose();
+						}
 					}
 				}
 			}
+		}
+		
+		override public function assignBadge():void 
+		{
+			if (cantEnemiesReachedEnd == 0) badgeObtained = BADGE_GOLD;
+			if (cantEnemiesReachedEnd == 1) badgeObtained = BADGE_SILVER;
+			if (cantEnemiesReachedEnd >= 2) badgeObtained = BADGE_BRONCE;
 		}
 		
 		protected function checkColisions():void

@@ -3,6 +3,7 @@ package game.sports
 	import assets.*;
 	import com.qb9.flashlib.geom.Vector2D;
 	import flash.events.KeyboardEvent;
+	import flash.ui.Keyboard;
 	import game.Hurdle;
 	import gameobject.GameObject;
 	
@@ -23,10 +24,11 @@ package game.sports
 		{
 			super.create();
 			
-			for (var i:int = 0; i < CANT_ENEMIES; i++)
-			{
-				enemies[i].baseAccel += 0.25;
-			}
+			//usar esto para accelerar o desaccelerar a los enemigos en este juego particular
+			//for (var i:int = 0; i < CANT_ENEMIES; i++)
+			//{
+				//enemies[i].baseAccel += 0.02;
+			//}
 			
 			player.setJumpVariables(120, 0, 300, false, true);
 		}
@@ -105,7 +107,21 @@ package game.sports
 		
 		override public function onKeyDown(key:KeyboardEvent):void 
 		{
-			player.jump(1, 0);
+			if (key.keyCode == Keyboard.LEFT && !leftKeyPressed)
+			{
+				leftKeyPressed = true;
+				player.accelerate();
+			}
+			else if (key.keyCode == Keyboard.RIGHT && leftKeyPressed)
+			{
+				leftKeyPressed = false;
+				player.accelerate();
+			}
+			else if (key.keyCode == Keyboard.SPACE)
+			{
+				player.jump(1, 0);
+			}
+			
 		}
 		
 	}

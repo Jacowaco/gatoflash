@@ -13,14 +13,16 @@ package game
 	
 	public class Player extends MovingObject 
 	{
+		public static var MIN_DISTANCE:int = 200;
+		public static var MAX_DISTANCE:int = 1000;
+		
 		private var jumps:Boolean;
-		private var spinning:Boolean;
+		private var spins:Boolean;
 		private var speed:Number;
 		private var maxSpeed:Number = 24;
 		
 		private var DISTANCE_Y:int = 150;
-		private var MIN_DISTANCE:int = 200;
-		private var MAX_DISTANCE:int = 1000;
+		
 		private var offset:Point;
 		private var distance:Number;
 		private var reached:Boolean;
@@ -67,7 +69,7 @@ package game
 						if (stopAtJump)
 						{
 							reached = true;
-							asset.gotoAndPlay("standBy");
+							asset.gotoAndPlay("stand");
 							var wait:Wait = new Wait(200);
 							var dispatchReached:Func = new Func(function():void { dispatchEvent(onReached); } );
 							var seq:Sequence = new Sequence(wait, dispatchReached);
@@ -84,9 +86,9 @@ package game
 			{
 				speed = Math.max(speed - 0.25, 0);
 				speed = Math.min(speed, maxSpeed);
-				var spinFactor:Number = (spinning) ? 0.3 : 1;
+				var spinFactor:Number = (spins) ? 0.3 : 1;
 				loc = loc.add(new Vector2D(speed * spinFactor, 0));
-				if (spinning)
+				if (spins && speed > maxSpeed * 0.1)
 				{
 					spinningCont++;
 					if (spinningCont > spinningTime)
@@ -99,12 +101,12 @@ package game
 			}
 		}
 		
-		public function start(_jumps:Boolean, _spin:Boolean=false):void
+		public function start(_jumps:Boolean, _spins:Boolean=false):void
 		{
 			jumps = _jumps;
-			spinning = _spin;
+			spins = _spins;
 			speed = 0;
-			asset.gotoAndPlay("walk");//if (!_spin) 
+			asset.gotoAndPlay("stand"); 
 			
 			jumped = false;
 			reached = false;
@@ -118,19 +120,20 @@ package game
 		{
 			move = false;
 			jumps = false;
-			asset.gotoAndPlay("standBy");
+			asset.gotoAndPlay("stand");
 			//speed = 0;
-			spinning = false;
+			spins = false;
 		}
 		
 		public function accelerate():void
 		{
 			speed += 1;
+			asset.gotoAndPlay("run1");
 		}
 		
 		private function spin():void
 		{
-			if (spinning)
+			if (spins)
 			{
 				lookingRight = !lookingRight;
 				asset.scaleX = -asset.scaleX;

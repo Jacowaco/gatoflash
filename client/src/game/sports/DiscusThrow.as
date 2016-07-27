@@ -132,6 +132,13 @@ package game.sports
 			win();
 		}
 		
+		override public function assignBadge():void 
+		{
+			if (meters >= 0) 						badgeObtained = BADGE_BRONCE;
+			if (meters >= Ball.MAX_DISTANCE * 0.5)  badgeObtained = BADGE_SILVER;
+			if (meters >= Ball.MAX_DISTANCE) 	    badgeObtained = BADGE_GOLD;
+		}
+		
 	}
 
 }
