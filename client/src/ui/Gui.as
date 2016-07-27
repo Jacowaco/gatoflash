@@ -123,9 +123,13 @@ package ui
 			
 			sportsMenu.instructionsMc.visible = false;
 			sportsMenu.txtClub.visible = false;
+			
 			sportsMenu.backBtn.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ goPage(1) });
+			sportsMenu.backBtn.text.text = settings.gui.confirmation.back;
 			sportsMenu.backBtn.visible = false;
+			
 			sportsMenu.playGameBtn.addEventListener(MouseEvent.CLICK, playSport);
+			sportsMenu.playGameBtn.text.text = settings.gui.confirmation.play;
 			sportsMenu.playGameBtn.visible = false;
 			
 			addChild(sportsMenu);
@@ -188,8 +192,9 @@ package ui
 		
 		private function playSport(e:Event):void
 		{
-			sportsMenu.visible = false;	
-			//			dispatchEvent(blabla);
+			sportsMenu.visible = false;
+			
+			dispatchEvent(new Event(GuiEvents.PLAY));
 			trace(sportSelected);
 		}
 		
@@ -201,8 +206,8 @@ package ui
 			instructions(true);
 			sportSelected = settings.sports[e.currentTarget.name].id;
 			
-			sportsMenu.txt_details.text = sportsMenu.currentLabel;
-			
+			sportsMenu.txt_details.text = settings.sports[e.currentTarget.name].name;
+						
 			
 			
 			
@@ -324,6 +329,11 @@ package ui
 			//				endCutscene.removeEventListener(Event.ENTER_FRAME, onCutsceneEnterFrame);
 			//				dispatchEvent(new Event(GuiEvents.ANIMATION_END));
 			//			}
+		}
+		
+		public function get currentSport():String
+		{
+			return sportSelected;
 		}
 	}
 }
