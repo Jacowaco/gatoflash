@@ -33,7 +33,7 @@ package game
 		{
 			super();
 			
-			level = new assets.level1MC();
+//			level = new assets.level1MC();
 		}
 		
 		public function create():void
@@ -72,15 +72,15 @@ package game
 			
 			addThingsBeforePlayer();
 			
-			player = new Player(new assets.GaturroMC());
-			camera.addChild(player.asset);
+//			player = new Player(new assets.GaturroMC());
+//			camera.addChild(player.asset);
 			
 			hud = new HUD();
 			addChild(hud);
 			
-			endCutScene = new assets.endCutsceneMC();
-			addChild(endCutScene);
-			endCutScene.visible = false;
+//			endCutScene = new assets.endCutsceneMC();
+//			addChild(endCutScene);
+//			endCutScene.visible = false;
 		}
 		
 		protected function addThingsBeforePlayer():void

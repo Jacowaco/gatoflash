@@ -2,7 +2,7 @@ package game
 {
 	
 	import adobe.utils.CustomActions;
-	import assets.tennisCourt;
+
 	import flash.events.DataEvent;
 	import game.sports.*;
 	
@@ -26,15 +26,12 @@ package game
 	
 	public class LevelController extends Sprite
 	{
-		
-		
+	
 		private var cron:Stopwatch; // tiempo
 		private var levelScore:SafeNumber = new SafeNumber(0); // puntos safeNumber() encripta el score para que no lo cheateen.
 		private var bonusScore:SafeNumber = new SafeNumber(0); // puntos safeNumber() encripta el score para que no lo cheateen.
 		
-		
 		private var sport:Sport;
-		private var menu:Menu;
 		
 		
 		public function LevelController()
@@ -45,16 +42,16 @@ package game
 			cron = new Stopwatch();
 			cron.setMode(Stopwatch.FORWARD);
 			
-			Metres100;
-			LongJump;
-			ShotPut;
-			HighJump;
-			Hurdles;
-			DiscusThrow;
-			Metres400;
-			Metres1500;
-			PoleVault;
-			JavelinThrow;
+//			Metres100;
+//			LongJump;
+//			ShotPut;
+//			HighJump;
+//			Hurdles;
+//			DiscusThrow;
+//			Metres400;
+//			Metres1500;
+//			PoleVault;
+//			JavelinThrow;
 			
 			this.addEventListener(Event.ADDED_TO_STAGE, function():void
 			{						
@@ -64,7 +61,7 @@ package game
 		
 		private function create():void
 		{
-			createMenu();
+			//			createMenu();
 			//createSport();
 			
 			reset();
@@ -73,15 +70,15 @@ package game
 		
 		public function createMenu():void
 		{
-			menu = new Menu();
-			menu.addEventListener("BTN_CLICKED", btnClicked);
-			addChild(menu);
+//			menu = new Menu();
+//			menu.addEventListener("BTN_CLICKED", btnClicked);
+//			addChild(menu);
 		}
 		
 		public function btnClicked(e:DataEvent):void
 		{
 			//trace(e.data);
-			removeChild(menu);
+//			removeChild(menu);
 			
 			var _sportClass:Class = getDefinitionByName("game.sports." + e.data) as Class;
 			if (sport)
@@ -108,7 +105,7 @@ package game
 		{
 			if (sport) removeChild(sport);
 			sport = null;
-			addChild(menu);
+//			addChild(menu);
 			
 			cron.set(0, 0);
 			levelScore.value = 0;

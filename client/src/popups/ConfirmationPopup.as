@@ -16,6 +16,7 @@ package popups
 	
 		public function ConfirmationPopup()
 		{
+			
 			confirmationPopup = new popups.McConfirmation;
 			addChild(confirmationPopup);
 			confirmationPopup.text.text = api.getText(settings.gui.confirmation.dialog);
