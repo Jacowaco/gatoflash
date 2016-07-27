@@ -17,7 +17,7 @@ package game.sports
 	{
 		protected const CANT_ENEMIES:int = 4;
 		
-		protected var enemies:Vector.<Enemy>;
+		protected var enemies:Array;
 		protected var end:GameObject;
 		protected var finalMetres:int;
 		protected var cantEnemiesReachedEnd:int;
@@ -31,14 +31,15 @@ package game.sports
 		
 		override public function create():void 
 		{
-			var speedFactors:Vector.<int> = new Vector.<int>();
+			var speedFactors:Array = new Array();
 			for (var i:int = 0; i < CANT_ENEMIES; i++)
 			{
 				speedFactors[i] = i;
 			}
-			Utils.shuffleVector(speedFactors);
 			
-			enemies = new Vector.<Enemy>();
+			Utils.shuffleArray(speedFactors);
+			
+			enemies = new Array();
 			for (i = 0; i < CANT_ENEMIES; i++)
 			{
 				enemies[i] = new Enemy(new assets.CorredorMC, speedFactors[i]);
@@ -100,7 +101,7 @@ package game.sports
 				enemies[i].update();
 			}
 			
-			speedBar.percentage = player.percentage;
+//			speedBar.percentage = player.percentage;
 			
 			camera.x += ((Game.SCREEN_WIDTH / 2) - player.asset.localToGlobal(new Point(0, 0)).x);
 			camera.x = Math.min(0, camera.x);

@@ -1,4 +1,4 @@
-package game 
+package ui 
 {
 	import com.qb9.flashlib.easing.Tween;
 	import com.qb9.flashlib.tasks.Loop;

@@ -11,7 +11,7 @@ package game.sports
 	{
 		private const CANT_HURDLES:int = 10;
 		public static const COLISION_RANGE:int = 60;
-		private var hurdles:Vector.<Vector.<Hurdle>>;
+		private var hurdles:Array;
 		
 		public function Hurdles() 
 		{
@@ -35,10 +35,10 @@ package game.sports
 		
 		override protected function addThingsBeforePlayer():void 
 		{
-			hurdles = new Vector.<Vector.<Hurdle>>();
+			hurdles = new Array();
 			for (var e:int = 0; e < CANT_ENEMIES + 1; e++)
 			{
-				hurdles[e] = new Vector.<Hurdle>();
+				hurdles[e] = new Array();
 				for (var i:int = 0; i < CANT_HURDLES; i++)
 				{
 					hurdles[e][i] = new Hurdle(new assets.hurdleMC);

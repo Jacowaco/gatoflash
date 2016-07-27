@@ -65,7 +65,7 @@ package game.sports
 				lose();
 			}
 			
-			speedBar.percentage = player.percentage;
+//			speedBar.percentage = player.percentage;
 			
 			meters = player.getMeters();
 			hud.updateMeters(meters);
@@ -79,8 +79,8 @@ package game.sports
 			
 			if (key.keyCode == Keyboard.SPACE)
 			{
-				speedBar.stop();
-				player.jump(speedBar.percentage, 0);
+//				speedBar.stop();
+//				player.jump(speedBar.percentage, 0);
 			}
 			else if (key.keyCode == Keyboard.LEFT && !leftKeyPressed)
 			{

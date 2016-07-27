@@ -94,7 +94,7 @@ package game.sports
 			
 			if (!ball.shot)
 			{
-				speedBar.percentage = player.percentage;
+//				speedBar.percentage = player.percentage;
 				
 				var offsetX:Number = ballOffset.x * ((player.lookingRight) ? 1 : -1);
 				ball.asset.x += offsetX;
@@ -111,9 +111,9 @@ package game.sports
 			if (key.keyCode == Keyboard.SPACE)
 			{
 				player.stop();
-				speedBar.stop();
-				if (!rotate) ball.shoot(speedBar.percentage, -ballOffset.y, player.lookingRight);
-				else ball.shoot(speedBar.percentage, 0, player.lookingRight);
+//				speedBar.stop();
+//				if (!rotate) ball.shoot(speedBar.percentage, -ballOffset.y, player.lookingRight);
+//				else ball.shoot(speedBar.percentage, 0, player.lookingRight);
 			}
 			else if (key.keyCode == Keyboard.LEFT && !leftKeyPressed)
 			{

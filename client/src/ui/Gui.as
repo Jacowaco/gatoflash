@@ -25,16 +25,19 @@ package ui
 	{
 		private var asset:MovieClip; // gui
 		
-		private var confirmationPopup:ConfirmationPopup;
-		private var endGamePopup:EndGamePopup;
 		
-		private var exitBtn:MovieClip;		
-		private var info:MovieClip;
-		private var power:MovieClip;
+		private var exitBtn:MovieClip; //	salir en la gui ingame		
+		private var info:MovieClip;    //	muestra la data del juego actual (tiempo/metros)
+		private var power:MovieClip;	//  la barra de power
 		
+		// menus
 		private var sportsMenu:MovieClip;
 		private var sportsMenuButtons:Array;
 		private var sportSelected:String;
+
+		private var confirmationPopup:ConfirmationPopup;
+		private var endGamePopup:EndGamePopup;
+		
 		
 		
 		public function Gui(asset:MovieClip)
@@ -45,11 +48,6 @@ package ui
 			trace("creating gui");
 			trace(asset);
 			
-			hurdles_btn;
-			fourHundreds_btn;
-			pizza_btn;
-			highJump_btn;
-			
 			// boton salir
 			exitBtn = asset.getChildByName("exit") as MovieClip;
 			exitBtn.text.text = api.getText(settings.gui.confirmation.exit);
@@ -57,6 +55,10 @@ package ui
 			exitBtn.addEventListener(MouseEvent.CLICK, onExitBtn);
 			exitBtn.addEventListener(MouseEvent.ROLL_OVER, onOver);
 			exitBtn.visible = false;
+			
+			
+			
+			
 			
 			// score
 			info = asset.getChildByName("display") as MovieClip;
@@ -83,20 +85,35 @@ package ui
 			sportsMenu.txt_details.text = settings.gui.details;
 			
 			
-			// las flechitas...
+			
+			sportsMenu.backBtn.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ goPage(1) });
+			sportsMenu.backBtn.addEventListener(MouseEvent.ROLL_OVER, onOver);
+			sportsMenu.backBtn.text.text = api.getText(settings.gui.confirmation.back);
+			sportsMenu.backBtn.visible = false;
+			
+			sportsMenu.playGameBtn.addEventListener(MouseEvent.CLICK, playSport);
+			sportsMenu.playGameBtn.addEventListener(MouseEvent.ROLL_OVER, onOver);
+			sportsMenu.playGameBtn.text.text = api.getText(settings.gui.confirmation.play);
+			sportsMenu.playGameBtn.visible = false;
+			
+			sportsMenu.exitBtn.addEventListener(MouseEvent.CLICK, onExitBtn);
+			sportsMenu.exitBtn.addEventListener(MouseEvent.ROLL_OVER, onOver);
+			sportsMenu.exitBtn.text.text = api.getText(settings.gui.confirmation.exit);
+			sportsMenu.exitBtn.visible = true;
+
 			sportsMenu.pg2.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ goPage(2) });
 			sportsMenu.pg1.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ goPage(1) });
-			sportsMenu.exitBtn.addEventListener(MouseEvent.CLICK, onExitBtn);
-			
-			
-			
+						
 			sportsMenu.nextWeek.visible = false;
 			
+			// botones de los juegos
+			hurdles_btn;
+			fourHundreds_btn;
+			pizza_btn;
+			highJump_btn;
 			
 			// armo los botones para los primeros 4
 			sportsMenuButtons = new Array();
-			
-			
 			
 			for(var i:int = 0; i < settings.sports.sportsQty; i ++){
 				var buttonToReplace:MovieClip = sportsMenu["sport"+i]; 		
@@ -119,23 +136,10 @@ package ui
 			
 			goPage(1);
 			
-			
-			
 			sportsMenu.instructionsMc.visible = false;
 			sportsMenu.txtClub.visible = false;
 			
-			sportsMenu.backBtn.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ goPage(1) });
-			sportsMenu.backBtn.text.text = settings.gui.confirmation.back;
-			sportsMenu.backBtn.visible = false;
-			
-			sportsMenu.playGameBtn.addEventListener(MouseEvent.CLICK, playSport);
-			sportsMenu.playGameBtn.text.text = settings.gui.confirmation.play;
-			sportsMenu.playGameBtn.visible = false;
-			
 			addChild(sportsMenu);
-			
-			
-			
 			
 			// confirmation popup
 			confirmationPopup = new ConfirmationPopup();
@@ -177,25 +181,19 @@ package ui
 			sportsMenu.pg2.visible = show;
 			sportsMenu.pg1.visible = show;
 			sportsMenu.exitBtn.visible = show;
-
 		}
 		
 		private function buttons(show:Boolean):void
 		{
 			for(var i:int = 0; i < settings.sports.sportsQty; i ++){
 				sportsMenuButtons[i].visible = show;											
-			}
-			
+			}			
 		}
-		
-				
 		
 		private function playSport(e:Event):void
 		{
-			sportsMenu.visible = false;
-			
-			dispatchEvent(new Event(GuiEvents.PLAY));
-			trace(sportSelected);
+			sportsMenu.visible = false;			
+			dispatchEvent(new Event(GuiEvents.PLAY));			
 		}
 		
 		private function playSportMenu(e:Event):void

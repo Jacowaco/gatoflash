@@ -1,22 +1,27 @@
 package game 
 {
 	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	import flash.geom.Point;
+	
 	import gameobject.GameObject;
 	
 	
-	public class Background extends GameObject 
+	public class Background extends Sprite 
 	{
 		private var obj1:MovieClip;
 		private var obj2:MovieClip;
 		
 		public function Background(obj1:MovieClip, obj2:MovieClip) 
 		{
-			super(obj1);
+//			super(obj1);
 			this.obj1 = obj1;
 			this.obj2 = obj2;
 			obj2.y = obj1.y;
-			debug(false);
+			addChild(obj1);
+			addChild(obj2);
+			
+//			debug(false);
 		}
 		
 		public function reset():void

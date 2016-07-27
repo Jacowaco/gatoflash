@@ -227,11 +227,11 @@ package
 			PoleVault;
 			JavelinThrow;
 			
+			if(currentSport) disposeSport(currentSport);
+				
 			var _sportClass:Class = getDefinitionByName("game.sports." + gui.currentSport) as Class;
-			currentSport = new _sportClass();
-			
+			currentSport = new _sportClass();			
 			createSport();
-			currentSport.reset();
 			stage.focus = this;
 		}
 		
@@ -240,10 +240,21 @@ package
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			
+			
 			currentSport.addEventListener(LevelEvents.LEVEL_LOST, onSportLose);
 			currentSport.addEventListener(LevelEvents.LEVEL_WIN, onSportWin);
 			currentSport.create();
-			addChild(currentSport);
+			currentSport.reset();
+			
+			addChildAt(currentSport, 0);
+		}
+
+		private function disposeSport(current:Sport):void
+		{
+			current.removeEventListener(LevelEvents.LEVEL_LOST, onSportLose);
+			current.removeEventListener(LevelEvents.LEVEL_WIN, onSportWin);
+			removeChild(current);
+			current = null;
 		}
 		
 		private function onKeyDown(key:KeyboardEvent):void

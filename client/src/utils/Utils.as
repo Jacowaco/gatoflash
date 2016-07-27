@@ -207,24 +207,36 @@ package utils
 //			return bitmap1;
 //		}
 
-		public static function shuffleVector(array:Vector.<int>):Boolean
+		
+//		public static function shuffleVector(array:Vector.<int>):Boolean
+//		{
+//			var i:uint = array.length;
+//			
+//			if (i < 2)
+//				return false;
+//			
+//			var j:uint;
+//			var o:int;
+//			while (--i)
+//			{
+//				j = Math.floor(Math.random() * (i + 1));
+//				o = array[i];
+//				array[i] = array[j];
+//				array[j] = o;
+//			}
+//			
+//			return true;
+//		}
+		
+		public static function shuffleArray(input:Array):void
 		{
-			var i:uint = array.length;
-			
-			if (i < 2)
-				return false;
-			
-			var j:uint;
-			var o:int;
-			while (--i)
+			for (var i:int = input.length-1; i >=0; i--)
 			{
-				j = Math.floor(Math.random() * (i + 1));
-				o = array[i];
-				array[i] = array[j];
-				array[j] = o;
+				var randomIndex:int = Math.floor(Math.random()*(i+1));
+				var itemAtIndex:Object = input[randomIndex];
+				input[randomIndex] = input[i];
+				input[i] = itemAtIndex;
 			}
-			
-			return true;
 		}
 	}
 }

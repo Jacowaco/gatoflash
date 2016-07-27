@@ -1,16 +1,18 @@
 package game 
 {
 	import assets.*;
+	
 	import com.qb9.flashlib.geom.Vector2D;
-	import flash.events.Event;
-	import flash.events.KeyboardEvent;
-	import flash.geom.Point;
-	import gameobject.GameObject;
 	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.KeyboardEvent;
+	import flash.geom.Point;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
+	
+	import gameobject.GameObject;
 	
 	
 	public class Sport extends Sprite 
@@ -25,13 +27,13 @@ package game
 		protected var camera:Sprite;
 		protected var bg:Background;
 		protected var start:GameObject;
-		protected var speedBar:SpeedBar;
+//		protected var speedBar:SpeedBar;
 		protected var player:Player;
 		protected var meters:int;
 		protected var hud:HUD;
 		protected var playing:Boolean;
 		protected var leftKeyPressed:Boolean;
-		protected var endCutScene:MovieClip;
+//		protected var endCutScene:MovieClip;
 		protected var badgeObtained:int = 0;
 		
 		public function Sport() 
@@ -48,15 +50,17 @@ package game
 			
 			//Cargo los assets del SWC
 			
-			_asset = new assets.backgroundMC();
+			var _asset:MovieClip = new assets.backgroundMC();
 			var _asset2:MovieClip = new assets.backgroundMC();
 			bg = new Background(_asset, _asset2);
-			camera.addChild(_asset);
-			camera.addChild(_asset2);
+			camera.addChild(bg);
 			
+//			camera.addChild(_asset);
+//			camera.addChild(_asset2);
+//			
 			for (var i:int = 0; i < level.numChildren; i++)
 			{
-				var _asset:MovieClip;
+			
 				if (getQualifiedClassName(level.getChildAt(i)).lastIndexOf("assets::startMC") != -1)
 				{
 					_asset = level.getChildAt(i) as MovieClip;
@@ -64,12 +68,13 @@ package game
 					start.debug(false);
 					camera.addChild(_asset);
 				}
-				if (getQualifiedClassName(level.getChildAt(i)).lastIndexOf("assets::speedBarMC") != -1)
+				if (getQualifiedClassName(level.getChildAt(i)).lastIndexOf("assets::phCartel") != -1)
 				{
 					_asset = level.getChildAt(i) as MovieClip;
-					speedBar = new SpeedBar(_asset);
 					addChild(_asset);
 				}
+				
+				
 			}
 			
 			addThingsBeforePlayer();
@@ -80,9 +85,9 @@ package game
 			hud = new HUD();
 			addChild(hud);
 			
-			endCutScene = new assets.endCutsceneMC();
-			addChild(endCutScene);
-			endCutScene.visible = false;
+//			endCutScene = new assets.endCutsceneMC();
+//			addChild(endCutScene);
+//			endCutScene.visible = false;
 		}
 		
 		protected function addThingsBeforePlayer():void
@@ -97,7 +102,7 @@ package game
 			
 			bg.reset();
 			
-			speedBar.reset();
+//			speedBar.reset();
 			
 			player.init(start.loc);
 			player.reset();
@@ -127,7 +132,7 @@ package game
 		
 		public function assignBadge():void
 		{
-			
+			throw new Error("unninplemented");
 		}
 		
 		public function win():void
@@ -137,18 +142,12 @@ package game
 			
 			playing = false;
 			dispatchEvent(new Event(LevelEvents.LEVEL_WIN));
-			endCutScene.visible = true;
-			endCutScene.gotoAndStop("win");
-			//endCutScene.addEventListener
 		}
 		
 		public function lose():void
 		{
 			playing = false;
 			dispatchEvent(new Event(LevelEvents.LEVEL_LOST));
-			endCutScene.visible = true;
-			endCutScene.gotoAndStop("lose");
-			//endCutScene.addEventListener
 		}
 	}
 
