@@ -21,10 +21,6 @@ package
 	import com.qb9.flashlib.tasks.*;
 	import com.qb9.flashlib.utils.ObjectUtil;
 	
-	
-	
-	
-	
 	import flash.debugger.enterDebugger;
 	import flash.display.*;
 	import flash.events.*;
@@ -40,8 +36,8 @@ package
 	import flash.utils.getQualifiedClassName;
 	import flash.utils.setTimeout;
 	
-	import game.LevelController;
 	import game.LevelEvents;
+	import game.Sport;
 	
 	import popups.*;
 	import popups.ConfirmationPopup;
@@ -75,21 +71,8 @@ package
 		
 		private var gui:Gui;
 		
-		private var level:game.LevelController;
-		
-		private var round:int;
-		
-		private var maxRound:int;
-		private var goal:String;
-		private var difficulty:int;
-		
-		private var winner:Boolean;
-		private var isLastRound:Boolean = false;
-		private var currentEgg:int = 0;
-		
-		// blabla... x2
-		
-		
+		private var currentSport:Sport;
+	
 		
 		public function Game()
 		{
@@ -130,32 +113,13 @@ package
 		private function settingsLoaded():void
 		{									
 			loadAudio();
-//			createLevel();
 			createGui();
-			
-			
-			
-//			
-//			
-
-//			
-//			stage.addEventListener(Event.ENTER_FRAME, update);
-//			
-//			ready();
-			
+			stage.addEventListener(Event.ENTER_FRAME, update);
+			ready();
 		}		
-		
-		private function createLevel():void
-		{
-			level = new game.LevelController();				
-			addChild(level);		
-		}
-		
 		
 		private function createGui():void
 		{
-			
-			// gui
 			gui = new Gui(new assets.guiMc());
 			gui.addEventListener(GuiEvents.EXIT, onPause);
 			gui.addEventListener(GuiEvents.CONFIRMATION_EXIT, onExitGame);
@@ -163,7 +127,6 @@ package
 			gui.addEventListener(GuiEvents.PLAY, onPlay);
 			addChild(gui);						
 		}
-		
 		
 		private function loadAudio():void
 		{
@@ -211,97 +174,59 @@ package
 				audio.gain(null, 0.001);
 			}
 		}
-		
+
+		private function createLevel():void
+		{
+			
+		}
+				
 		private function update(e:Event):void
 		{
-			gui.setTime(level.time);
-			gui.setScore(level.score.toString());
+			gui.setTime("0");
+			gui.setScore("0");
 		}
+		
 		// -----------------------------------
 		private function onPause(e:Event):void
 		{
-//			level.pause();		
+		
 		}
 		
 		private function onResume(e:Event):void
 		{
-//			setTimeout(level.resume, 100);			
+
 		}
 		
-//		private var rabbit:MovieClip = new popups.rabbit;
-//		// -----------------------------------		
-		private function onLevelWin(e:Event):void
+		private function onSportWin(e:Event):void
 		{
 			logger.info("level win");
 			audio.fx.play("win");
-			level.pause();
-			//round++;
-			
-			//if(round < maxRound){
-				//var levelScore:Number = level.score;
-				//var levelBonus:Number = level.bonus * settings.scoring.bonus;						
-				//addSessionScore(levelScore+levelBonus);			
-//				gui.showWinScreen(EndGamePopup.WIN, levelScore, levelBonus, maxSessionScore.value, false);				
-//				gui.showNext();
-//				gui.showWinner(rabbit, false, false);
-			//}else{
-				//winner = true;
-				//gameWon();	
-			//}
-						
-		}
+				
+		}		
 		
-		
-		//private function gameWon():void
-		//{
-			//level.removeEventListener(LevelEvents.LEVEL_WIN, onLevelWin);
-			//level.removeEventListener(LevelEvents.LEVEL_LOST, onLevelLose);
-			//
-			//gui.showWinner(miniature, true, currentEgg == 9);  // llego al ultimo huevo 
-			
-		//}
-		
-		
-		private function onLevelLose(e:Event):void
+		private function onSportLose(e:Event):void
 		{						
 			logger.info("level lose");
-			level.pause();
-			//var levelScore:Number = level.score;			
-			//var levelBonus:Number = level.bonus * 0;
-			
-			//addSessionScore(levelScore+levelBonus);
-			
-			//gui.showWinScreen(EndGamePopup.LOSE, levelScore, levelBonus, maxSessionScore.value, false);
-//			gui.showWinner(rabbit, false, false);
 			audio.fx.play("lose");
-			//level.removeEventListener(LevelEvents.LEVEL_WIN, onLevelWin);
-			//level.removeEventListener(LevelEvents.LEVEL_LOST, onLevelLose);
 		}
 		
-		
-		// -----------------------------------
 		private function onPlay(e:Event):void
 		{
-				// TODO crear el level con ese juego
 			var currentSport:String = gui.currentSport;
 			trace("crear el level con ese juego: " + currentSport);
 		}
 		
-		// -----------------------------------
 		private function onExitGame(e:Event=null):void
 		{
-//			level.pause();
 			audio.fx.play("click");
-			logger.info("scoring: ", maxSessionScore.value);
-			
+			logger.info("scoring: ", maxSessionScore.value);			
 			if(online){
 				// medallas ganadas a los teams		
 			}
-// TODO
-//			close(maxSessionScore.value);
+			// TODO
+			// close(maxSessionScore.value);
 			close(0);
 		}
-		
 		
 		// eliminar bien el juego.
 		// dispose() se llama en baseGame
@@ -312,8 +237,7 @@ package
 //			removeChild(level); level = null;			
 			removeChild(gui); gui = null;			
 		}
-		
-		// -----------------------------------
+
 		public static function taskRunner():TaskRunner
 		{
 			return tasks;			
