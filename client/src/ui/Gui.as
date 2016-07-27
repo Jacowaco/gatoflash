@@ -8,12 +8,19 @@ package ui
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.net.getClassByAlias;
+	import flash.utils.getDefinitionByName;
+	
+	import mx.core.ButtonAsset;
 	
 	import popups.ConfirmationPopup;
 	import popups.EndGamePopup;
 	import popups.InstructionsPopup;
 	import popups.McMenu;
-
+	
+	
+	
+	
 	public class Gui extends Sprite
 	{
 		private var asset:MovieClip; // gui
@@ -26,6 +33,7 @@ package ui
 		private var power:MovieClip;
 		
 		private var sportsMenu:MovieClip;
+		private var sportsMenuButtons:Array;
 		private var sportSelected:String;
 		
 		
@@ -33,6 +41,14 @@ package ui
 		{
 			super();
 			this.asset = asset;
+			
+			trace("creating gui");
+			trace(asset);
+			
+			hurdles_btn;
+			fourHundreds_btn;
+			pizza_btn;
+			highJump_btn;
 			
 			// boton salir
 			exitBtn = asset.getChildByName("exit") as MovieClip;
@@ -51,7 +67,8 @@ package ui
 			power = asset.getChildByName("power") as MovieClip;
 			// TODO doesnt work
 			power.stop();
-
+			
+			
 			
 			// endgame popup
 			endGamePopup = new EndGamePopup();
@@ -65,18 +82,51 @@ package ui
 			sportsMenu.txt_title.text = settings.gui.title;
 			sportsMenu.txt_details.text = settings.gui.details;
 			
+			
 			// las flechitas...
-			sportsMenu.pg2.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ trace(e); sportsMenu.gotoAndStop("page2"); });
-			sportsMenu.pg1.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ trace(e); sportsMenu.gotoAndStop("page1"); });
-			sportsMenu.exitGame.addEventListener(MouseEvent.CLICK, onExitBtn);
+			sportsMenu.pg2.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ goPage(2) });
+			sportsMenu.pg1.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ goPage(1) });
+			sportsMenu.exitBtn.addEventListener(MouseEvent.CLICK, onExitBtn);
 			
 			
-				
+			
+			sportsMenu.nextWeek.visible = false;
+			
+			
 			// armo los botones para los primeros 4
+			sportsMenuButtons = new Array();
+			
+			
 			
 			for(var i:int = 0; i < settings.sports.sportsQty; i ++){
-				sportsMenu["sport"+i].addEventListener("PLAY_GAME", playSportMenu)							
+				var buttonToReplace:MovieClip = sportsMenu["sport"+i]; 		
+				var x:int = buttonToReplace.x;
+				var y:int = buttonToReplace.y;
+				
+				var myClass:Class = getDefinitionByName("assets."+settings.sports["sport"+i].id+"_btn") as Class;
+				
+				var newButton:MovieClip = new myClass() as MovieClip;
+				newButton.name = "sport"+i;
+				newButton.x = x;
+				newButton.y = y;
+				newButton.visible = false;
+				newButton.addEventListener(MouseEvent.CLICK, playSportMenu);
+				
+				sportsMenuButtons.push(newButton);		
+				sportsMenu.removeChild(buttonToReplace);				
+				sportsMenu.addChild(newButton);	
 			}
+			
+			goPage(1);
+			
+			
+			
+			sportsMenu.instructionsMc.visible = false;
+			sportsMenu.txtClub.visible = false;
+			sportsMenu.backBtn.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ goPage(1) });
+			sportsMenu.backBtn.visible = false;
+			sportsMenu.playGameBtn.addEventListener(MouseEvent.CLICK, playSport);
+			sportsMenu.playGameBtn.visible = false;
 			
 			addChild(sportsMenu);
 			
@@ -92,36 +142,65 @@ package ui
 			
 			// asset tiene el marco amarillo
 			addChild(asset);
-		
+			
 			
 		}
 		
-		private function resetMenu(e:Event):void
+		private function goPage(page:int):void
+		{
+			switch (page){
+				case 1:
+					buttons(true);
+					arrows(true);
+					instructions(false);
+					playbtn(false);
+					
+					sportsMenu.nextWeek.visible = false;
+					break;
+				
+				case 2:
+					buttons(false);
+					sportsMenu.nextWeek.visible = true;
+					break;
+			}
+			
+			
+			
+		}
+		
+		private function arrows(show:Boolean):void
+		{
+			sportsMenu.pg2.visible = show;
+			sportsMenu.pg1.visible = show;
+			sportsMenu.exitBtn.visible = show;
+
+		}
+		
+		private function buttons(show:Boolean):void
 		{
 			for(var i:int = 0; i < settings.sports.sportsQty; i ++){
-				sportsMenu["sport"+i].addEventListener("PLAY_GAME", playSportMenu)							
+				sportsMenuButtons[i].visible = show;											
 			}
 			
 		}
 		
+				
 		
 		private function playSport(e:Event):void
 		{
 			sportsMenu.visible = false;	
-//			dispatchEvent(blabla);
+			//			dispatchEvent(blabla);
 			trace(sportSelected);
 		}
 		
 		private function playSportMenu(e:Event):void
-		{			
-			sportsMenu.gotoAndStop(e.currentTarget.name);
+		{						
+			buttons(false);
+			arrows(false);
+			playbtn(true);
+			instructions(true);
 			sportSelected = settings.sports[e.currentTarget.name].id;
-			sportsMenu.addEventListener( Event.ENTER_FRAME , ensureRendered );			
-			function ensureRendered( evt:Event ) : void
-			{
-				removeEventListener( Event.ENTER_FRAME , ensureRendered );
-				sportsMenu.playGameBtn.addEventListener(MouseEvent.CLICK, playSport);					
-			}
+			
 			sportsMenu.txt_details.text = sportsMenu.currentLabel;
 			
 			
@@ -129,24 +208,37 @@ package ui
 			
 		}
 		
-//		public function showWinScreen(result:int, score:Number, bonus:Number, endScore:Number, isLastLevel:Boolean = false):void
-//		{
-//			logger.info("showWinScreen()");
-//			endGamePopup.show(result, score, bonus, endScore, isLastLevel);
-//			exitBtn.visible = false;
-//		}
-
+		private function instructions(show:Boolean):void
+		{
+			sportsMenu.instructionsMc.visible = show;
+			sportsMenu.txtClub.visible = show;
+		}
+		
+		private function playbtn(show:Boolean):void
+		{
+			sportsMenu.backBtn.visible = show;
+			sportsMenu.playGameBtn.visible = show;
+		}
+		
+		
+		//		public function showWinScreen(result:int, score:Number, bonus:Number, endScore:Number, isLastLevel:Boolean = false):void
+		//		{
+		//			logger.info("showWinScreen()");
+		//			endGamePopup.show(result, score, bonus, endScore, isLastLevel);
+		//			exitBtn.visible = false;
+		//		}
+		
 		public function showWinner(mc:Sprite, isLastRound:Boolean, isLastLevel:Boolean = false):void
 		{
 			//logger.info("showWinScreen()");
 			endGamePopup.showWinner(mc, isLastRound, isLastLevel);
 			exitBtn.visible = false;
 		}
-
+		
 		public function showNext():void
 		{
 			logger.info("showNext");
-//			endGamePopup.show(result, score, bonus, endScore, isLastLevel);
+			//			endGamePopup.show(result, score, bonus, endScore, isLastLevel);
 			endGamePopup.next();
 			exitBtn.visible = false;
 		}
@@ -156,7 +248,7 @@ package ui
 			endGamePopup.hide();
 			exitBtn.visible = true;
 		}
-				
+		
 		public function setTime(time:String):void
 		{
 			asset.timer.field.text = time;
@@ -187,32 +279,32 @@ package ui
 			confirmationPopup.visible = false;
 			dispatchEvent(new Event(GuiEvents.RESUME));
 		}
-				
+		
 		private function onOver(e:Event):void
 		{
 			audio.fx.play("rollover");
 		}
-
+		
 		private function onPlay(e:Event):void
 		{
-//				if(e.currentTarget == instructionsPopup){
-//					e.currentTarget.removeEventListener(e.type, arguments.callee);
-//					removeChild(instructionsPopup);
-//					score.visible = true;
-//				}
-				
-				
-				dispatchEvent(new Event(GuiEvents.PLAY));
-				
+			//				if(e.currentTarget == instructionsPopup){
+			//					e.currentTarget.removeEventListener(e.type, arguments.callee);
+			//					removeChild(instructionsPopup);
+			//					score.visible = true;
+			//				}
+			
+			
+			dispatchEvent(new Event(GuiEvents.PLAY));
+			
 		}
 		
 		public function runCutscene():void
 		{
-//			endCutscene.visible = true;
-//			score.visible = false;
-//			exitBtn.visible = false;
-//			endCutscene.gotoAndPlay(1);
-//			endCutscene.addEventListener(Event.ENTER_FRAME, onCutsceneEnterFrame);			
+			//			endCutscene.visible = true;
+			//			score.visible = false;
+			//			exitBtn.visible = false;
+			//			endCutscene.gotoAndPlay(1);
+			//			endCutscene.addEventListener(Event.ENTER_FRAME, onCutsceneEnterFrame);			
 		}
 		
 		
@@ -222,16 +314,16 @@ package ui
 		private function onCutsceneEnterFrame(e:Event):void			
 		{
 			
-//			if((endCutscene as MovieClip).currentLabel == "showText"){
-//				endCutscene.ballon.visible = true;
-//			}
-//			
-//			
-//			if((endCutscene as MovieClip).currentLabel == "end"){
-//				endCutscene.visible = false;
-//				endCutscene.removeEventListener(Event.ENTER_FRAME, onCutsceneEnterFrame);
-//				dispatchEvent(new Event(GuiEvents.ANIMATION_END));
-//			}
+			//			if((endCutscene as MovieClip).currentLabel == "showText"){
+			//				endCutscene.ballon.visible = true;
+			//			}
+			//			
+			//			
+			//			if((endCutscene as MovieClip).currentLabel == "end"){
+			//				endCutscene.visible = false;
+			//				endCutscene.removeEventListener(Event.ENTER_FRAME, onCutsceneEnterFrame);
+			//				dispatchEvent(new Event(GuiEvents.ANIMATION_END));
+			//			}
 		}
 	}
 }
