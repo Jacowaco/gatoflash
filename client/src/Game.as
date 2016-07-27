@@ -282,12 +282,9 @@ package
 		// -----------------------------------
 		private function onPlay(e:Event):void
 		{
-			level.addEventListener(LevelEvents.LEVEL_WIN, onLevelWin);
-			level.addEventListener(LevelEvents.LEVEL_LOST, onLevelLose);					
-			
-			gui.reset();
-			level.startLevel(goal, difficulty, (round == maxRound - 1));
-			stage.focus = level;
+				// TODO crear el level con ese juego
+			var currentSport:String = gui.currentSport;
+			trace("crear el level con ese juego: " + currentSport);
 		}
 		
 		// -----------------------------------
