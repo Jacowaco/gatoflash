@@ -5,8 +5,7 @@ package game.sports
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
 	import game.Hurdle;
-//	import gameobject.GameObject;
-	
+
 	public class Hurdles extends Metres100
 	{
 		private const CANT_HURDLES:int = 10;
@@ -15,8 +14,7 @@ package game.sports
 		
 		public function Hurdles() 
 		{
-			super();
-			
+			super();		
 			finalMetres = 110;
 		}
 		
@@ -33,7 +31,7 @@ package game.sports
 			player.setJumpVariables(120, 0, 300, false, true);
 		}
 		
-		override protected function addThingsBeforePlayer():void 
+		override protected function addGoalLine():void 
 		{
 			hurdles = new Array();
 			for (var e:int = 0; e < CANT_ENEMIES + 1; e++)
@@ -46,7 +44,7 @@ package game.sports
 				}
 			}
 			
-			super.addThingsBeforePlayer();
+			super.addGoalLine();
 		}
 		
 		override public function reset():void 

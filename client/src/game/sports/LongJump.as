@@ -73,7 +73,7 @@ package game.sports
 //			speedBar.percentage = player.percentage;
 			
 			meters = player.getMeters();
-			hud.updateMeters(meters);
+//			hud.updateMeters(meters);
 		}
 		
 		override public function onKeyDown(key:KeyboardEvent):void 

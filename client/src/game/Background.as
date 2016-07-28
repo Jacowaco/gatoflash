@@ -4,8 +4,7 @@ package game
 	import flash.display.Sprite;
 	import flash.geom.Point;
 	
-//	import gameobject.GameObject;
-	
+	import assets.*;
 	
 	public class Background extends Sprite 
 	{
@@ -13,10 +12,10 @@ package game
 		private var obj2:MovieClip;
 		private var offset:int = 0;
 		
-		public function Background(obj1:MovieClip, obj2:MovieClip) 
+		public function Background() 
 		{
-			this.obj1 = obj1;
-			this.obj2 = obj2;
+			this.obj1 = new assets.backgroundMC();
+			this.obj2 = new assets.backgroundMC();
 			obj2.y = obj1.y;
 			addChild(obj1);
 			addChild(obj2);

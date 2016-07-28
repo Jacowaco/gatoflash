@@ -95,7 +95,7 @@ package game.sports
 			}
 			
 			meters = ball.getMeters();
-			hud.updateMeters(meters);
+//			hud.updateMeters(meters);
 			
 			if (!ball.shot)
 			{

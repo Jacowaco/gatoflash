@@ -42,6 +42,7 @@ package game
 			
 			onReached = new Event("reached");
 			offset = new Point();
+			
 		}
 		
 		public function update():void 

@@ -29,11 +29,9 @@ package game
 		
 		public function Enemy(mc:MovieClip, speedFactor:Number) 
 		{
-			super(mc);
-			
+			super(mc);			
 			maxSpeed += speedFactor;
-			baseAccel = 0.01 * speedFactor;
-			
+			baseAccel = 0.01 * speedFactor;			
 			offset = new Point();
 		}
 		
@@ -58,8 +56,7 @@ package game
 		{
 			speed = 0;
 			asset.gotoAndPlay("stand");
-			asset.gotoAndPlay("run1");
-			
+			asset.gotoAndPlay("run1");			
 			jumped = false;
 			reached = false;
 			move = true;
