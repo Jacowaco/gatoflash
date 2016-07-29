@@ -39,9 +39,9 @@ package game.sports
 			throwMeters = 5;
 		}
 		
-		override public function create():void 
+		 public function create():void 
 		{
-			super.create();
+		//	super.create();
 			
 			ball = new Ball(new ballMovieClip(), rotate);
 			ball.addEventListener("reached", ballReached);
@@ -50,7 +50,7 @@ package game.sports
 			if (rotate) ballOffset = new Vector2D(20, -40);
 		}
 		
-		override protected function addThingsBeforePlayer():void 
+		 protected function addThingsBeforePlayer():void 
 		{
 			line = new MovingObject(new assets.lineMC);
 //			line.debug(false);

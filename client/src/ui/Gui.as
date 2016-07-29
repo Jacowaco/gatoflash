@@ -162,7 +162,8 @@ package ui
 					arrows(true);
 					instructions(false);
 					playbtn(false);
-					sportsMenu.txt_details.text = settings.gui.details;					
+					sportName(false);
+					
 					sportsMenu.nextWeek.visible = false;
 					break;
 				
@@ -202,12 +203,12 @@ package ui
 			arrows(false);
 			playbtn(true);
 			instructions(true);
-			sportSelected = settings.sports[e.currentTarget.name].classID;
+			sportName(true);			
+			details(false);
 			
+			sportsMenu.txt_sportTitle.text = settings.sports[e.currentTarget.name].name;
+			sportSelected = settings.sports[e.currentTarget.name].classID;			
 			sportsMenu.txt_details.text = settings.sports[e.currentTarget.name].name;
-						
-			
-			
 			
 		}
 		
@@ -215,6 +216,7 @@ package ui
 		{
 			sportsMenu.instructionsMc.visible = show;
 			sportsMenu.txtClub.visible = show;
+			sportsMenu.clubPh.visible = show;
 		}
 		
 		private function playbtn(show:Boolean):void
@@ -223,6 +225,16 @@ package ui
 			sportsMenu.playGameBtn.visible = show;
 		}
 		
+		private function sportName(show:Boolean):void
+		{			
+			sportsMenu.txt_sportTitle.visible = show;
+		}
+		
+		private function details(show:Boolean):void
+		{
+			
+			sportsMenu.txt_details.visible = show;
+		}
 		
 		//		public function showWinScreen(result:int, score:Number, bonus:Number, endScore:Number, isLastLevel:Boolean = false):void
 		//		{
@@ -230,6 +242,7 @@ package ui
 		//			endGamePopup.show(result, score, bonus, endScore, isLastLevel);
 		//			exitBtn.visible = false;
 		//		}
+		
 		
 		public function showWinner(mc:Sprite, isLastRound:Boolean, isLastLevel:Boolean = false):void
 		{

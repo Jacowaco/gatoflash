@@ -18,9 +18,9 @@ package game.sports
 			finalMetres = 110;
 		}
 		
-		override public function create():void 
+		public function create():void 
 		{
-			super.create();
+//			super.create();
 			
 			//usar esto para accelerar o desaccelerar a los enemigos en este juego particular
 			//for (var i:int = 0; i < CANT_ENEMIES; i++)

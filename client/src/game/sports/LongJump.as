@@ -31,15 +31,15 @@ package game.sports
 			throwMeters = 8;
 		}
 		
-		override public function create():void 
+		 public function create():void 
 		{
-			super.create();
+//			super.create();
 			
 			player.addEventListener("reached", playerReached);
 			player.setJumpVariables(150, 200, 1000);
 		}
 		
-		override protected function addThingsBeforePlayer():void 
+		 protected function addThingsBeforePlayer():void 
 		{
 			line = new MovingObject(new assets.lineMC);
 //			line.debug(false);

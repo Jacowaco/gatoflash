@@ -227,6 +227,7 @@ package
 			PoleVault;
 			JavelinThrow;
 			
+			
 			if(currentSport) disposeSport(currentSport);
 				
 			var _sportClass:Class = getDefinitionByName("game.sports." + gui.currentSport) as Class;
@@ -243,7 +244,7 @@ package
 			
 			currentSport.addEventListener(LevelEvents.LEVEL_LOST, onSportLose);
 			currentSport.addEventListener(LevelEvents.LEVEL_WIN, onSportWin);
-			currentSport.create();
+//			currentSport.create();
 			currentSport.reset();
 			
 			addChildAt(currentSport, 0);
