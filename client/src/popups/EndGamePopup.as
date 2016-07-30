@@ -141,7 +141,7 @@ package popups
 		
 		private function onExit(e:Event):void
 		{
-			dispatchEvent(new Event(GuiEvents.EXIT));
+			dispatchEvent(new Event(GuiEvents.PAUSE));
 			audio.play("click");
 		}
 

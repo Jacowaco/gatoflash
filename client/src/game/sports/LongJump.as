@@ -29,6 +29,8 @@ package game.sports
 			super();
 			
 			throwMeters = 8;
+			addThingsBeforePlayer();
+			player = new Player(new CorredorMC);
 		}
 		
 		 public function create():void 

@@ -13,6 +13,7 @@ package game.sports
 	import game.Ball;
 	import game.LevelEvents;
 	import game.MovingObject;
+	import game.Player;
 	import game.Sport;
 	
 //	import gameobject.GameObject;
@@ -37,6 +38,9 @@ package game.sports
 			rotate = false;
 			
 			throwMeters = 5;
+			create();
+			addThingsBeforePlayer();
+			player = new Player(new CorredorMC);
 		}
 		
 		 public function create():void 

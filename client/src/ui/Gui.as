@@ -57,9 +57,6 @@ package ui
 			exitBtn.visible = false;
 			
 			
-			
-			
-			
 			// score
 			info = asset.getChildByName("display") as MovieClip;
 			info.label.text = api.getText(settings.sports.defaultValue.display.label);
@@ -77,7 +74,7 @@ package ui
 			addChild(endGamePopup);
 			endGamePopup.visible = false;
 			endGamePopup.addEventListener(GuiEvents.PLAY, onPlay);
-			endGamePopup.addEventListener(GuiEvents.EXIT, onConfirmationExit);
+			endGamePopup.addEventListener(GuiEvents.PAUSE, onConfirmationExit);
 			
 			// el menu que te deja elegir el juego			
 			sportsMenu = new McMenu();
@@ -194,7 +191,7 @@ package ui
 		private function playSport(e:Event):void
 		{
 			sportsMenu.visible = false;			
-			dispatchEvent(new Event(GuiEvents.PLAY));			
+			dispatchEvent(new Event(GuiEvents.NEW_MATCH));			
 		}
 		
 		private function playSportMenu(e:Event):void
@@ -219,20 +216,20 @@ package ui
 			sportsMenu.clubPh.visible = show;
 		}
 		
+		
 		private function playbtn(show:Boolean):void
 		{
 			sportsMenu.backBtn.visible = show;
 			sportsMenu.playGameBtn.visible = show;
 		}
-		
+				
 		private function sportName(show:Boolean):void
 		{			
 			sportsMenu.txt_sportTitle.visible = show;
 		}
 		
 		private function details(show:Boolean):void
-		{
-			
+		{			
 			sportsMenu.txt_details.visible = show;
 		}
 		
@@ -281,7 +278,7 @@ package ui
 		{
 			audio.fx.play("click");
 			confirmationPopup.visible = true;
-			dispatchEvent(new Event(GuiEvents.EXIT));
+			dispatchEvent(new Event(GuiEvents.PAUSE));
 		}
 		
 		private function onConfirmationExit(e:Event):void 

@@ -45,6 +45,7 @@ package game
 		
 		private function create():void
 		{
+			player = new Player(new CorredorMC);
 			camera = new Sprite();
 			addChild(camera);
 			

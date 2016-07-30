@@ -36,7 +36,12 @@ package game
 		private var spinningTime:int;
 		private var move:Boolean;
 		
-		public function Player(mc:MovieClip=null) 
+		// null como default no. 
+		// no esta bueno porque no arma una interfase. definir las interfases es importante. 
+		// o sea, cada vez que creas un MovingObject tenes que saber que le tenes que pasar un mc.
+		// entonces lo haces siempre igual...
+//		public function Player(mc:MovieClip=null)		
+		public function Player(mc:MovieClip)  
 		{
 			super(mc);
 			

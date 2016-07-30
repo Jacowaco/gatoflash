@@ -70,15 +70,16 @@ package
 		
 		private static const settingsFile:Class;						
 		private static var tasks:TaskRunner;				
+		//esto es importante: en Game.as conviven una gui y un juego particular
+		// es una implementación de MVC donde el modelo es el juego en sí (que a su vez tiene su propio define su propio MVC)
+		// la gui es la vista (que en general maneja todos los popups y data en pantalla - excepto que un juego requiera una interfase especial)		
 		private var gui:Gui;		
 		private var currentSport:Sport;
 	
-		
 		public function Game()
 		{
 			super();
-			logger.info("game started");						
-			
+			logger.info("game started");									
 			if (stage)
 			{
 				stage.scaleMode = StageScaleMode.NO_SCALE;
@@ -91,8 +92,7 @@ package
 		override protected function whenReady():void
 		{						
 			tasks = new TaskRunner(this);
-			tasks.start();
-			
+			tasks.start();			
 			if(online){
 				// si estoy online uso el setting incrustado
 				trace("loading embed settings");
@@ -115,24 +115,25 @@ package
 			loadAudio();
 			createGui();
 			stage.addEventListener(Event.ENTER_FRAME, update);
+			// ready() le avisa al mmo que ya estoy para jugar (ie. dispatchEvent(MinigameEvent.READY));
 			ready();
 		}		
 		
 		private function createGui():void
 		{
 			gui = new Gui(new assets.guiMc());
-			gui.addEventListener(GuiEvents.EXIT, onPause);
 			gui.addEventListener(GuiEvents.CONFIRMATION_EXIT, onExitGame);
+			gui.addEventListener(GuiEvents.PAUSE, onPause);			
 			gui.addEventListener(GuiEvents.RESUME, onResume);
 			gui.addEventListener(GuiEvents.PLAY, onPlay);
+			gui.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);
 			addChild(gui);						
 		}
 		
 		private function loadAudio():void
 		{
 			audio = new AudioManager(new PlayableFactory(makeAbsoluteURL("sfx/"),"mp3"));			
-			logger.info("registering audio");
-			
+			logger.info("registering audio");			
 			audio.registerMusic("inicio", "music_intro");
 			audio.registerFx("bonus", "bonus");
 			audio.registerFx("bInstruc", "bInstruc");
@@ -164,28 +165,19 @@ package
 			//			audio.registerMusic("music_intro", "music_intro");
 			
 			//						audio.registerMusic("musica", "AmbienteNavidad");
-			
-
-			
-			
 			audio.music.loop("inicio");
 			
 			if(!settings.defaultValue.soundsEnable){
 				audio.gain(null, 0.001);
 			}
 		}
-
-		private function createLevel():void
-		{
-			
-		}
 				
 		private function update(e:Event):void
 		{
+			// update aprovecho para actualizar la gui con data del juego...
+			if (currentSport) currentSport.update();
 			gui.setTime("0");
 			gui.setScore("0");
-			
-			if (currentSport) currentSport.update();
 		}
 		
 		// -----------------------------------
@@ -212,7 +204,13 @@ package
 			audio.fx.play("lose");
 		}
 		
+		
 		private function onPlay(e:Event):void
+		{
+			
+		}
+		
+		private function onNewMatch(e:Event):void
 		{
 			trace("crear el level con ese juego: " + gui.currentSport);
 			
