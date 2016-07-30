@@ -15,7 +15,6 @@ package game.sports
 	import game.LevelEvents;
 	import game.MovingObject;
 	import game.Player;
-	import game.Sport;
 	
 	import mx.core.mx_internal;
 	

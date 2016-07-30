@@ -1,4 +1,4 @@
-package game 
+package game.sports 
 {
 	import assets.*;
 	
@@ -11,6 +11,10 @@ package game
 	import flash.geom.Point;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
+	import game.Background;
+	import game.LevelEvents;
+	import game.MovingObject;
+	import game.Player;
 
 	public class Sport extends Sprite 
 	{
@@ -100,6 +104,10 @@ package game
 			player.update();
 		}
 		
+		
+		// esto te obliga a implementar el metodo en todos los sports
+		// no se si es del todo necesario pero creo que te evita algunos quilombos
+		// tendría que pensarlo un cacho mas
 		public function onKeyDown(key:KeyboardEvent):void
 		{
 			throw new Error("unninplemented");

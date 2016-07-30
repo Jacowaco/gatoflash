@@ -7,6 +7,7 @@ package game
 	import flash.geom.Point;
 	import game.sports.Hurdles;
 	import game.sports.Metres100;
+	import game.sports.Sport;
 	
 	
 	public class Enemy extends MovingObject 

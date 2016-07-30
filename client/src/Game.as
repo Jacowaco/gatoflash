@@ -37,7 +37,7 @@ package
 	import flash.utils.setTimeout;
 	
 	import game.LevelEvents;
-	import game.Sport;
+	import game.sports.Sport;
 	import game.sports.*;
 	
 	import popups.*;
