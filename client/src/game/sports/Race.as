@@ -23,8 +23,6 @@ package game.sports
 	
 	public class Race extends Sport 
 	{
-		protected const CANT_ENEMIES:int = 4;
-		protected var enemies:Array;
 		
 		protected var finalMetres:int;
 		
@@ -142,9 +140,9 @@ package game.sports
 		
 		override public function assignBadge():void 
 		{
-			if (cantEnemiesReachedEnd == 0) badgeObtained = BADGE_GOLD;
-			if (cantEnemiesReachedEnd == 1) badgeObtained = BADGE_SILVER;
-			if (cantEnemiesReachedEnd >= 2) badgeObtained = BADGE_BRONCE;
+			if (cantEnemiesReachedEnd == 0) badge = BADGE_GOLD;
+			if (cantEnemiesReachedEnd == 1) badge = BADGE_SILVER;
+			if (cantEnemiesReachedEnd >= 2) badge = BADGE_BRONCE;
 		}
 		
 		protected function checkColisions():void

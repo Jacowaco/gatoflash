@@ -142,9 +142,9 @@ package game.sports
 		
 		override public function assignBadge():void 
 		{
-			if (meters >= 0) 						badgeObtained = BADGE_BRONCE;
-			if (meters >= Ball.MAX_DISTANCE * 0.5)  badgeObtained = BADGE_SILVER;
-			if (meters >= Ball.MAX_DISTANCE) 	    badgeObtained = BADGE_GOLD;
+			if (meters >= 0) 						badge = BADGE_BRONCE;
+			if (meters >= Ball.MAX_DISTANCE * 0.5)  badge = BADGE_SILVER;
+			if (meters >= Ball.MAX_DISTANCE) 	    badge = BADGE_GOLD;
 		}
 		
 	}

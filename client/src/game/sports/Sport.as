@@ -11,69 +11,64 @@ package game.sports
 	import flash.geom.Point;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
+	
 	import game.Background;
 	import game.LevelEvents;
 	import game.MovingObject;
 	import game.Player;
+	
+	import ui.GuiEvents;
 
+	// extiendo de sprite pero en realidad no debería.
+	// ya tengo bastantes DisplayObjects dando vuelta...
+	// el background por ejemplo
+	// por ahora lo dejamos asi.
 	public class Sport extends Sprite 
 	{
 	
 		public static const UNITS_PER_METER:int = 100;
 		
+		//sport es entonces el modelo
+		// que tambien involucra una vista (controlada por la camara)
 		public static const BADGE_LOOSER:int = 0;
 		public static const BADGE_BRONCE:int = 1;
 		public static const BADGE_SILVER:int = 2;
 		public static const BADGE_GOLD:int = 3;
 		
+		// esto es privado. no quiero que nadie toque este valor
+		// a lo sumo te doy un metodo publico para que lo leas.
+		private var badgeObtained:int = 0; 
+		
+		protected var player:Player;		
+		protected var enemies:Array;
+		
+		// puede ser 0 para los juegos de tirar cosas.
+		protected const CANT_ENEMIES:int = 4;
+		
+		// aca se define toda la sangucheria de cosas que se tienen que mover durante la partida.
+		// queda todo supeditado a la camara en un punto.
+		// aca está la magia mas maravillosa de flash. (vista y modelo conviven todo el tiempo)
+		// la clave obviamente es enteder el DisplayList a full y en particular la clase MovieClip
+		protected var camera:Sprite;		
 		protected var levelDefinition:MovieClip;
-		protected var bg:Background;
+		protected var bg:Background;				
 		protected var start:MovingObject;
-		
-		protected var player:Player;
-		
-		protected var camera:Sprite;
+		protected var goal:MovingObject;
 		
 		protected var meters:int;
 		protected var playing:Boolean;
 		protected var leftKeyPressed:Boolean;
-
-		protected var badgeObtained:int = 0;
 		
 		public function Sport() 
 		{
-			super();				
-			levelDefinition = new assets.level1MC();
-			create();
+//			// levanto el mc que contiene un juego de carrera
+//			levelDefinition = new assets.racesMC();
+//			create();
 		}
 		
-		private function create():void
+		protected function create():void
 		{
-			player = new Player(new CorredorMC);
-			camera = new Sprite();
-			addChild(camera);
-			
-			bg = new Background();
-			camera.addChild(bg);
-			
-			
-			var _asset:MovieClip; 
-			
-			for (var i:int = 0; i < levelDefinition.numChildren; i++)
-			{			
-				if (getQualifiedClassName(levelDefinition.getChildAt(i)).lastIndexOf("assets::startMC") != -1)
-				{
-					_asset = levelDefinition.getChildAt(i) as MovieClip;
-					start = new MovingObject(_asset);
-					camera.addChild(_asset);
-				}
-				
-				if (getQualifiedClassName(levelDefinition.getChildAt(i)).lastIndexOf("assets::lineMC") != -1)
-				{
-					_asset = levelDefinition.getChildAt(i) as MovieClip;
-					camera.addChild(_asset);
-				}						
-			}
+			throw new Error("uninplemented");
 			
 		
 		}
@@ -136,6 +131,22 @@ package game.sports
 		{
 			playing = false;
 			dispatchEvent(new Event(LevelEvents.LEVEL_LOST));
+		}
+		
+		public function get badge():int
+		{
+			return badgeObtained;
+		}
+		
+		public function set badge(badge:int):void
+		{
+			badgeObtained = badge;
+		}
+		
+		private function replay():void
+		{
+			dispatchEvent(GuiEvents.NEW_MATCH);
+			
 		}
 	}
 
