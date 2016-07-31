@@ -12,7 +12,7 @@ package game.sports
 	
 	import game.Ball;
 	import game.LevelEvents;
-	import game.MovingObject;
+//	import game.MovingObject;
 	import game.Player;
 	
 //	import gameobject.GameObject;
@@ -26,7 +26,7 @@ package game.sports
 		protected var ballMovieClip:Class;
 		protected var rotate:Boolean;
 		
-		protected var line:MovingObject;
+		protected var line:MovieClip;
 		protected var throwMeters:int;
 		
 		public function DiscusThrow() 
@@ -48,14 +48,14 @@ package game.sports
 			
 			ball = new Ball(new ballMovieClip(), rotate);
 			ball.addEventListener("reached", ballReached);
-			camera.addChild(ball.asset);
+			camera.addChild(ball);
 			
 			if (rotate) ballOffset = new Vector2D(20, -40);
 		}
 		
 		 protected function addThingsBeforePlayer():void 
 		{
-			line = new MovingObject(new assets.lineMC);
+			line = new assets.lineMC;
 //			line.debug(false);
 //			line.loc = new Vector2D(start.loc.x + throwMeters * UNITS_PER_METER, start.loc.y);
 //			line.run();
@@ -83,15 +83,15 @@ package game.sports
 			
 			super.update();
 			
-			ball.setPlayerX(player.loc.x);
+//			ball.setPlayerX(player.loc.x);
 			ball.update();
 			
-			if (ball.asset.localToGlobal(new Point(0, 0)).x  > Game.SCREEN_WIDTH / 2)
+			if (ball.localToGlobal(new Point(0, 0)).x  > Game.SCREEN_WIDTH / 2)
 			{			
-				camera.x += ((Game.SCREEN_WIDTH / 2) - (ball.asset.localToGlobal(new Point(0, 0)).x));
+				camera.x += ((Game.SCREEN_WIDTH / 2) - (ball.localToGlobal(new Point(0, 0)).x));
 			}
 			
-			if (player.loc.x > line.loc.x)
+			if (player.x > line.x)
 			{
 				player.stop();
 				lose();
@@ -105,8 +105,8 @@ package game.sports
 //				speedBar.percentage = player.percentage;
 				
 				var offsetX:Number = ballOffset.x * ((player.lookingRight) ? 1 : -1);
-				ball.asset.x += offsetX;
-				ball.asset.y += ballOffset.y;
+				ball.x += offsetX;
+				ball.y += ballOffset.y;
 			}
 		}
 		

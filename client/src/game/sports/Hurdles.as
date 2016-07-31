@@ -43,7 +43,7 @@ package game.sports
 				{
 					if (e == CANT_ENEMIES)
 					{
-						if (!hurdles[e][i].collided && player.loc.distance(hurdles[e][i].loc) < COLISION_RANGE)
+						if (false) // (!hurdles[e][i].collided && player.loc.distance(hurdles[e][i].loc) < COLISION_RANGE)
 						{
 							//trace("colliding player");
 							hurdles[e][i].collide();

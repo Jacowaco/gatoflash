@@ -14,7 +14,7 @@ package game.sports
 	
 	import game.Background;
 	import game.LevelEvents;
-	import game.MovingObject;
+//	import game.MovingObject;
 	import game.Player;
 	
 	import ui.GuiEvents;

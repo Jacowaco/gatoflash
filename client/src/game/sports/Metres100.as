@@ -12,7 +12,7 @@ package game.sports
 	
 	import game.Enemy;
 	import game.LevelEvents;
-	import game.MovingObject;
+//	import game.MovingObject;
 	
 	import utils.Utils;
 	

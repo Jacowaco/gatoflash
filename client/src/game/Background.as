@@ -30,7 +30,7 @@ package game
 		}
 		
 				
-		public function follow(object:MovingObject):void
+		public function follow(object:Sprite):void
 		{
 			
 //			obj1.x += delta;

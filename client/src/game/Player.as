@@ -5,17 +5,22 @@ package game
 	import com.qb9.flashlib.tasks.Func;
 	import com.qb9.flashlib.tasks.Sequence;
 	import com.qb9.flashlib.tasks.Wait;
+	
 	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;
+	
 	import game.sports.Metres100;
 	import game.sports.Sport;
 	
 	
-	public class Player extends MovingObject 
+	public class Player extends Sprite // extends MovingObject 
 	{
 		public static var MIN_DISTANCE:int = 200;
 		public static var MAX_DISTANCE:int = 1000;
+		
+		private var asset:MovieClip;
 		
 		private var jumps:Boolean;
 		private var spins:Boolean;
@@ -44,16 +49,16 @@ package game
 //		public function Player(mc:MovieClip=null)		
 		public function Player(mc:MovieClip)  
 		{
-			super(mc);
-			
+//			super(mc);	
+			asset = mc;
+			addChild(mc);
 			onReached = new Event("reached");
-			offset = new Point();
-			
+			offset = new Point();			
 		}
 		
 		public function update():void 
 		{
-			super.run();
+//			super.run();
 			
 			if (!move) return;
 			
@@ -63,12 +68,19 @@ package game
 				{
 					speed = Math.max(speed - 0.25, 0);
 					speed = Math.min(speed, maxSpeed);
-					loc = loc.add(new Vector2D(speed, 0));
+					x += speed;
+//					loc = loc.add(new Vector2D(speed, 0));
 				}
 				if (jumped)
 				{
-					if (hurdleLevel) loc = new Vector2D(loc.x, initialLoc.y + offset.y);
-					else loc = new Vector2D(offset.x + jumpingX, initialLoc.y + offset.y);
+					if (hurdleLevel) {
+						y += offset.y;
+//						loc = new Vector2D(loc.x, initialLoc.y + offset.y);
+				}else {
+//						loc = new Vector2D(offset.x + jumpingX, initialLoc.y + offset.y);
+						x += jumpingX;
+						y = offset.y;
+					}
 					//trace("y", offset.y);
 					
 					if (jumped && !reached && Game.taskRunner().empty)//offset.x == distance)
@@ -94,7 +106,9 @@ package game
 				speed = Math.max(speed - 0.25, 0);
 				speed = Math.min(speed, maxSpeed);
 				var spinFactor:Number = (spins) ? 0.3 : 1;
-				loc = loc.add(new Vector2D(speed * spinFactor, 0));
+//				loc = loc.add(new Vector2D(speed * spinFactor, 0));
+				x += speed*spinFactor;
+				
 				if (spins && speed > maxSpeed * 0.1)
 				{
 					spinningCont++;
@@ -154,7 +168,8 @@ package game
 		
 		public function getMeters():int
 		{
-			return int((loc.x - initialLoc.x) / Sport.UNITS_PER_METER);
+//			return int((loc.x - initialLoc.x) / Sport.UNITS_PER_METER);
+			return int(x / Sport.UNITS_PER_METER);
 		}
 		
 		public function collideHurdle():void
@@ -176,7 +191,7 @@ package game
 			if (jumped) return;
 			jumped = true;
 			distance = _power * MAX_DISTANCE + MIN_DISTANCE;
-			jumpingX = loc.x;
+			jumpingX = x;
 			offset.x = offset.y = 0;
 			var time:Number = Math.max(Math.abs(distance), 500);
 			

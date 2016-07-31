@@ -3,18 +3,23 @@ package game
 	import com.qb9.flashlib.easing.Tween;
 	import com.qb9.flashlib.geom.Vector2D;
 	import com.qb9.flashlib.tasks.Sequence;
+	
 	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	import flash.geom.Point;
+	
 	import game.sports.Hurdles;
 	import game.sports.Metres100;
 	import game.sports.Sport;
 	
 	
-	public class Enemy extends MovingObject 
+	public class Enemy extends Sprite
 	{
 		private var speed:Number;
 		private var maxSpeed:Number = 19;
 		public var baseAccel:Number;
+		
+		private var asset:MovieClip;
 		
 		private var DISTANCE_Y:int = 120;
 		private var MIN_DISTANCE:int = 0;
@@ -30,7 +35,8 @@ package game
 		
 		public function Enemy(mc:MovieClip, speedFactor:Number) 
 		{
-			super(mc);			
+			asset = mc;
+			addChild(asset);
 			maxSpeed += speedFactor;
 			baseAccel = 0.01 * speedFactor;			
 			offset = new Point();
@@ -38,10 +44,11 @@ package game
 		
 		public function update():void 
 		{
-			super.run();
+//			super.run();
 			
 			speed = Math.min(speed + 0.10 + baseAccel + Math.random() * 0.01, maxSpeed);
-			loc = loc.add(new Vector2D(speed, 0));
+//			loc = loc.add(new Vector2D(speed, 0));
+			x += speed;
 			
 			if (jumped)
 			{
@@ -49,7 +56,8 @@ package game
 				{
 					jumped = false;
 				}
-				loc = new Vector2D(loc.x, initialLoc.y + offset.y);
+//				loc = new Vector2D(loc.x, initialLoc.y + offset.y);
+				y += offset.y;
 			}
 		}
 		
@@ -72,7 +80,7 @@ package game
 		
 		public function getMeters():int
 		{
-			return int((loc.x - initialLoc.x) / Sport.UNITS_PER_METER);
+			return 0; // int((loc.x - initialLoc.x) / Sport.UNITS_PER_METER);
 		}
 		
 		public function collideHurdle():void
@@ -85,7 +93,7 @@ package game
 			if (jumped) return;
 			jumped = true;
 			distance = _power * MAX_DISTANCE + MIN_DISTANCE;
-			jumpingX = loc.x;
+			jumpingX = x;
 			offset.x = offset.y = 0;
 			
 			var startX:Tween = new Tween(offset, distance, { x:distance / 2 }, { transition:"linear" } );

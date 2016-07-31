@@ -13,7 +13,7 @@ package game.sports
 	
 	import game.Enemy;
 	import game.LevelEvents;
-	import game.MovingObject;
+//	import game.MovingObject;
 	import game.Player;
 	
 	import mx.core.mx_internal;
@@ -28,9 +28,9 @@ package game.sports
 		
 		protected var cantEnemiesReachedEnd:int;
 		
-		protected var start:MovingObject;
-		protected var line:MovingObject;
-		protected var goal:MovingObject;
+		protected var start:MovieClip;
+		protected var line:MovieClip;
+		protected var goal:MovieClip;
 		
 		
 		public function Race() 
@@ -51,30 +51,25 @@ package game.sports
 		
 		private function createLane():void 
 		{
-			start = new MovingObject(levelDefinition.start);
-			start.initLoc(start.asset.x, start.asset.y);
-			
-			line = new MovingObject(levelDefinition.line);
-			line.initLoc(line.asset.x, line.asset.y);
-			
-			goal = new MovingObject(levelDefinition.goal);
-			goal.initLoc(goal.asset.x + finalMetres * UNITS_PER_METER, goal.asset.y);
-			
-			camera.addChild(start.asset);
-			camera.addChild(line.asset);
-			camera.addChild(goal.asset);
+			start = levelDefinition.start;
+			line = levelDefinition.line
+			goal = levelDefinition.goal;			
+			camera.addChild(start);
+			camera.addChild(line);
+			camera.addChild(goal);
 		}
 		
 		private function createEnemies():void
 		{			
-			trace(camera.x, camera.y);
 			enemies = new Array();		
 			for(var i:int = 0; i < CANT_ENEMIES; i++){
 				var enemy:Enemy = new Enemy(new assets.CorredorMC, settings.sports[currentSport].minEnemySpeed + Math.random() * settings.sports[currentSport].maxEnemySpeed );
-				var stageLocation:Point = start.asset.localToGlobal(new Point(start.asset["carril"+i].x , start.asset["carril"+i].y));
-				trace(stageLocation);
-				enemy.initLoc(stageLocation.x, stageLocation.y);
-				enemy.reset(); // para que setee la posicion actual a la inicial...
+				var stageLocation:Point = start.localToGlobal(new Point(start["carril"+i].x , start["carril"+i].y));
+				enemy.x =stageLocation.x;
+				enemy.y = stageLocation.y;
+				
+//				enemy.initLoc(stageLocation.x, stageLocation.y);
+//				enemy.reset(); // para que setee la posicion actual a la inicial...
 				enemies.push(enemy);				
 			}
 		}
@@ -82,18 +77,19 @@ package game.sports
 		private function createPlayer():void
 		{
 			player = new Player(new assets.CorredorMC);
-			var stageLocation:Point = start.asset.localToGlobal(new Point(start.asset["carrilPlayer"].x , start.asset["carrilPlayer"].y));			
-			player.initLoc(stageLocation.x, stageLocation.y);
-			player.reset();
+			var stageLocation:Point = start.localToGlobal(new Point(start["carrilPlayer"].x , start["carrilPlayer"].y));			
+			player.x = stageLocation.x;
+			player.y = stageLocation.y;
+//			player.reset();
 		}
 		
 		private function addPlayerAndEnemies():void 
 		{
-			camera.addChild(enemies[0].asset);
-			camera.addChild(enemies[1].asset);
-			camera.addChild(player.asset);			
-			camera.addChild(enemies[2].asset);
-			camera.addChild(enemies[3].asset);
+			camera.addChild(enemies[0]);
+			camera.addChild(enemies[1]);
+			camera.addChild(player);			
+			camera.addChild(enemies[2]);
+			camera.addChild(enemies[3]);
 		}
 		
 
@@ -123,7 +119,7 @@ package game.sports
 			if (!playing) return;
 			player.update();
 						
-			bg.follow(player);
+//			bg.follow(player);
 			
 			
 			for (var i:int = 0; i < CANT_ENEMIES; i++)
@@ -133,7 +129,7 @@ package game.sports
 			
 //			speedBar.percentage = player.percentage;
 			
-			camera.x += ((Game.SCREEN_WIDTH / 2) - player.asset.localToGlobal(new Point(0, 0)).x);
+			camera.x += ((Game.SCREEN_WIDTH / 2) - player.localToGlobal(new Point(0, 0)).x);
 			camera.x = Math.min(0, camera.x);
 			
 			meters = player.getMeters();

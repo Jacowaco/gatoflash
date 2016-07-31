@@ -12,7 +12,7 @@ package game.sports
 	
 	import game.Ball;
 	import game.LevelEvents;
-	import game.MovingObject;
+//	import game.MovingObject;
 	import game.Player;
 
 //	import gameobject.GameObject;
@@ -20,7 +20,7 @@ package game.sports
 	
 	public class LongJump extends Sport 
 	{
-		protected var line:MovingObject;
+		protected var line:MovieClip;
 		protected var throwMeters:int;
 		
 		public function LongJump() 
@@ -63,14 +63,14 @@ package game.sports
 			
 			super.update();
 			
-			camera.x += ((Game.SCREEN_WIDTH / 2) - player.asset.localToGlobal(new Point(0, 0)).x);
+			camera.x += ((Game.SCREEN_WIDTH / 2) - player.localToGlobal(new Point(0, 0)).x);
 			camera.x = Math.min(0, camera.x);
 			
-			if (!player.jumped && player.loc.x > line.loc.x)
-			{
-				player.stop();
-				lose();
-			}
+//			if (!player.jumped && player.loc.x > line.loc.x)
+//			{
+//				player.stop();
+//				lose();
+//			}
 			
 //			speedBar.percentage = player.percentage;
 			
@@ -103,7 +103,7 @@ package game.sports
 		
 		public function playerReached(e:Event):void
 		{
-			if (player.loc.x > line.loc.x)
+			if (player.x > line.x)
 				win();
 			else
 				lose();
