@@ -62,7 +62,7 @@ package game.sports
 		{
 			bg = new Background();
 			addChild(bg);
-			camera = new MovieClip();
+			camera = new Sprite();
 			addChild(camera);
 		}
 		

@@ -1,9 +1,12 @@
 package game.sports 
 {
 	import assets.*;
+	
 	import com.qb9.flashlib.geom.Vector2D;
+	
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
+	
 	import game.Hurdle;
 
 	public class Hurdles extends Race
@@ -57,13 +60,17 @@ package game.sports
 						}
 						if (!hurdles[e][i].collided && enemies[e].loc.distance(hurdles[e][i].loc) < COLISION_RANGE)
 						{
-							//trace("colliding enemy");
 							hurdles[e][i].collide();
 							enemies[e].collideHurdle();
 						}
 					}
 				}
 			}
+		}
+		
+		override public function onKeyUp(key:KeyboardEvent):void
+		{
+			
 		}
 		
 		override public function onKeyDown(key:KeyboardEvent):void 

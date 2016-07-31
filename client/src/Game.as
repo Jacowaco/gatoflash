@@ -239,12 +239,10 @@ package
 		{
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-			currentSport.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);	
 			
+			currentSport.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);				
 			currentSport.addEventListener(LevelEvents.LEVEL_LOST, onSportLose);
 			currentSport.addEventListener(LevelEvents.LEVEL_WIN, onSportWin);
-//			currentSport.create();
-//			currentSport.reset();
 			
 			addChildAt(currentSport, 0);
 		}

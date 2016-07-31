@@ -125,7 +125,6 @@ package game.sports
 			
 			super.update();
 			
-			
 			for (var i:int = 0; i < CANT_ENEMIES; i++)
 			{
 				enemies[i].update();
