@@ -24,11 +24,12 @@ package game
 		private var asset:MovieClip;
 		
 		//TODO implementar estados
-		private var jumps:Boolean;
-		private var spins:Boolean;
-		private var speed:Number;
+//		private var jumps:Boolean;
+//		private var spins:Boolean;
+	
 		
 		private var MAX_SPEED:Number = 100;
+		private var speed:Number;
 		// TODO externalizar por settings.
 		private var speedDamping:Number = -0.5;
 		private var speedIncrement:Number = 2.0;
@@ -40,6 +41,8 @@ package game
 		private const THROWING:int = 4;
 		
 		private var state:int = IDLE;
+		
+		private var currentAnimation:String;
 		// ????	
 		//		private var DISTANCE_Y:int = 150;
 		
@@ -77,8 +80,6 @@ package game
 		
 		public function update():void 
 		{
-//			if (!move) return;
-			
 			switch(state)
 			{
 				case IDLE:
@@ -89,10 +90,11 @@ package game
 					
 				case RUNNING:
 				{
-					trace("player running");
+					trace("player running. speed: " + speed);
 					speed = Math.max(speed + speedDamping, 0);
 					speed = Math.min(speed, MAX_SPEED);
 					x += speed;
+					checkSpeedForAnimation();
 					break;	
 				}
 				
@@ -164,10 +166,18 @@ package game
 			speed = 0;
 		}
 		
+		
+		private function checkSpeedForAnimation():void
+		{
+			if(speed > 0 && speed < MAX_SPEED / 3 && asset.currentLabel != "run1") asset.gotoAndStop("run1");
+			if(speed > MAX_SPEED / 3 && speed < MAX_SPEED / 3 * 2 && asset.currentLabel != "run2") asset.gotoAndStop("run2");
+			if(speed > MAX_SPEED / 3 * 2 && speed < MAX_SPEED && asset.currentLabel != "run3") asset.gotoAndStop("run3");
+		}
+		
 		public function start(_jumps:Boolean, _spins:Boolean=false):void
 		{
-			jumps = _jumps;
-			spins = _spins;
+//			jumps = _jumps;
+//			spins = _spins;
 			speed = 0;
 			asset.gotoAndPlay("stand"); 
 			
@@ -182,24 +192,23 @@ package game
 		public function stop():void
 		{
 			move = false;
-			jumps = false;
+//			jumps = false;
 			asset.gotoAndPlay("stand");
-			spins = false;
+//			spins = false;
 		}
 		
 		public function accelerate():void
 		{
-			trace("speed: " + speed);
 			speed += speedIncrement;
 		}
 		
 		private function spin():void
 		{
-			if (spins)
-			{
-				lookingRight = !lookingRight;
-				asset.scaleX = -asset.scaleX;
-			}
+//			if (spins)
+//			{
+//				lookingRight = !lookingRight;
+//				asset.scaleX = -asset.scaleX;
+//			}
 		}
 		
 		public function get percentage():Number
