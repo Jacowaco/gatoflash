@@ -28,11 +28,12 @@ package game.sports
 			super();
 			
 			throwMeters = 8;
-			addThingsBeforePlayer();
+//			addThingsBeforePlayer();
 			player = new Player(new CorredorMC);
 		}
 		
-		 public function create():void 
+		
+		public function create():void 
 		{
 //			super.create();
 			
@@ -40,21 +41,21 @@ package game.sports
 			player.setJumpVariables(150, 200, 1000);
 		}
 		
-		 protected function addThingsBeforePlayer():void 
-		{
-			line = new MovingObject(new assets.lineMC);
-//			line.debug(false);
-			line.loc = new Vector2D(start.loc.x + throwMeters * UNITS_PER_METER, start.loc.y);
-//			line.run();
-			camera.addChild(line.asset);
-		}
+//		 protected function addThingsBeforePlayer():void 
+//		{
+//			line = new MovingObject(new assets.lineMC);
+////			line.debug(false);
+//			line.loc = new Vector2D(start.loc.x + throwMeters * UNITS_PER_METER, start.loc.y);
+////			line.run();
+//			camera.addChild(line.asset);
+//		}
 		
-		override public function reset():void 
-		{
-			super.reset();
-			
-			player.start(true);
-		}
+//		override public function reset():void 
+//		{
+//			super.reset();
+//			
+//			player.start(true);
+//		}
 		
 		override public function update():void 
 		{

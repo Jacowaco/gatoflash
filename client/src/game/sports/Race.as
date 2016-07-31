@@ -27,62 +27,87 @@ package game.sports
 		protected var finalMetres:int;
 		
 		protected var cantEnemiesReachedEnd:int;
-		protected var end:MovingObject;
+		
+		
+		protected var start:MovingObject;
+		protected var line:MovingObject;
+		protected var goal:MovingObject;
+		
 		
 		public function Race() 
 		{
-			super();
-			finalMetres = 100;			
-			addGoalLine();
-			createPlayerAndEnemies();
+
+		}
+		
+		protected function create():void
+		{
+			levelDefinition = new assets.racesMC();			
+			createLane();
+			createEnemies();
+			createPlayer();			
+			addPlayerAndEnemies();
 			reset();
-			
 			
 		}
 		
-		public function createPlayerAndEnemies():void 
+		private function createLane():void 
 		{
-
-			enemies = new Array();
+			start = new MovingObject(levelDefinition.start);
+			start.initLoc(start.asset.x, start.asset.y);
 			
-			for (var i:int = 0; i < CANT_ENEMIES; i++)
-			{
-				enemies[i] = new Enemy(new assets.CorredorMC, settings.sports.minEnemySpeed + Math.random() * settings.sports.maxEnemySpeed );
+			line = new MovingObject(levelDefinition.line);
+			line.initLoc(line.asset.x, line.asset.y);
+			
+			goal = new MovingObject(levelDefinition.goal);
+			goal.initLoc(goal.asset.x + finalMetres * UNITS_PER_METER, goal.asset.y);
+			
+			camera.addChild(start.asset);
+			camera.addChild(line.asset);
+			camera.addChild(goal.asset);
+		}
+		
+		private function createEnemies():void
+		{			
+			trace(camera.x, camera.y);
+			enemies = new Array();		
+			for(var i:int = 0; i < CANT_ENEMIES; i++){
+				var enemy:Enemy = new Enemy(new assets.CorredorMC, settings.sports[currentSport].minEnemySpeed + Math.random() * settings.sports[currentSport].maxEnemySpeed );
+				var stageLocation:Point = start.asset.localToGlobal(new Point(start.asset["carril"+i].x , start.asset["carril"+i].y));
+				trace(stageLocation);
+				enemy.initLoc(stageLocation.x, stageLocation.y);
+				enemy.reset(); // para que setee la posicion actual a la inicial...
+				enemies.push(enemy);				
 			}
-			
-			
+		}
+		
+		private function createPlayer():void
+		{
+			player = new Player(new assets.CorredorMC);
+			var stageLocation:Point = start.asset.localToGlobal(new Point(start.asset["carrilPlayer"].x , start.asset["carrilPlayer"].y));			
+			player.initLoc(stageLocation.x, stageLocation.y);
+			player.reset();
+		}
+		
+		private function addPlayerAndEnemies():void 
+		{
 			camera.addChild(enemies[0].asset);
 			camera.addChild(enemies[1].asset);
-			
-			player = new Player(new assets.CorredorMC);
-			camera.addChild(player.asset);
-			
+			camera.addChild(player.asset);			
 			camera.addChild(enemies[2].asset);
 			camera.addChild(enemies[3].asset);
 		}
 		
-		protected function addGoalLine():void 
-		{
-			end = new MovingObject(new assets.endMC());			
-			end.init(new Vector2D(start.loc.x + finalMetres * UNITS_PER_METER, start.loc.y));
-			camera.addChild(end.asset);
-		}
+
 		
-		override public function reset():void 
+		private function reset():void 
 		{
-			super.reset();
-			
+			playing = true;
+
 			cantEnemiesReachedEnd = 0;
-			
-			enemies[0].init(new Vector2D(start.asset.carril1.x, start.asset.carril1.y));
-			enemies[1].init(new Vector2D(start.asset.carril2.x, start.asset.carril2.y));
-			enemies[2].init(new Vector2D(start.asset.carril4.x, start.asset.carril4.y));
-			enemies[3].init(new Vector2D(start.asset.carril5.x, start.asset.carril5.y));
 			
 			for (var i:int = 0; i < CANT_ENEMIES; i++)
 			{
-				
-				enemies[i].reset();
+
 				enemies[i].start();
 			}
 			
@@ -100,7 +125,6 @@ package game.sports
 			
 			super.update();
 			
-			checkColisions();
 			
 			for (var i:int = 0; i < CANT_ENEMIES; i++)
 			{

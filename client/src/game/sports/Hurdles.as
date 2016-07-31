@@ -6,7 +6,7 @@ package game.sports
 	import flash.ui.Keyboard;
 	import game.Hurdle;
 
-	public class Hurdles extends Metres100
+	public class Hurdles extends Race
 	{
 		private const CANT_HURDLES:int = 10;
 		public static const COLISION_RANGE:int = 60;
@@ -14,54 +14,17 @@ package game.sports
 		
 		public function Hurdles() 
 		{
-			super();		
-			finalMetres = 110;
+			super();
+			currentSport = "sport0"; // esto es lo único que debería hardcodear...
+			finalMetres = settings.sports[currentSport].metres;			
+			super.create();
+			
 		}
-		
-		public function create():void 
+
+		override public function update():void
 		{
-//			super.create();
-			
-			//usar esto para accelerar o desaccelerar a los enemigos en este juego particular
-			//for (var i:int = 0; i < CANT_ENEMIES; i++)
-			//{
-				//enemies[i].baseAccel += 0.02;
-			//}
-			
-			player.setJumpVariables(120, 0, 300, false, true);
-		}
-		
-		override protected function addGoalLine():void 
-		{
-			hurdles = new Array();
-			for (var e:int = 0; e < CANT_ENEMIES + 1; e++)
-			{
-				hurdles[e] = new Array();
-				for (var i:int = 0; i < CANT_HURDLES; i++)
-				{
-					hurdles[e][i] = new Hurdle(new assets.hurdleMC);
-					camera.addChild(hurdles[e][i].asset);
-				}
-			}
-			
-			super.addGoalLine();
-		}
-		
-		override public function reset():void 
-		{
-			super.reset();
-			
-			for (var e:int = 0; e < CANT_ENEMIES + 1; e++)
-			{
-				for (var i:int = 0; i < CANT_HURDLES; i++)
-				{
-					if (e == CANT_ENEMIES)
-						hurdles[e][i].initLoc(start.loc.x + 2000 + i * 900, player.loc.y);
-					else
-						hurdles[e][i].initLoc(start.loc.x + 2000 + i * 900, enemies[e].loc.y);
-					hurdles[e][i].run();
-				}
-			}
+//			checkColisions();
+			super.update();
 		}
 		
 		override protected function startPlayer():void 

@@ -244,7 +244,7 @@ package
 			currentSport.addEventListener(LevelEvents.LEVEL_LOST, onSportLose);
 			currentSport.addEventListener(LevelEvents.LEVEL_WIN, onSportWin);
 //			currentSport.create();
-			currentSport.reset();
+//			currentSport.reset();
 			
 			addChildAt(currentSport, 0);
 		}

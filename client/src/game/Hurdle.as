@@ -12,26 +12,17 @@ package game
 	{
 		private var _collided:Boolean;
 		
-		public function Hurdle(mc:MovieClip=null) 
+		public function Hurdle(mc:MovieClip) 
 		{
 			super(mc);
-//			addChild(mc);	
-//			debug(false);
 			_collided = false;
 		}
-		
-//		public function init(x:Number, y:Number):void
-//		{
-////			loc = new Vector2D(x, y);
-//			this.x = x;
-//			this.y = y;
-//		}
 		
 		public function collide():void
 		{
 			if (_collided) return;
 			_collided = true;
-//			asset.rotation = 90;
+			asset.rotation = 90;
 		}
 		
 		public function get collided():Boolean

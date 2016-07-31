@@ -37,16 +37,16 @@ package game.sports
 			//pole.loc = new Vector2D(100, 100);
 		//}
 		
-		override protected function addThingsBeforePlayer():void 
-		{
-			super.addThingsBeforePlayer();
-			
-			jumpBar = new MovingObject(new assets.jumpBarMC);
-//			jumpBar.debug(false);
-			jumpBar.loc = new Vector2D(start.loc.x + throwMeters * UNITS_PER_METER, start.loc.y);
-//			jumpBar.run();
-			camera.addChild(jumpBar.asset);
-		}
+//		override protected function addThingsBeforePlayer():void 
+//		{
+//			super.addThingsBeforePlayer();
+//			
+//			jumpBar = new MovingObject(new assets.jumpBarMC);
+////			jumpBar.debug(false);
+//			jumpBar.loc = new Vector2D(start.loc.x + throwMeters * UNITS_PER_METER, start.loc.y);
+////			jumpBar.run();
+//			camera.addChild(jumpBar.asset);
+//		}
 		
 		override public function update():void 
 		{

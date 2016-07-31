@@ -37,12 +37,12 @@ package game.sports
 			rotate = false;
 			
 			throwMeters = 5;
-			create();
+			createSport();
 			addThingsBeforePlayer();
 			player = new Player(new CorredorMC);
 		}
 		
-		 public function create():void 
+		override protected function createSport():void 
 		{
 		//	super.create();
 			
@@ -57,21 +57,21 @@ package game.sports
 		{
 			line = new MovingObject(new assets.lineMC);
 //			line.debug(false);
-			line.loc = new Vector2D(start.loc.x + throwMeters * UNITS_PER_METER, start.loc.y);
+//			line.loc = new Vector2D(start.loc.x + throwMeters * UNITS_PER_METER, start.loc.y);
 //			line.run();
 			camera.addChild(line.asset);
 		}
 		
-		override public function reset():void 
-		{
-			super.reset();
-			
-			ball.init(start.loc);
-			ball.reset();
-			
-			startPlayer();
-		}
-		
+//		override public function reset():void 
+//		{
+//			super.reset();
+//			
+//			ball.init(start.loc);
+//			ball.reset();
+//			
+//			startPlayer();
+//		}
+//		
 		protected function startPlayer():void
 		{
 			player.start(false, true);

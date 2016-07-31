@@ -52,53 +52,32 @@ package game.sports
 		protected var camera:Sprite;		
 		protected var levelDefinition:MovieClip;
 		protected var bg:Background;				
-		protected var start:MovingObject;
-		protected var goal:MovingObject;
 		
 		protected var meters:int;
 		protected var playing:Boolean;
 		protected var leftKeyPressed:Boolean;
+		protected var currentSport:String; // para poder ubicar el setting de este sport en los settings
 		
 		public function Sport() 
 		{
-//			// levanto el mc que contiene un juego de carrera
-//			levelDefinition = new assets.racesMC();
-//			create();
+			bg = new Background();
+			addChild(bg);
+			camera = new MovieClip();
+			addChild(camera);
 		}
 		
-		protected function create():void
+		protected function createSport():void
 		{
 			throw new Error("uninplemented");
-			
-		
 		}
 		
-		
-		public function reset():void
-		{
-			meters = 0;
-			camera.x = 0;
-			
-			bg.reset();
-		
-//			if(player){
-//				player.initLoc(start.loc.x, start.loc.y);
-//				player.reset();					
-//			}
-
-//			speedBar.reset();			
-//			hud.updateMeters(meters);
-			
-			playing = true;
-		}
-		
+				
 		public function update():void
 		{
 			if (!playing) return;			
 			bg.update();
 			player.update();
 		}
-		
 		
 		// esto te obliga a implementar el metodo en todos los sports
 		// no se si es del todo necesario pero creo que te evita algunos quilombos
@@ -145,7 +124,7 @@ package game.sports
 		
 		private function replay():void
 		{
-			dispatchEvent(GuiEvents.NEW_MATCH);
+			dispatchEvent(new Event(GuiEvents.NEW_MATCH));
 			
 		}
 	}
