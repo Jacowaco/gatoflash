@@ -28,7 +28,6 @@ package game.sports
 		
 		protected var cantEnemiesReachedEnd:int;
 		
-		
 		protected var start:MovingObject;
 		protected var line:MovingObject;
 		protected var goal:MovingObject;
@@ -122,8 +121,10 @@ package game.sports
 		override public function update():void 
 		{
 			if (!playing) return;
+			player.update();
+						
+			bg.follow(player);
 			
-			super.update();
 			
 			for (var i:int = 0; i < CANT_ENEMIES; i++)
 			{

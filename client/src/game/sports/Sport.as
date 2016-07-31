@@ -74,9 +74,7 @@ package game.sports
 				
 		public function update():void
 		{
-			if (!playing) return;			
-			bg.update();
-			player.update();
+			throw new Error("uninplemented");
 		}
 		
 		// esto te obliga a implementar el metodo en todos los sports
