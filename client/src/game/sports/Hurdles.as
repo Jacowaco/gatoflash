@@ -17,23 +17,20 @@ package game.sports
 		
 		public function Hurdles() 
 		{
-			super();
 			currentSport = "sport0"; // esto es lo único que debería hardcodear...
 			finalMetres = settings.sports[currentSport].metres;			
 			super.create();
-			
+			// TODO aca seguro va a haber que poner una cuenta regresiva
+			start();
 		}
 
-		override public function update():void
-		{
-//			checkColisions();
-			super.update();
-		}
+//		override public function update():void
+//		{
+////			checkColisions();
+//			super.update();
+//		}
 		
-		override protected function start():void 
-		{
-			player.start(true);
-		}
+
 		
 		override protected function checkColisions():void 
 		{

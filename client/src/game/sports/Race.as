@@ -43,7 +43,7 @@ package game.sports
 			createEnemies();
 			createPlayer();			
 			addPlayerAndEnemies();
-		
+			
 		}
 		
 		private function createLane():void 
@@ -89,7 +89,9 @@ package game.sports
 		protected function start():void
 		{
 			for each(var enemie:Enemy in enemies) enemie.start();
-			player.start(false);
+			player.setRunning();
+			playing = true;
+			trace("race started");
 		}
 		
 		override public function update():void 

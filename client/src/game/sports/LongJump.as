@@ -12,12 +12,9 @@ package game.sports
 	
 	import game.Ball;
 	import game.LevelEvents;
-//	import game.MovingObject;
+
 	import game.Player;
 
-//	import gameobject.GameObject;
-	
-	
 	public class LongJump extends Sport 
 	{
 		protected var line:MovieClip;
@@ -111,9 +108,9 @@ package game.sports
 		
 		override public function assignBadge():void 
 		{
-			if (meters >= 0) 						  badge = BADGE_BRONCE;
-			if (meters >= Player.MAX_DISTANCE * 0.5)  badge = BADGE_SILVER;
-			if (meters >= Player.MAX_DISTANCE) 	      badge = BADGE_GOLD;
+//			if (meters >= 0) 						  badge = BADGE_BRONCE;
+//			if (meters >= Player.MAX_DISTANCE * 0.5)  badge = BADGE_SILVER;
+//			if (meters >= Player.MAX_DISTANCE) 	      badge = BADGE_GOLD;
 		}
 		
 	}
