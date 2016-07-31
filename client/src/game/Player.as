@@ -3,7 +3,9 @@ package game
 	import com.qb9.flashlib.easing.Tween;
 	import com.qb9.flashlib.geom.Vector2D;
 	import com.qb9.flashlib.tasks.Func;
+	import com.qb9.flashlib.tasks.Parallel;
 	import com.qb9.flashlib.tasks.Sequence;
+	import com.qb9.flashlib.tasks.TaskEvent;
 	import com.qb9.flashlib.tasks.Wait;
 	
 	import flash.display.MovieClip;
@@ -27,12 +29,16 @@ package game
 //		private var jumps:Boolean;
 //		private var spins:Boolean;
 	
-		
-		private var MAX_SPEED:Number = 100;
 		private var speed:Number;
 		// TODO externalizar por settings.
 		private var speedDamping:Number = -0.5;
 		private var speedIncrement:Number = 2.0;
+		// TODO estos tambien porque van a depender del juego
+		private var MAX_JUMP_DISTANCE:Number = 20;
+		private var MAX_JUMP_HEIGHT:Number = 5;
+		private var MAX_SPEED:Number = 50;
+
+		
 		
 		private const IDLE:int = 0;
 		private const RUNNING:int = 1;
@@ -46,13 +52,13 @@ package game
 		// ????	
 		//		private var DISTANCE_Y:int = 150;
 		
-		//		private var offset:Point;
+		private var offset:Point;
 		private var traveledDistance:Number;
 		
 		private var reached:Boolean;
 		private var onReached:Event;
 		
-		public var jumped:Boolean;
+//		public var jumped:Boolean;
 		// CHUPALA !!!
 		//		private var hurdleLevel:Boolean;
 		
@@ -75,7 +81,7 @@ package game
 			asset = mc;
 			addChild(mc);
 			onReached = new Event("reached");
-			//			offset = new Point();			
+			offset = new Point();			
 		}
 		
 		public function update():void 
@@ -97,6 +103,16 @@ package game
 					checkSpeedForAnimation();
 					break;	
 				}
+					
+				case JUMPING:
+				{
+					trace("jumping");
+					speed = Math.max(speed + speedDamping, 0);
+					speed = Math.min(speed, MAX_SPEED);
+					trace(x, y);
+					break;	
+				}
+					
 				
 				
 				default:
@@ -181,7 +197,7 @@ package game
 			speed = 0;
 			asset.gotoAndPlay("stand"); 
 			
-			jumped = false;
+//			jumped = false;
 			reached = false;
 			lookingRight = true;
 			spinningCont = 0;
@@ -213,6 +229,7 @@ package game
 		
 		public function get percentage():Number
 		{
+			trace( speed / MAX_SPEED);
 			return speed / MAX_SPEED;
 		}
 		
@@ -235,23 +252,34 @@ package game
 //			hurdleLevel = _hurdleLevel;
 		}
 		
-		public function jump(_power:Number, offsetY:Number):void
+		public function jump():void
 		{
-//			if (jumped) return;
-//			jumped = true;
+			
+			
+			if (state == JUMPING) return;
+			state = JUMPING;
+
 //			traveledDistance = _power * MAX_DISTANCE + MIN_DISTANCE;
 //			jumpingX = x;
-//			offset.x = offset.y = 0;
+			offset.x = offset.y = 0;
 //			var time:Number = Math.max(Math.abs(traveledDistance), 500);
 //			
-//			var startX:Tween = new Tween(offset, time, { x:traveledDistance / 2 }, { transition:"linear" } );
-//			var startY:Tween = new Tween(offset, time, { y: -DISTANCE_Y }, { transition:"Quad.easeOut" } );
-//			var endX:Tween   = new Tween(offset, time, { x:traveledDistance },     { transition:"linear" } );
-//			var endY:Tween   = new Tween(offset, time, { y:offsetY },      { transition:"Quad.easeIn" } );
-//			var sequenceX:Sequence = new Sequence(startX, endX);
-//			var sequenceY:Sequence = new Sequence(startY, endY);
-//			Game.taskRunner().add(sequenceX);
-//			Game.taskRunner().add(sequenceY);
+			var time:Number = 500;
+			var distance:Number = speed * MAX_JUMP_DISTANCE;
+			var height:Number = speed * MAX_JUMP_HEIGHT;
+
+			var startX:Tween = new Tween(this, time, { x: x + distance/2 }, { transition:"linear" } );
+			var startY:Tween = new Tween(this, time, { y: y - height}, { transition:"Quad.easeOut" } );
+
+			var endX:Tween   = new Tween(this, time, { x: x + distance },     { transition:"linear" } );
+			var endY:Tween   = new Tween(this, time, { y: y  },      { transition:"Quad.easeIn" } );
+			
+			var inAnim:Parallel = new Parallel(startX, startY);
+			var outAnim:Parallel = new Parallel(endX, endY);
+			
+			var sequence:Sequence = new Sequence(inAnim, outAnim);
+			sequence.addEventListener(TaskEvent.COMPLETE, function():void {state = RUNNING});			
+			Game.taskRunner().add(sequence);
 		}
 		
 	}

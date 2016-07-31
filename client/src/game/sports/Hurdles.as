@@ -84,7 +84,7 @@ package game.sports
 			}
 			else if (key.keyCode == Keyboard.SPACE)
 			{
-				player.jump(1, 0);
+				player.jump();
 			}
 			
 		}

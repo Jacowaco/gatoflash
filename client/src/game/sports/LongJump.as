@@ -79,7 +79,7 @@ package game.sports
 		{
 			super.onKeyDown(key);
 			
-			if (player.jumped) return;
+//			if (player.jumped) return;
 			
 			if (key.keyCode == Keyboard.SPACE)
 			{

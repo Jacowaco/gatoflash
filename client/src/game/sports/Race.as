@@ -94,11 +94,17 @@ package game.sports
 			trace("race started");
 		}
 		
+		
 		override public function update():void 
 		{
 			if (!playing) return;
+		
+//			camera.x = Utils.ease(camera.x + ((Game.SCREEN_WIDTH / 2) - player.localToGlobal(new Point(0,0)).x), camera.x, 0.95);
+			camera.x += ((Game.SCREEN_WIDTH / 4) - player.localToGlobal(new Point(0,0)).x);
+//			camera.x = Math.min(0, camera.x);
+
 			player.update();						
-			bg.follow(player);
+			bg.follow(camera.x);
 			
 			
 			for (var i:int = 0; i < CANT_ENEMIES; i++)
@@ -108,8 +114,6 @@ package game.sports
 			
 //			speedBar.percentage = player.percentage;
 			
-			camera.x += ((Game.SCREEN_WIDTH / 2) - player.localToGlobal(new Point(0, 0)).x);
-			camera.x = Math.min(0, camera.x);
 			
 			meters = player.getMeters();
 //			hud.updateMeters(meters);
