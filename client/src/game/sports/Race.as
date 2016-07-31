@@ -4,6 +4,7 @@ package game.sports
 	
 	import com.qb9.flashlib.geom.Vector2D;
 	import com.qb9.flashlib.lang.AssertionError;
+	import com.qb9.flashlib.lang.foreach;
 	
 	import flash.display.MovieClip;
 	import flash.events.Event;
@@ -13,10 +14,7 @@ package game.sports
 	
 	import game.Enemy;
 	import game.LevelEvents;
-//	import game.MovingObject;
 	import game.Player;
-	
-	import mx.core.mx_internal;
 	
 	import utils.Utils;
 	
@@ -27,11 +25,11 @@ package game.sports
 		protected var finalMetres:int;
 		
 		protected var cantEnemiesReachedEnd:int;
-		
-		protected var start:MovieClip;
+
+		// la carrera tiene todo esto
+		protected var departure:MovieClip;
 		protected var line:MovieClip;
 		protected var goal:MovieClip;
-		
 		
 		public function Race() 
 		{
@@ -45,16 +43,15 @@ package game.sports
 			createEnemies();
 			createPlayer();			
 			addPlayerAndEnemies();
-			reset();
-			
+		
 		}
 		
 		private function createLane():void 
 		{
-			start = levelDefinition.start;
+			departure = levelDefinition.start;
 			line = levelDefinition.line
 			goal = levelDefinition.goal;			
-			camera.addChild(start);
+			camera.addChild(departure);
 			camera.addChild(line);
 			camera.addChild(goal);
 		}
@@ -64,12 +61,9 @@ package game.sports
 			enemies = new Array();		
 			for(var i:int = 0; i < CANT_ENEMIES; i++){
 				var enemy:Enemy = new Enemy(new assets.CorredorMC, settings.sports[currentSport].minEnemySpeed + Math.random() * settings.sports[currentSport].maxEnemySpeed );
-				var stageLocation:Point = start.localToGlobal(new Point(start["carril"+i].x , start["carril"+i].y));
-				enemy.x =stageLocation.x;
+				var stageLocation:Point = departure.localToGlobal(new Point(departure["carril"+i].x , departure["carril"+i].y));
+				enemy.x = stageLocation.x;
 				enemy.y = stageLocation.y;
-				
-//				enemy.initLoc(stageLocation.x, stageLocation.y);
-//				enemy.reset(); // para que setee la posicion actual a la inicial...
 				enemies.push(enemy);				
 			}
 		}
@@ -77,10 +71,9 @@ package game.sports
 		private function createPlayer():void
 		{
 			player = new Player(new assets.CorredorMC);
-			var stageLocation:Point = start.localToGlobal(new Point(start["carrilPlayer"].x , start["carrilPlayer"].y));			
+			var stageLocation:Point = departure.localToGlobal(new Point(departure["carrilPlayer"].x , departure["carrilPlayer"].y));			
 			player.x = stageLocation.x;
 			player.y = stageLocation.y;
-//			player.reset();
 		}
 		
 		private function addPlayerAndEnemies():void 
@@ -91,35 +84,19 @@ package game.sports
 			camera.addChild(enemies[2]);
 			camera.addChild(enemies[3]);
 		}
+				
 		
-
-		
-		private function reset():void 
+		protected function start():void
 		{
-			playing = true;
-
-			cantEnemiesReachedEnd = 0;
-			
-			for (var i:int = 0; i < CANT_ENEMIES; i++)
-			{
-
-				enemies[i].start();
-			}
-			
-			startPlayer();
-		}
-		
-		protected function startPlayer():void
-		{
+			for each(var enemie:Enemy in enemies) enemie.start();
 			player.start(false);
 		}
 		
 		override public function update():void 
 		{
 			if (!playing) return;
-			player.update();
-						
-//			bg.follow(player);
+			player.update();						
+			bg.follow(player);
 			
 			
 			for (var i:int = 0; i < CANT_ENEMIES; i++)
@@ -171,10 +148,8 @@ package game.sports
 		}
 		
 		override public function onKeyDown(key:KeyboardEvent):void 
-		{
-			super.onKeyDown(key);
-			
-			if (key.keyCode == Keyboard.LEFT && !leftKeyPressed)
+		{			
+			if (key.keyCode == Keyboard.LEFT && ! leftKeyPressed)
 			{
 				leftKeyPressed = true;
 				player.accelerate();

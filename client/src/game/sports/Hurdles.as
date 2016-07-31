@@ -30,7 +30,7 @@ package game.sports
 			super.update();
 		}
 		
-		override protected function startPlayer():void 
+		override protected function start():void 
 		{
 			player.start(true);
 		}

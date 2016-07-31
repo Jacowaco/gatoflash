@@ -17,27 +17,37 @@ package game
 	
 	public class Player extends Sprite // extends MovingObject 
 	{
-		public static var MIN_DISTANCE:int = 200;
-		public static var MAX_DISTANCE:int = 1000;
+		// no tiene nada que ver con el player. es una propiead de la carrera a lo sumo
+//		public static var MIN_DISTANCE:int = 200;
+//		public static var MAX_DISTANCE:int = 1000;
 		
 		private var asset:MovieClip;
 		
+		//TODO implementar estados
 		private var jumps:Boolean;
 		private var spins:Boolean;
 		private var speed:Number;
+		
 		private var maxSpeed:Number = 24;
+
+		// ????	
+//		private var DISTANCE_Y:int = 150;
 		
-		private var DISTANCE_Y:int = 150;
+//		private var offset:Point;
+		private var traveledDistance:Number;
 		
-		private var offset:Point;
-		private var distance:Number;
 		private var reached:Boolean;
 		private var onReached:Event;
+		
 		public var jumped:Boolean;
-		private var hurdleLevel:Boolean;
+		// CHUPALA !!!
+//		private var hurdleLevel:Boolean;
+		
 		private var jumpingX:Number;
 		private var stopAtJump:Boolean;
+		
 		public var lookingRight:Boolean;
+		
 		private var spinningCont:int;
 		private var spinningTime:int;
 		private var move:Boolean;
@@ -49,7 +59,6 @@ package game
 //		public function Player(mc:MovieClip=null)		
 		public function Player(mc:MovieClip)  
 		{
-//			super(mc);	
 			asset = mc;
 			addChild(mc);
 			onReached = new Event("reached");
@@ -58,8 +67,6 @@ package game
 		
 		public function update():void 
 		{
-//			super.run();
-			
 			if (!move) return;
 			
 			if (jumps)
@@ -69,20 +76,15 @@ package game
 					speed = Math.max(speed - 0.25, 0);
 					speed = Math.min(speed, maxSpeed);
 					x += speed;
-//					loc = loc.add(new Vector2D(speed, 0));
 				}
 				if (jumped)
 				{
 					if (hurdleLevel) {
 						y += offset.y;
-//						loc = new Vector2D(loc.x, initialLoc.y + offset.y);
 				}else {
-//						loc = new Vector2D(offset.x + jumpingX, initialLoc.y + offset.y);
 						x += jumpingX;
 						y = offset.y;
 					}
-					//trace("y", offset.y);
-					
 					if (jumped && !reached && Game.taskRunner().empty)//offset.x == distance)
 					{
 						if (stopAtJump)
@@ -106,7 +108,6 @@ package game
 				speed = Math.max(speed - 0.25, 0);
 				speed = Math.min(speed, maxSpeed);
 				var spinFactor:Number = (spins) ? 0.3 : 1;
-//				loc = loc.add(new Vector2D(speed * spinFactor, 0));
 				x += speed*spinFactor;
 				
 				if (spins && speed > maxSpeed * 0.1)
@@ -142,14 +143,12 @@ package game
 			move = false;
 			jumps = false;
 			asset.gotoAndPlay("stand");
-			//speed = 0;
 			spins = false;
 		}
 		
 		public function accelerate():void
 		{
 			speed += 1;
-			asset.gotoAndPlay("run1");
 		}
 		
 		private function spin():void
@@ -168,7 +167,6 @@ package game
 		
 		public function getMeters():int
 		{
-//			return int((loc.x - initialLoc.x) / Sport.UNITS_PER_METER);
 			return int(x / Sport.UNITS_PER_METER);
 		}
 		
@@ -190,14 +188,14 @@ package game
 		{
 			if (jumped) return;
 			jumped = true;
-			distance = _power * MAX_DISTANCE + MIN_DISTANCE;
+			traveledDistance = _power * MAX_DISTANCE + MIN_DISTANCE;
 			jumpingX = x;
 			offset.x = offset.y = 0;
-			var time:Number = Math.max(Math.abs(distance), 500);
+			var time:Number = Math.max(Math.abs(traveledDistance), 500);
 			
-			var startX:Tween = new Tween(offset, time, { x:distance / 2 }, { transition:"linear" } );
+			var startX:Tween = new Tween(offset, time, { x:traveledDistance / 2 }, { transition:"linear" } );
 			var startY:Tween = new Tween(offset, time, { y: -DISTANCE_Y }, { transition:"Quad.easeOut" } );
-			var endX:Tween   = new Tween(offset, time, { x:distance },     { transition:"linear" } );
+			var endX:Tween   = new Tween(offset, time, { x:traveledDistance },     { transition:"linear" } );
 			var endY:Tween   = new Tween(offset, time, { y:offsetY },      { transition:"Quad.easeIn" } );
 			var sequenceX:Sequence = new Sequence(startX, endX);
 			var sequenceY:Sequence = new Sequence(startY, endY);

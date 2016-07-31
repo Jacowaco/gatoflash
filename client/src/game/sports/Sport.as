@@ -14,22 +14,19 @@ package game.sports
 	
 	import game.Background;
 	import game.LevelEvents;
-//	import game.MovingObject;
-	import game.Player;
-	
+	import game.Player;	
 	import ui.GuiEvents;
 
 	// extiendo de sprite pero en realidad no debería.
 	// ya tengo bastantes DisplayObjects dando vuelta...
 	// el background por ejemplo
 	// por ahora lo dejamos asi.
+	//sport es el modelo
 	public class Sport extends Sprite 
 	{
 	
 		public static const UNITS_PER_METER:int = 100;
 		
-		//sport es entonces el modelo
-		// que tambien involucra una vista (controlada por la camara)
 		public static const BADGE_LOOSER:int = 0;
 		public static const BADGE_BRONCE:int = 1;
 		public static const BADGE_SILVER:int = 2;
@@ -47,39 +44,44 @@ package game.sports
 		
 		// aca se define toda la sangucheria de cosas que se tienen que mover durante la partida.
 		// queda todo supeditado a la camara en un punto.
-		// aca está la magia mas maravillosa de flash. (vista y modelo conviven todo el tiempo)
+		// esta es la magia mas maravillosa de flash. (vista y modelo conviven todo el tiempo)
 		// la clave obviamente es enteder el DisplayList a full y en particular la clase MovieClip
 		protected var camera:Sprite;		
-		protected var levelDefinition:MovieClip;
 		protected var bg:Background;				
 		
+		protected var levelDefinition:MovieClip;
+		
+		// estado del juego
 		protected var meters:int;
 		protected var playing:Boolean;
 		protected var leftKeyPressed:Boolean;
-		protected var currentSport:String; // para poder ubicar el setting de este sport en los settings
+		// para poder ubicar el setting de este sport en los settings
+		protected var currentSport:String; 
 		
 		public function Sport() 
 		{
 			bg = new Background();
 			addChild(bg);
+			
 			camera = new Sprite();
 			addChild(camera);
 		}
+		
+		
+		// esto te obliga a implementar el metodo en todos los sports
+		// no se si es del todo necesario pero creo que te evita algunos quilombos
+		// tendría que pensarlo un cacho mas
 		
 		protected function createSport():void
 		{
 			throw new Error("uninplemented");
 		}
-		
 				
 		public function update():void
 		{
 			throw new Error("uninplemented");
 		}
 		
-		// esto te obliga a implementar el metodo en todos los sports
-		// no se si es del todo necesario pero creo que te evita algunos quilombos
-		// tendría que pensarlo un cacho mas
 		public function onKeyDown(key:KeyboardEvent):void
 		{
 			throw new Error("unninplemented");
@@ -98,8 +100,6 @@ package game.sports
 		public function win():void
 		{
 			assignBadge();
-			trace("BADGE OBTAINED", badgeObtained);
-			
 			playing = false;
 			dispatchEvent(new Event(LevelEvents.LEVEL_WIN));
 		}
@@ -122,8 +122,7 @@ package game.sports
 		
 		private function replay():void
 		{
-			dispatchEvent(new Event(GuiEvents.NEW_MATCH));
-			
+			dispatchEvent(new Event(GuiEvents.NEW_MATCH));			
 		}
 	}
 
