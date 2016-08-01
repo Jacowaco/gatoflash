@@ -37,7 +37,6 @@ package game.sports
 		private var badgeObtained:int = 0; 
 		
 		protected var player:Avatar;		
-		protected var enemies:Array;
 		
 		// puede ser 0 para los juegos de tirar cosas.
 		protected const CANT_ENEMIES:int = 4;

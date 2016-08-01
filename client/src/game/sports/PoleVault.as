@@ -29,7 +29,7 @@ package game.sports
 			pole.asset.rotation = -40;
 			camera.addChild(pole.asset);
 			
-			player.setJumpVariables(200, 100, 300);
+//			player.setJumpVariables(200, 100, 300);
 		}
 		
 		//override public function reset():void 

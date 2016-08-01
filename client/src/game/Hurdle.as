@@ -7,24 +7,46 @@ package game
 	
 	public class Hurdle extends MovieClip
 	{
-		private var _collided:Boolean;
+		
+		private var currentLane:String; // para chequear colisiones
+		private var isActive:Boolean;
+		private var isCollided:Boolean;
 		
 		public function Hurdle(mc:MovieClip) 
 		{
 	 		addChild(mc);
-			_collided = false;
+			isCollided = false;
+			isActive = true;
 		}
 		
+		public function setCurrentLane(laneName:String):void
+		{
+			currentLane = laneName;
+		}
+		public function get lane():String
+		{
+			return currentLane;
+		}
+		
+		public function get active():Boolean
+		{
+			return isActive;
+		}
+		
+		public function set active(active:Boolean):void
+		{
+			isActive = active;
+		}
 		public function collide():void
 		{
-			if (_collided) return;
-			_collided = true;
+			if (isCollided) return;
+			isCollided = true;
 			rotation = 90;
 		}
 		
 		public function get collided():Boolean
 		{
-			return _collided;
+			return isCollided;
 		}
 		
 	}

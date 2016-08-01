@@ -35,7 +35,7 @@ package game.sports
 //			super.create();
 			
 			player.addEventListener("reached", playerReached);
-			player.setJumpVariables(150, 200, 1000);
+//			player.setJumpVariables(150, 200, 1000);
 		}
 		
 //		 protected function addThingsBeforePlayer():void 

@@ -13,6 +13,7 @@ package game.sports
 	import flash.ui.Keyboard;
 	
 	import game.Avatar;
+	import game.Lane;
 	import game.LevelEvents;
 	
 	import utils.Utils;
@@ -24,12 +25,15 @@ package game.sports
 		protected var finalMetres:int;
 		
 		protected var cantEnemiesReachedEnd:int;
-
+		
+		
 		// la carrera tiene todo esto
+//		protected var players:Array; 			// son todas las instancias de avatar. (mas facil chequear las colisiones)
 		protected var departure:MovieClip;
 		protected var line:MovieClip;
 		protected var goal:MovieClip;
-		protected var lanes:Array = new Array();
+		protected var lanes:Array;
+		
 		public function Race() 
 		{
 
@@ -41,8 +45,8 @@ package game.sports
 			levelDefinition = new assets.racesMC();			
 			createLane();
 			createEnemies();
-			createPlayer();			
-			addPlayerAndEnemies();
+//			createPlayer();			
+//			addPlayerAndEnemies();
 			
 		}
 		
@@ -52,16 +56,21 @@ package game.sports
 			line = levelDefinition.line
 			goal = levelDefinition.goal;
 			
+			lanes = new Array();
 			
 			for(var ph:int = 0; ph < departure.numChildren; ph++)
 			{
 				if( departure.getChildAt(ph).name.search("carril") != -1){
 					var loc:Point = departure.getChildAt(ph).localToGlobal(new Point());
-					lanes.push(loc);
-//					trace(loc);
+//					var stageLocation:Point = departure.localToGlobal(new Point(departure["carril"+i].x , departure["carril"+i].y));
+					var lane:Lane = new Lane();
+					lane.name = departure.getChildAt(ph).name;
+					lane.loc = loc;
+					lanes.push(lane);
 				}
 				
 			}
+			
 			
 			camera.addChild(departure);
 			camera.addChild(line);
@@ -70,41 +79,56 @@ package game.sports
 		
 		private function createEnemies():void
 		{			
-			enemies = new Array();		
-			for(var i:int = 0; i < CANT_ENEMIES; i++){
-				var enemy:Avatar = new Avatar(new assets.CorredorMC ); 
-				var stageLocation:Point = departure.localToGlobal(new Point(departure["carril"+i].x , departure["carril"+i].y));
-				enemy.x = stageLocation.x;
-				enemy.y = stageLocation.y;
-				enemy.setMode(Avatar.ENEMY);
-				enemies.push(enemy);				
+//			players = new Array();		
+			
+			for(var lane:int = 0; lane < lanes.length; lane++){
+				if(lanes[lane].name == "carrilPlayer"){
+					player = new Avatar(new assets.CorredorMC);			
+					player.x = lanes[lane].loc.x;
+					player.y = lanes[lane].loc.y;player.setMode(Avatar.PLAYER);
+					player.setMode(Avatar.PLAYER);
+					lanes[lane].avatar = player;
+				}else{
+					var enemy:Avatar = new Avatar(new assets.CorredorMC ); 
+					enemy.x = lanes[lane].loc.x;
+					enemy.y = lanes[lane].loc.y;
+					enemy.setMode(Avatar.ENEMY);
+					lanes[lane].avatar = enemy;
+				}
+				
+				camera.addChild(lanes[lane].avatar);
+				
+//				enemy.setCurrentLane("carril"+i);	
 			}
 		}
 		
-		private function createPlayer():void
-		{
-			player = new Avatar(new assets.CorredorMC);
-			var stageLocation:Point = departure.localToGlobal(new Point(departure["carrilPlayer"].x , departure["carrilPlayer"].y));			
-			player.x = stageLocation.x;
-			player.y = stageLocation.y;
-			player.setMode(Avatar.PLAYER);
-		}
-		
-		private function addPlayerAndEnemies():void 
-		{
-			camera.addChild(enemies[0]);
-			camera.addChild(enemies[1]);
-			camera.addChild(player);			
-			camera.addChild(enemies[2]);
-			camera.addChild(enemies[3]);
-		}
+//		private function createPlayer():void
+//		{
+//			player = new Avatar(new assets.CorredorMC);
+//			var stageLocation:Point = departure.localToGlobal(new Point(departure["carrilPlayer"].x , departure["carrilPlayer"].y));			
+//			player.x = stageLocation.x;
+//			player.y = stageLocation.y;
+//			player.setMode(Avatar.PLAYER);
+//			player.setCurrentLane("carrilPlayer");
+//			
+//		}
+//		
+//		private function addPlayerAndEnemies():void 
+//		{
+//			for
+//			
+//			camera.addChild(players[1]);
+//			camera.addChild(player);			
+//			camera.addChild(players[2]);
+//			camera.addChild(players[3]);
+//		}
 				
 		
 		
 		protected function start():void
 		{
-			for each(var enemie:Avatar in enemies) enemie.setRunning();
-			player.setRunning();
+			for each(var lane:Lane in lanes) lane.avatar.setRunning();
+//			player.setRunning();
 			playing = true;
 			trace("race started");
 		}
@@ -118,14 +142,15 @@ package game.sports
 			camera.x += ((Game.SCREEN_WIDTH / 4) - player.localToGlobal(new Point(0,0)).x);
 //			camera.x = Math.min(0, camera.x);
 
-			player.update();						
+									
 			bg.follow(camera.x);
 			
-			
-			for (var i:int = 0; i < CANT_ENEMIES; i++)
-			{
-				enemies[i].update();
-			}
+			for each(var lane:Lane in lanes) lane.avatar.update();
+//			player.update();
+//			for (var i:int = 0; i < CANT_ENEMIES; i++)
+//			{
+//				players[i].update();
+//			}
 			
 //			speedBar.percentage = player.percentage;
 			
@@ -140,19 +165,19 @@ package game.sports
 			}
 			else 
 			{
-				for (i = 0; i < CANT_ENEMIES; i++)
-				{
-					if (enemies[i].getMeters() >= finalMetres)
-					{
-						enemies[i].stop();
-						cantEnemiesReachedEnd++;
-						if (cantEnemiesReachedEnd >= 3)
-						{
-							player.stop();
-							lose();
-						}
-					}
-				}
+//				for (i = 0; i < CANT_ENEMIES; i++)
+//				{
+//					if (players[i].getMeters() >= finalMetres)
+//					{
+//						players[i].stop();
+//						cantEnemiesReachedEnd++;
+//						if (cantEnemiesReachedEnd >= 3)
+//						{
+//							player.stop();
+//							lose();
+//						}
+//					}
+//				}
 			}
 		}
 		

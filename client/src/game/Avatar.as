@@ -23,7 +23,7 @@ package game
 		//		public static var MIN_DISTANCE:int = 200;
 		//		public static var MAX_DISTANCE:int = 1000;
 		
-		private var mode:int;
+		private var currentMode:int;
 		public static const ENEMY:int = 0;
 		public static const PLAYER:int = 1;
 		
@@ -53,6 +53,7 @@ package game
 		private var state:int = IDLE;
 		
 		private var currentAnimation:String;
+		private var currentLane:String; // es mas facil chequar colisiones
 		
 		private var offset:Point;
 		private var traveledDistance:Number;
@@ -101,17 +102,17 @@ package game
 				{
 					updateSpeed();	
 					checkSpeedForAnimation();
-					if(mode == PLAYER) trace(speed);
+//					if(mode == PLAYER) trace(speed);
 					x += speed;
 					break;	
 				}
 					
 				case JUMPING:
 				{
-					trace("jumping");
-					speed = Math.max(speed + speedDamping, 0);
-					speed = Math.min(speed, MAX_SPEED);
-					trace(x, y);
+
+//					speed = Math.max(speed + speedDamping, 0);
+//					speed = Math.min(speed, MAX_SPEED);
+
 					break;	
 				}
 					
@@ -179,25 +180,40 @@ package game
 		}
 		
 		public function setMode(mode:int):void{
-			this.mode = mode;
+			this.currentMode = mode;		
+			
 			if(mode == ENEMY){
-				speed = Math.min(MAX_SPEED / 10 + Math.random() * MAX_SPEED / 10 * 9, MAX_SPEED);
+				initEnemy();
 			}
+		}
+		
+		private function initEnemy():void
+		{
+			speed = Math.min(MAX_SPEED / 10 + Math.random() * MAX_SPEED / 10 * 9, MAX_SPEED);
+		}
+		
+		public function setCurrentLane(laneName:String):void
+		{
+			currentLane = laneName;
+		}
+		public function get lane():String
+		{
+			return currentLane;
 		}
 		
 		public function setRunning():void
 		{						
-			state = RUNNING;
-			
+			state = RUNNING;			
 		}
 		
 		private function updateSpeed():void
 		{	
-			if(mode == ENEMY) return;
-			speed = Math.max(speed + speedDamping, 0);
-			speed = Math.min(speed, MAX_SPEED);	
-			
-			
+			if(mode == ENEMY){
+				
+			}else{
+				speed = Math.max(speed + speedDamping, 0);
+				speed = Math.min(speed, MAX_SPEED);	
+			}							
 		}
 		
 		
@@ -247,7 +263,7 @@ package game
 		
 		public function get percentage():Number
 		{
-			trace( speed / MAX_SPEED);
+//			trace( speed / MAX_SPEED);
 			return speed / MAX_SPEED;
 		}
 		
@@ -259,15 +275,7 @@ package game
 		public function collideHurdle():void
 		{
 			speed = 0;
-		}
-		
-		public function setJumpVariables(distance_y:int, min_distance:int, max_distance:int, _stopAtJump:Boolean=true, _hurdleLevel:Boolean=false):void
-		{
-			//			DISTANCE_Y = distance_y;
-			//			MIN_DISTANCE = min_distance;
-			//			MAX_DISTANCE = max_distance;
-			//			stopAtJump = _stopAtJump;
-			//			hurdleLevel = _hurdleLevel;
+			asset.gotoAndStop("fall");
 		}
 		
 		public function jump():void
@@ -275,13 +283,10 @@ package game
 			
 			
 			if (state == JUMPING) return;
+			asset.gotoAndStop("jump");
 			state = JUMPING;
-			
-			//			traveledDistance = _power * MAX_DISTANCE + MIN_DISTANCE;
-			//			jumpingX = x;
 			offset.x = offset.y = 0;
-			//			var time:Number = Math.max(Math.abs(traveledDistance), 500);
-			//			
+			
 			var time:Number = 500;
 			var distance:Number = speed * MAX_JUMP_DISTANCE;
 			var height:Number = MAX_JUMP_HEIGHT;
@@ -292,12 +297,20 @@ package game
 			var endX:Tween   = new Tween(this, time, { x: x + distance },     { transition:"linear" } );
 			var endY:Tween   = new Tween(this, time, { y: y  },      { transition:"Quad.easeIn" } );
 			
-			var inAnim:Parallel = new Parallel(startX, startY);
-			var outAnim:Parallel = new Parallel(endX, endY);
+			var xtw:Sequence = new Sequence(startX, endX);
+			var ytw:Sequence = new Sequence(startY, endY);
 			
-			var sequence:Sequence = new Sequence(inAnim, outAnim);
-			sequence.addEventListener(TaskEvent.COMPLETE, function():void {state = RUNNING});			
-			Game.taskRunner().add(sequence);
+			var anim:Parallel = new Parallel(xtw, ytw);
+			
+			anim.addEventListener(TaskEvent.COMPLETE, function():void {
+				state = RUNNING;				
+			});			
+			Game.taskRunner().add(anim);
+		}
+		
+		public function get mode():int
+		{
+			return currentMode;
 		}
 		
 	}

@@ -53,6 +53,8 @@ package game.sports
 			if (rotate) ballOffset = new Vector2D(20, -40);
 		}
 		
+		
+		
 		 protected function addThingsBeforePlayer():void 
 		{
 			line = new assets.lineMC;

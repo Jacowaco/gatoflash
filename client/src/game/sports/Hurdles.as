@@ -9,13 +9,15 @@ package game.sports
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 	
+	import game.Avatar;
 	import game.Hurdle;
+	import game.Lane;
 
 	public class Hurdles extends Race
 	{
 		private const CANT_HURDLES:int = 10;
 		public static const COLISION_RANGE:int = 60;
-		private var hurdles:Array;
+//		private var hurdles:Array;
 		
 		public function Hurdles() 
 		{
@@ -29,53 +31,68 @@ package game.sports
 		
 		private function createHurdles():void
 		{
-			for(var i:int = 2; i < settings.sports[currentSport].numObstacles; i++){ // pongo vallas a partir de la segunda
-				for(var lane:int = 0; lane < lanes.length; lane++){
+//			hurdles = new Array();
+			
+			for each(var lane:Lane in lanes){
+				for(var i:int = 2; i < settings.sports[currentSport].numObstacles; i++){ // pongo vallas a partir de la segunda
 					var hurdle:Hurdle = new Hurdle(new assets.hurdleMC);
-					camera.addChild(hurdle);
-					hurdle.y = lanes[lane].y;
-					hurdle.x = lanes[lane].x + (finalMetres * UNITS_PER_METER /  settings.sports[currentSport].numObstacles * i);
+					hurdle.y = lane.loc.y;
+					hurdle.x = lane.loc.x + (finalMetres * UNITS_PER_METER /  settings.sports[currentSport].numObstacles * i);
+					lane.hurdles.push(hurdle);		
+					camera.addChildAt(hurdle, 0);
 				}
 			}
+			
+//				for(var player:int = 0; player < players.length; player++){
+//				
+//					
+//					hurdle.setCurrentLane(players[player].lane);
+//					
+//				}
+//			}
 		}
 		
 		override protected function checkColisions():void 
 		{
-			for(var lane:int = 0; lane < lanes.length; lane++){
-				
-			}
 			
-			
-			for (var e:int = 0; e < CANT_ENEMIES + 1; e++)
-			{
-				for (var i:int = 0; i < CANT_HURDLES; i++)
-				{
-					if (e == CANT_ENEMIES)
-					{
-						if (false) // (!hurdles[e][i].collided && player.loc.distance(hurdles[e][i].loc) < COLISION_RANGE)
-						{
-							//trace("colliding player");
-							hurdles[e][i].collide();
-							player.collideHurdle();
-						}
-					}
-					else
-					{
-						var enemyDistToHurdle:Number = hurdles[e][i].loc.x - enemies[e].loc.x;
-						if (!hurdles[e][i].collided && enemyDistToHurdle >= 0 && enemyDistToHurdle < enemies[e].nextJumpDist)
-						{
-							//trace("enemy jumping");
-							enemies[e].jump(1, 0);
-						}
-						if (!hurdles[e][i].collided && enemies[e].loc.distance(hurdles[e][i].loc) < COLISION_RANGE)
-						{
-							hurdles[e][i].collide();
-							enemies[e].collideHurdle();
-						}
-					}
+			for each(var lane:Lane in lanes){
+				for each(var hurdle:Hurdle in lane.hurdles){
+					if(!hurdle.active) continue;
+					if(lane.avatar.mode == Avatar.ENEMY){
+						checkForJump(lane.avatar, hurdle);
+						collide(lane.avatar, hurdle);
+					}else{
+						collide(lane.avatar, hurdle);
+					}	
 				}
 			}
 		}
+		
+		override public function update():void
+		{
+			super.update();
+			checkColisions();
+		}
+		
+		private var jumpinThreshold:Number = 100;
+		private function checkForJump(avatar:Avatar, hurdle:Hurdle):void
+		{			
+			if(hurdle.x - avatar.x < jumpinThreshold){
+				hurdle.active = false;
+				var chance:int = 10;			
+				var nuance:int = Math.random() * 1000;	
+				if(nuance < chance) avatar.jump();
+			}			
+		}
+		
+		private function collide(players:Avatar, hurdle:Hurdle):void{
+			if(player.hitTestObject(hurdle)){
+				hurdle.collide();
+				hurdle.active = false;
+				player.collideHurdle();
+			}
+		}
+		
 		
 		override public function onKeyUp(key:KeyboardEvent):void
 		{
