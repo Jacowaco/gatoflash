@@ -49,8 +49,6 @@ package game
 		private var state:int = IDLE;
 		
 		private var currentAnimation:String;
-		// ????	
-		//		private var DISTANCE_Y:int = 150;
 		
 		private var offset:Point;
 		private var traveledDistance:Number;

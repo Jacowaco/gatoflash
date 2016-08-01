@@ -5,16 +5,13 @@ package game
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	
-//	import gameobject.GameObject;
-	
-	
-	public class Hurdle extends MovingObject 
+	public class Hurdle extends MovieClip
 	{
 		private var _collided:Boolean;
 		
 		public function Hurdle(mc:MovieClip) 
 		{
-			super(mc);
+	 		addChild(mc);
 			_collided = false;
 		}
 		
@@ -22,7 +19,7 @@ package game
 		{
 			if (_collided) return;
 			_collided = true;
-			asset.rotation = 90;
+			rotation = 90;
 		}
 		
 		public function get collided():Boolean

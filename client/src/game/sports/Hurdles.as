@@ -4,7 +4,9 @@ package game.sports
 	
 	import com.qb9.flashlib.geom.Vector2D;
 	
+	import flash.display.Sprite;
 	import flash.events.KeyboardEvent;
+	import flash.geom.Point;
 	import flash.ui.Keyboard;
 	
 	import game.Hurdle;
@@ -20,20 +22,41 @@ package game.sports
 			currentSport = "sport0"; // esto es lo único que debería hardcodear...
 			finalMetres = settings.sports[currentSport].metres;			
 			super.create();
+			createHurdles();
 			// TODO aca seguro va a haber que poner una cuenta regresiva
 			start();
 		}
-
-//		override public function update():void
-//		{
-////			checkColisions();
-//			super.update();
-//		}
 		
+		private function createHurdles():void
+		{
+			var locations:Array = new Array();
+			for(var ph:int = 0; ph < departure.numChildren; ph++)
+			{
+				if( departure.getChildAt(ph).name.search("carril") != -1){
+					var loc:Point = departure.getChildAt(ph).localToGlobal(new Point());
+					locations.push(loc);
+					trace(loc);
+				}
+				
+			}
+			trace("locations: " +locations.length);
+			
+			for(var i:int = 2; i < settings.sports[currentSport].numObstacles; i++){ // pongo vallas a partir de la segunda
+				for(var lane:int = 0; lane < locations.length; lane++){
+					var hurdle:Hurdle = new Hurdle(new assets.hurdleMC);
+					camera.addChild(hurdle);
+					hurdle.y = locations[lane].y;
+					hurdle.x = locations[lane].x + (finalMetres * UNITS_PER_METER /  settings.sports[currentSport].numObstacles * i);
+				}
+			}
+		}
 
 		
 		override protected function checkColisions():void 
 		{
+			
+			
+			
 			for (var e:int = 0; e < CANT_ENEMIES + 1; e++)
 			{
 				for (var i:int = 0; i < CANT_HURDLES; i++)
