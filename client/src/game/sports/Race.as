@@ -30,7 +30,7 @@ package game.sports
 		protected var departure:MovieClip;
 		protected var line:MovieClip;
 		protected var goal:MovieClip;
-		
+		protected var lanes:Array = new Array();
 		public function Race() 
 		{
 
@@ -50,7 +50,19 @@ package game.sports
 		{
 			departure = levelDefinition.start;
 			line = levelDefinition.line
-			goal = levelDefinition.goal;			
+			goal = levelDefinition.goal;
+			
+			
+			for(var ph:int = 0; ph < departure.numChildren; ph++)
+			{
+				if( departure.getChildAt(ph).name.search("carril") != -1){
+					var loc:Point = departure.getChildAt(ph).localToGlobal(new Point());
+					lanes.push(loc);
+//					trace(loc);
+				}
+				
+			}
+			
 			camera.addChild(departure);
 			camera.addChild(line);
 			camera.addChild(goal);

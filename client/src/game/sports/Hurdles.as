@@ -29,32 +29,21 @@ package game.sports
 		
 		private function createHurdles():void
 		{
-			var locations:Array = new Array();
-			for(var ph:int = 0; ph < departure.numChildren; ph++)
-			{
-				if( departure.getChildAt(ph).name.search("carril") != -1){
-					var loc:Point = departure.getChildAt(ph).localToGlobal(new Point());
-					locations.push(loc);
-					trace(loc);
-				}
-				
-			}
-			trace("locations: " +locations.length);
-			
 			for(var i:int = 2; i < settings.sports[currentSport].numObstacles; i++){ // pongo vallas a partir de la segunda
-				for(var lane:int = 0; lane < locations.length; lane++){
+				for(var lane:int = 0; lane < lanes.length; lane++){
 					var hurdle:Hurdle = new Hurdle(new assets.hurdleMC);
 					camera.addChild(hurdle);
-					hurdle.y = locations[lane].y;
-					hurdle.x = locations[lane].x + (finalMetres * UNITS_PER_METER /  settings.sports[currentSport].numObstacles * i);
+					hurdle.y = lanes[lane].y;
+					hurdle.x = lanes[lane].x + (finalMetres * UNITS_PER_METER /  settings.sports[currentSport].numObstacles * i);
 				}
 			}
 		}
-
 		
 		override protected function checkColisions():void 
 		{
-			
+			for(var lane:int = 0; lane < lanes.length; lane++){
+				
+			}
 			
 			
 			for (var e:int = 0; e < CANT_ENEMIES + 1; e++)
