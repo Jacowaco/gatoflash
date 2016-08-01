@@ -39,7 +39,7 @@ package game
 		private var speedIncrement:Number = 2.0;
 		// TODO estos tambien porque van a depender del juego
 		private var MAX_JUMP_DISTANCE:Number = 20;
-		private var MAX_JUMP_HEIGHT:Number = 5;
+		private var MAX_JUMP_HEIGHT:Number = 50;
 		private var MAX_SPEED:Number = 20;
 		
 		
@@ -284,7 +284,7 @@ package game
 			//			
 			var time:Number = 500;
 			var distance:Number = speed * MAX_JUMP_DISTANCE;
-			var height:Number = speed * MAX_JUMP_HEIGHT;
+			var height:Number = MAX_JUMP_HEIGHT;
 			
 			var startX:Tween = new Tween(this, time, { x: x + distance/2 }, { transition:"linear" } );
 			var startY:Tween = new Tween(this, time, { y: y - height}, { transition:"Quad.easeOut" } );

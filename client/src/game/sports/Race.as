@@ -35,6 +35,7 @@ package game.sports
 
 		}
 		
+		
 		protected function create():void
 		{
 			levelDefinition = new assets.racesMC();			
@@ -71,8 +72,7 @@ package game.sports
 		{			
 			enemies = new Array();		
 			for(var i:int = 0; i < CANT_ENEMIES; i++){
-				var enemy:Avatar = new Avatar(new assets.CorredorMC );
-				//settings.sports[currentSport].minEnemySpeed + Math.random() * settings.sports[currentSport].maxEnemySpeed 
+				var enemy:Avatar = new Avatar(new assets.CorredorMC ); 
 				var stageLocation:Point = departure.localToGlobal(new Point(departure["carril"+i].x , departure["carril"+i].y));
 				enemy.x = stageLocation.x;
 				enemy.y = stageLocation.y;
@@ -100,6 +100,7 @@ package game.sports
 		}
 				
 		
+		
 		protected function start():void
 		{
 			for each(var enemie:Avatar in enemies) enemie.setRunning();
@@ -107,6 +108,7 @@ package game.sports
 			playing = true;
 			trace("race started");
 		}
+		
 		
 		
 		override public function update():void 
