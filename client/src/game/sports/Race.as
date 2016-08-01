@@ -12,9 +12,8 @@ package game.sports
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 	
-	import game.Enemy;
 	import game.LevelEvents;
-	import game.Player;
+	import game.Avatar;
 	
 	import utils.Utils;
 	
@@ -72,7 +71,8 @@ package game.sports
 		{			
 			enemies = new Array();		
 			for(var i:int = 0; i < CANT_ENEMIES; i++){
-				var enemy:Enemy = new Enemy(new assets.CorredorMC, settings.sports[currentSport].minEnemySpeed + Math.random() * settings.sports[currentSport].maxEnemySpeed );
+				var enemy:Avatar = new Avatar(new assets.CorredorMC );
+				//settings.sports[currentSport].minEnemySpeed + Math.random() * settings.sports[currentSport].maxEnemySpeed 
 				var stageLocation:Point = departure.localToGlobal(new Point(departure["carril"+i].x , departure["carril"+i].y));
 				enemy.x = stageLocation.x;
 				enemy.y = stageLocation.y;
@@ -82,7 +82,7 @@ package game.sports
 		
 		private function createPlayer():void
 		{
-			player = new Player(new assets.CorredorMC);
+			player = new Avatar(new assets.CorredorMC);
 			var stageLocation:Point = departure.localToGlobal(new Point(departure["carrilPlayer"].x , departure["carrilPlayer"].y));			
 			player.x = stageLocation.x;
 			player.y = stageLocation.y;
@@ -100,7 +100,7 @@ package game.sports
 		
 		protected function start():void
 		{
-			for each(var enemie:Enemy in enemies) enemie.start();
+			for each(var enemie:Avatar in enemies) enemie.setRunning();
 			player.setRunning();
 			playing = true;
 			trace("race started");
@@ -139,7 +139,7 @@ package game.sports
 			{
 				for (i = 0; i < CANT_ENEMIES; i++)
 				{
-					if (enemies[i].move && enemies[i].getMeters() >= finalMetres)
+					if (enemies[i].getMeters() >= finalMetres)
 					{
 						enemies[i].stop();
 						cantEnemiesReachedEnd++;

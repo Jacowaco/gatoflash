@@ -13,7 +13,7 @@ package game.sports
 	import game.Ball;
 	import game.LevelEvents;
 //	import game.MovingObject;
-	import game.Player;
+	import game.Avatar;
 	
 //	import gameobject.GameObject;
 	
@@ -39,7 +39,7 @@ package game.sports
 			throwMeters = 5;
 			createSport();
 			addThingsBeforePlayer();
-			player = new Player(new CorredorMC);
+			player = new Avatar(new CorredorMC);
 		}
 		
 		override protected function createSport():void 
@@ -74,7 +74,7 @@ package game.sports
 //		
 		protected function startPlayer():void
 		{
-			player.start(false, true);
+			player.start();
 		}
 		
 		override public function update():void 

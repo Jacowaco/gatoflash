@@ -13,7 +13,7 @@ package game.sports
 	import game.Ball;
 	import game.LevelEvents;
 
-	import game.Player;
+	import game.Avatar;
 
 	public class LongJump extends Sport 
 	{
@@ -26,7 +26,7 @@ package game.sports
 			
 			throwMeters = 8;
 //			addThingsBeforePlayer();
-			player = new Player(new CorredorMC);
+			player = new Avatar(new CorredorMC);
 		}
 		
 		

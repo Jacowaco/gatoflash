@@ -17,11 +17,15 @@ package game
 	import game.sports.Sport;
 	
 	
-	public class Player extends Sprite // extends MovingObject 
+	public class Avatar extends Sprite // extends MovingObject 
 	{
 		// no tiene nada que ver con el player. es una propiead de la carrera a lo sumo
 		//		public static var MIN_DISTANCE:int = 200;
 		//		public static var MAX_DISTANCE:int = 1000;
+		
+		private var mode:int;
+		private var ENEMY:int = 0;
+		private var PLAYER:int = 1;
 		
 		private var asset:MovieClip;
 		
@@ -74,7 +78,7 @@ package game
 		// o sea, cada vez que creas un MovingObject tenes que saber que le tenes que pasar un mc.
 		// entonces lo haces siempre igual...
 		//		public function Player(mc:MovieClip=null)		
-		public function Player(mc:MovieClip)  
+		public function Avatar(mc:MovieClip)  
 		{
 			asset = mc;
 			addChild(mc);
@@ -188,7 +192,7 @@ package game
 			if(speed > MAX_SPEED / 3 * 2 && speed < MAX_SPEED && asset.currentLabel != "run3") asset.gotoAndStop("run3");
 		}
 		
-		public function start(_jumps:Boolean, _spins:Boolean=false):void
+		public function start():void
 		{
 //			jumps = _jumps;
 //			spins = _spins;

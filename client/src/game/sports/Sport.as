@@ -14,7 +14,7 @@ package game.sports
 	
 	import game.Background;
 	import game.LevelEvents;
-	import game.Player;	
+	import game.Avatar;	
 	import ui.GuiEvents;
 
 	// extiendo de sprite pero en realidad no debería.
@@ -36,7 +36,7 @@ package game.sports
 		// a lo sumo te doy un metodo publico para que lo leas.
 		private var badgeObtained:int = 0; 
 		
-		protected var player:Player;		
+		protected var player:Avatar;		
 		protected var enemies:Array;
 		
 		// puede ser 0 para los juegos de tirar cosas.
