@@ -24,15 +24,15 @@ package game
 		//		public static var MAX_DISTANCE:int = 1000;
 		
 		private var mode:int;
-		private var ENEMY:int = 0;
-		private var PLAYER:int = 1;
+		public static const ENEMY:int = 0;
+		public static const PLAYER:int = 1;
 		
 		private var asset:MovieClip;
 		
 		//TODO implementar estados
-//		private var jumps:Boolean;
-//		private var spins:Boolean;
-	
+		//		private var jumps:Boolean;
+		//		private var spins:Boolean;
+		
 		private var speed:Number;
 		// TODO externalizar por settings.
 		private var speedDamping:Number = -0.5;
@@ -40,8 +40,8 @@ package game
 		// TODO estos tambien porque van a depender del juego
 		private var MAX_JUMP_DISTANCE:Number = 20;
 		private var MAX_JUMP_HEIGHT:Number = 5;
-		private var MAX_SPEED:Number = 50;
-
+		private var MAX_SPEED:Number = 20;
+		
 		
 		
 		private const IDLE:int = 0;
@@ -60,7 +60,7 @@ package game
 		private var reached:Boolean;
 		private var onReached:Event;
 		
-//		public var jumped:Boolean;
+		//		public var jumped:Boolean;
 		// CHUPALA !!!
 		//		private var hurdleLevel:Boolean;
 		
@@ -83,7 +83,8 @@ package game
 			asset = mc;
 			addChild(mc);
 			onReached = new Event("reached");
-			offset = new Point();			
+			offset = new Point();	
+			speed = 0;
 		}
 		
 		public function update():void 
@@ -98,11 +99,10 @@ package game
 					
 				case RUNNING:
 				{
-					trace("player running. speed: " + speed);
-					speed = Math.max(speed + speedDamping, 0);
-					speed = Math.min(speed, MAX_SPEED);
-					x += speed;
+					updateSpeed();	
 					checkSpeedForAnimation();
+					if(mode == PLAYER) trace(speed);
+					x += speed;
 					break;	
 				}
 					
@@ -115,8 +115,8 @@ package game
 					break;	
 				}
 					
-				
-				
+					
+					
 				default:
 				{
 					break;
@@ -178,10 +178,26 @@ package game
 			//			}
 		}
 		
+		public function setMode(mode:int):void{
+			this.mode = mode;
+			if(mode == ENEMY){
+				speed = Math.min(MAX_SPEED / 10 + Math.random() * MAX_SPEED / 10 * 9, MAX_SPEED);
+			}
+		}
+		
 		public function setRunning():void
-		{
+		{						
 			state = RUNNING;
-			speed = 0;
+			
+		}
+		
+		private function updateSpeed():void
+		{	
+			if(mode == ENEMY) return;
+			speed = Math.max(speed + speedDamping, 0);
+			speed = Math.min(speed, MAX_SPEED);	
+			
+			
 		}
 		
 		
@@ -194,12 +210,12 @@ package game
 		
 		public function start():void
 		{
-//			jumps = _jumps;
-//			spins = _spins;
+			//			jumps = _jumps;
+			//			spins = _spins;
 			speed = 0;
 			asset.gotoAndPlay("stand"); 
 			
-//			jumped = false;
+			//			jumped = false;
 			reached = false;
 			lookingRight = true;
 			spinningCont = 0;
@@ -210,9 +226,9 @@ package game
 		public function stop():void
 		{
 			move = false;
-//			jumps = false;
+			//			jumps = false;
 			asset.gotoAndPlay("stand");
-//			spins = false;
+			//			spins = false;
 		}
 		
 		public function accelerate():void
@@ -222,11 +238,11 @@ package game
 		
 		private function spin():void
 		{
-//			if (spins)
-//			{
-//				lookingRight = !lookingRight;
-//				asset.scaleX = -asset.scaleX;
-//			}
+			//			if (spins)
+			//			{
+			//				lookingRight = !lookingRight;
+			//				asset.scaleX = -asset.scaleX;
+			//			}
 		}
 		
 		public function get percentage():Number
@@ -247,11 +263,11 @@ package game
 		
 		public function setJumpVariables(distance_y:int, min_distance:int, max_distance:int, _stopAtJump:Boolean=true, _hurdleLevel:Boolean=false):void
 		{
-//			DISTANCE_Y = distance_y;
-//			MIN_DISTANCE = min_distance;
-//			MAX_DISTANCE = max_distance;
-//			stopAtJump = _stopAtJump;
-//			hurdleLevel = _hurdleLevel;
+			//			DISTANCE_Y = distance_y;
+			//			MIN_DISTANCE = min_distance;
+			//			MAX_DISTANCE = max_distance;
+			//			stopAtJump = _stopAtJump;
+			//			hurdleLevel = _hurdleLevel;
 		}
 		
 		public function jump():void
@@ -260,19 +276,19 @@ package game
 			
 			if (state == JUMPING) return;
 			state = JUMPING;
-
-//			traveledDistance = _power * MAX_DISTANCE + MIN_DISTANCE;
-//			jumpingX = x;
+			
+			//			traveledDistance = _power * MAX_DISTANCE + MIN_DISTANCE;
+			//			jumpingX = x;
 			offset.x = offset.y = 0;
-//			var time:Number = Math.max(Math.abs(traveledDistance), 500);
-//			
+			//			var time:Number = Math.max(Math.abs(traveledDistance), 500);
+			//			
 			var time:Number = 500;
 			var distance:Number = speed * MAX_JUMP_DISTANCE;
 			var height:Number = speed * MAX_JUMP_HEIGHT;
-
+			
 			var startX:Tween = new Tween(this, time, { x: x + distance/2 }, { transition:"linear" } );
 			var startY:Tween = new Tween(this, time, { y: y - height}, { transition:"Quad.easeOut" } );
-
+			
 			var endX:Tween   = new Tween(this, time, { x: x + distance },     { transition:"linear" } );
 			var endY:Tween   = new Tween(this, time, { y: y  },      { transition:"Quad.easeIn" } );
 			

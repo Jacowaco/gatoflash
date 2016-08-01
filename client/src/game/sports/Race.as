@@ -12,8 +12,8 @@ package game.sports
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 	
-	import game.LevelEvents;
 	import game.Avatar;
+	import game.LevelEvents;
 	
 	import utils.Utils;
 	
@@ -76,6 +76,7 @@ package game.sports
 				var stageLocation:Point = departure.localToGlobal(new Point(departure["carril"+i].x , departure["carril"+i].y));
 				enemy.x = stageLocation.x;
 				enemy.y = stageLocation.y;
+				enemy.setMode(Avatar.ENEMY);
 				enemies.push(enemy);				
 			}
 		}
@@ -86,6 +87,7 @@ package game.sports
 			var stageLocation:Point = departure.localToGlobal(new Point(departure["carrilPlayer"].x , departure["carrilPlayer"].y));			
 			player.x = stageLocation.x;
 			player.y = stageLocation.y;
+			player.setMode(Avatar.PLAYER);
 		}
 		
 		private function addPlayerAndEnemies():void 
@@ -111,7 +113,6 @@ package game.sports
 		{
 			if (!playing) return;
 		
-//			camera.x = Utils.ease(camera.x + ((Game.SCREEN_WIDTH / 2) - player.localToGlobal(new Point(0,0)).x), camera.x, 0.95);
 			camera.x += ((Game.SCREEN_WIDTH / 4) - player.localToGlobal(new Point(0,0)).x);
 //			camera.x = Math.min(0, camera.x);
 
