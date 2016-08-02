@@ -63,10 +63,6 @@ package game
 		private var reached:Boolean;
 		private var onReached:Event;
 		
-		//		public var jumped:Boolean;
-		// CHUPALA !!!
-		//		private var hurdleLevel:Boolean;
-		
 		private var jumpingX:Number;
 		private var stopAtJump:Boolean;
 		
@@ -75,6 +71,11 @@ package game
 		private var spinningCont:int;
 		private var spinningTime:int;
 		private var move:Boolean;
+		
+		
+		// como estas tweens van a tener un evento, las dejo como miembro...
+		private var anim:Parallel;
+		private var to:Timeout;
 		
 		// null como default no. 
 		// no esta bueno porque no arma una interfase. definir las interfases es importante. 
@@ -110,14 +111,14 @@ package game
 					
 				case JUMPING:
 				{					
-					trace(">>>>>>>jumping");
+//					trace(">>>>>>>jumping");
 					
 					break;	
 				}
 					
 				case FALL:
 				{
-					trace(">>>>>>> fall");
+//					trace(">>>>>>> fall");
 					break;
 				}
 					
@@ -196,15 +197,20 @@ package game
 			return state == JUMPING;
 		}
 		
+		public function isIdle():Boolean
+		{
+			return state == IDLE;
+		}
+		
 		public function setMaxSpeed(speed:Number):void
 		{
 			maxSpeed = speed;
 		}
 		
+		
 		private function initEnemy():void
 		{
 			maxSpeed = Math.min(maxSpeed / 10 + Math.random() * maxSpeed / 10 * 9, maxSpeed);
-			trace(maxSpeed);
 			speed = maxSpeed;
 		}
 		
@@ -217,8 +223,9 @@ package game
 			return currentLane;
 		}
 		
-		public function setRunning():void
+		private function setRunning():void
 		{						
+//			if(mode == PLAYER ) trace("set running: ");
 			state = RUNNING;			
 		}
 		
@@ -244,21 +251,24 @@ package game
 		
 		public function start():void
 		{
+			state = RUNNING;
+			
 			//			jumps = _jumps;
 			//			spins = _spins;
-			speed = 0;
-			asset.gotoAndPlay("stand"); 
+//			speed = 0;
+//			asset.gotoAndPlay("stand"); 
 			
 			//			jumped = false;
-			reached = false;
-			lookingRight = true;
-			spinningCont = 0;
-			spinningTime = 12;
-			move = true;
+//			reached = false;
+//			lookingRight = true;
+//			spinningCont = 0;
+//			spinningTime = 12;
+//			move = true;
 		}
 		
 		public function stop():void
 		{
+			state = IDLE;
 			move = false;
 			//			jumps = false;
 			asset.gotoAndPlay("stand");
@@ -290,20 +300,27 @@ package game
 			return int(x / Sport.UNITS_PER_METER);
 		}
 		
+		
 		public function collide():void
 		{
 			speed = 0;
 			asset.gotoAndStop("fall");
+			if(to && to.running) to.dispose() ;
+			if(!isJumping()){ // ENGANIA PICHANGA... si vengo saltando, por mas que choque me voy a poner en running eso caga la fruta
+				 to = new Timeout(setRunning, 600);
+				Game.taskRunner().add(to);	
+			}			
 			state = FALL;
-			var to:Timeout = new Timeout(setRunning, 600);
-			Game.taskRunner().add(to);
 		}
 		
 		public function jumpHurdle():void
 		{
 			if (state == JUMPING) return;
-			asset.gotoAndStop("jump");
+//			if(mode == PLAYER ) trace("jump added: jumping: " , state ==JUMPING);
 			state = JUMPING;
+			
+			
+			asset.gotoAndStop("jump");			
 			offset.x = offset.y = 0;
 			
 			var time:Number = 250; //Math.max(Math.abs(distance), 500);
@@ -314,14 +331,18 @@ package game
 			var startY:Tween = new Tween(this, time, { y: y - height}, { transition:"Quad.easeOut" } );
 			
 			var endX:Tween   = new Tween(this, time, { x: x + distance },     { transition:"linear" } );
-			var endY:Tween   = new Tween(this, time, { y: y  },      { transition:"Quad.easeIn" } );
+			var endY:Tween   = new Tween(this, time, { y: y  },      { transition:"Quad.easeOut" } );
 			
 			var xtw:Sequence = new Sequence(startX, endX);
 			var ytw:Sequence = new Sequence(startY, endY);
+
+			if(anim && anim.running){
+				anim.dispose();
+			}
 			
-			var anim:Parallel = new Parallel(xtw, ytw);
+			anim = new Parallel(xtw, ytw);
 			
-			anim.addEventListener(TaskEvent.COMPLETE, function(e:Event){
+			anim.addEventListener(TaskEvent.COMPLETE, function(e:Event):void{
 				setRunning();
 				e.currentTarget.removeEventListener(e.type, arguments.callee);
 			});			

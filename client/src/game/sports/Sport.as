@@ -12,9 +12,10 @@ package game.sports
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 	
+	import game.Avatar;
 	import game.Background;
 	import game.LevelEvents;
-	import game.Avatar;	
+	
 	import ui.GuiEvents;
 
 	// extiendo de sprite pero en realidad no debería.
@@ -25,8 +26,7 @@ package game.sports
 	public class Sport extends Sprite 
 	{
 	
-		public static const UNITS_PER_METER:int = 100;
-		
+		public static const UNITS_PER_METER:int = 100;		
 		public static const BADGE_LOOSER:int = 0;
 		public static const BADGE_BRONCE:int = 1;
 		public static const BADGE_SILVER:int = 2;
@@ -47,11 +47,11 @@ package game.sports
 		// la clave obviamente es enteder el DisplayList a full y en particular la clase MovieClip
 		protected var camera:Sprite;		
 		protected var bg:Background;				
-		
+		protected var playerScreenPosition:Number;
 		protected var levelDefinition:MovieClip;
 		
 		// estado del juego
-		protected var meters:int;
+//		protected var meters:int;
 		protected var playing:Boolean;
 		protected var leftKeyPressed:Boolean;
 		// para poder ubicar el setting de este sport en los settings
@@ -64,6 +64,7 @@ package game.sports
 			
 			camera = new Sprite();
 			addChild(camera);
+			playerScreenPosition = Game.SCREEN_WIDTH / 4;
 		}
 		
 		
@@ -91,19 +92,18 @@ package game.sports
 			throw new Error("unninplemented");
 		}
 		
-		public function assignBadge():void
+		protected function assignBadge():void
 		{
 			throw new Error("unninplemented");
 		}
 		
-		public function win():void
-		{
-			assignBadge();
+		protected function win():void
+		{			
 			playing = false;
 			dispatchEvent(new Event(LevelEvents.LEVEL_WIN));
 		}
 		
-		public function lose():void
+		protected function lose():void
 		{
 			playing = false;
 			dispatchEvent(new Event(LevelEvents.LEVEL_LOST));

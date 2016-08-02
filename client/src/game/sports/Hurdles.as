@@ -36,8 +36,9 @@ package game.sports
 		
 		private function createHurdles():void
 		{		
+			numObstacles += 4; // engania pichanga para que cree la cantidad de vallas que dice el settings.json
 			for each(var lane:Lane in lanes){
-				for(var i:int = 2; i < numObstacles; i++){ // pongo vallas a partir de la segunda
+				for(var i:int = 2; i < numObstacles - 2; i++){ // pongo vallas a partir de la segunda
 					var hurdle:Hurdle = new Hurdle(new assets.hurdleMC);
 					hurdle.y = lane.loc.y;
 					hurdle.x = lane.loc.x + (finalMetres * UNITS_PER_METER /  numObstacles * i);
@@ -47,7 +48,7 @@ package game.sports
 			}			
 		}
 		
-		override protected function checkColisions():void 
+		private function checkColisions():void 
 		{
 			for each(var lane:Lane in lanes){				
 				if(lane.avatar.mode == Avatar.ENEMY){
@@ -60,9 +61,9 @@ package game.sports
 						}	
 					}					
 				}else{
-					for each(var hurdle:Hurdle in lane.hurdles){	
+					for each(hurdle in lane.hurdles){	
 						if(!hurdle.active) continue;
-						var distToObstacle:Number = hurdle.x - lane.avatar.x;					
+						distToObstacle = hurdle.x - lane.avatar.x;					
 						if(distToObstacle < collisionRange){							
 							collide(lane.avatar, hurdle);
 						}				
@@ -73,15 +74,13 @@ package game.sports
 		
 		override public function update():void
 		{
-//			if(Math.random() > 0.5)player.accelerate();
 			super.update();
 			checkColisions();
 		}
 		
 		
 		private function checkForJump(avatar:Avatar, hurdle:Hurdle):void
-		{						
-			
+		{									
 			var distToObstacle:Number = Math.abs(hurdle.x - avatar.x);
 			if(distToObstacle < jumpinThreshold && ! avatar.isJumping()){
 				var chance:int = 500;			
@@ -89,15 +88,12 @@ package game.sports
 				if(nounce < chance) {
 					avatar.jumpHurdle();
 				}
-			}
-			
+			}			
 		}
-		
 		
 		private function collide(avatar:Avatar, hurdle:Hurdle):void{			 			
 			var distToObstacle:Number = Math.abs(hurdle.x - avatar.x);
 			if(distToObstacle < jumpinThreshold && ! avatar.isJumping()){
-				trace("collide");
 				hurdle.active = false;
 				hurdle.collide();				
 				avatar.collide();
@@ -111,22 +107,9 @@ package game.sports
 		}
 		
 		override public function onKeyDown(key:KeyboardEvent):void 
-		{
-			if (key.keyCode == Keyboard.LEFT && !leftKeyPressed)
-			{
-				leftKeyPressed = true;
-				player.accelerate();
-			}
-			else if (key.keyCode == Keyboard.RIGHT && leftKeyPressed)
-			{
-				leftKeyPressed = false;
-				player.accelerate();
-			}
-			else if (key.keyCode == Keyboard.SPACE)
-			{
-				player.jumpHurdle();
-			}
-			
+		{			
+			if (key.keyCode == Keyboard.SPACE) player.jumpHurdle();			
+			super.onKeyDown(key);			
 		}
 		
 	}

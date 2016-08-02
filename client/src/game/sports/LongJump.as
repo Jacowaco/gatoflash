@@ -71,7 +71,7 @@ package game.sports
 			
 //			speedBar.percentage = player.percentage;
 			
-			meters = player.getMeters();
+//			meters = player.getMeters();
 //			hud.updateMeters(meters);
 		}
 		
@@ -106,7 +106,7 @@ package game.sports
 				lose();
 		}
 		
-		override public function assignBadge():void 
+		override protected function assignBadge():void 
 		{
 //			if (meters >= 0) 						  badge = BADGE_BRONCE;
 //			if (meters >= Player.MAX_DISTANCE * 0.5)  badge = BADGE_SILVER;

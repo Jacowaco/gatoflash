@@ -127,6 +127,11 @@ package
 			gui.addEventListener(GuiEvents.RESUME, onResume);
 			gui.addEventListener(GuiEvents.PLAY, onPlay);
 			gui.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);
+			
+			var clubes:Array = ["club1", "club2", "club3"];
+			
+			gui.setClub(clubes[Math.floor(Math.random() * 3)]);
+			
 			addChild(gui);						
 		}
 		

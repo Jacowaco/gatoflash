@@ -25,25 +25,24 @@ package game.sports
 		protected var finalMetres:int;		
 		protected var cantEnemiesReachedEnd:int;
 		
-		
 		// la carrera tiene todo esto
 		protected var departure:MovieClip;
 		protected var line:MovieClip;
 		protected var goal:MovieClip;
-		protected var lanes:Array;
-		
+		// los lanes estan para poder meter juntos corredores y vallas
+		protected var lanes:Array;		
 		protected var playersMaxSpeed:Number;
+		
 		public function Race() 
 		{
-
+			
 		}
-
+		
 		protected function create():void
 		{
 			levelDefinition = new assets.racesMC();			
 			createLanes();
-			createPlayers();
-			
+			createPlayers();			
 		}
 		
 		private function createLanes():void 
@@ -62,9 +61,10 @@ package game.sports
 					lane.name = departure.getChildAt(ph).name;
 					lane.loc = loc;
 					lanes.push(lane);
-				}
-				
+				}				
 			}
+			
+			goal.x = finalMetres * UNITS_PER_METER;
 			
 			camera.addChild(departure);
 			camera.addChild(line);
@@ -74,12 +74,12 @@ package game.sports
 		private function createPlayers():void
 		{			
 			for(var lane:int = 0; lane < lanes.length; lane++){
-				if(lanes[lane].name == "carrilPlayer"){
+				if(lanes[lane].name == "carrilPlayer"){ // si es el corredor...
 					player = new Avatar(new assets.CorredorMC);			
 					player.x = lanes[lane].loc.x;
 					player.y = lanes[lane].loc.y;player.setMode(Avatar.PLAYER);					
 					player.setMaxSpeed(playersMaxSpeed);
-					player.setMode(Avatar.PLAYER);
+					player.setMode(Avatar.PLAYER);	// lo creo en modo player
 					lanes[lane].avatar = player;
 				}else{
 					var enemy:Avatar = new Avatar(new assets.CorredorMC ); 
@@ -95,70 +95,54 @@ package game.sports
 		
 		protected function start():void
 		{
-			for each(var lane:Lane in lanes) lane.avatar.setRunning();
+			for each(var lane:Lane in lanes) lane.avatar.start();
 			playing = true;
-			trace("race started");
 		}
-		
-		
 		
 		override public function update():void 
 		{
 			if (!playing) return;
-		
-			camera.x += ((Game.SCREEN_WIDTH / 4) - player.localToGlobal(new Point(0,0)).x);
-//			camera.x = Math.min(0, camera.x);
-
-									
+			
+			camera.x += (playerScreenPosition - player.localToGlobal(new Point(0,0)).x);									
 			bg.follow(camera.x);
 			
-			for each(var lane:Lane in lanes) lane.avatar.update();
-//			player.update();
-//			for (var i:int = 0; i < CANT_ENEMIES; i++)
-//			{
-//				players[i].update();
-//			}
-			
-//			speedBar.percentage = player.percentage;
-			
-			
-			meters = player.getMeters();
-//			hud.updateMeters(meters);
-			
-			if (meters >= finalMetres)
-			{
-				player.stop();
-				win();
-			}
-			else 
-			{
-//				for (i = 0; i < CANT_ENEMIES; i++)
-//				{
-//					if (players[i].getMeters() >= finalMetres)
-//					{
-//						players[i].stop();
-//						cantEnemiesReachedEnd++;
-//						if (cantEnemiesReachedEnd >= 3)
-//						{
-//							player.stop();
-//							lose();
-//						}
-//					}
-//				}
-			}
+			for each(var lane:Lane in lanes) lane.avatar.update();						
+			checkIfWin();
 		}
 		
-		override public function assignBadge():void 
+		private function checkIfWin():void
+		{
+			for each(var lane:Lane in lanes) {			
+				if (lane.avatar.getMeters() >= finalMetres)
+				{					
+					if(lane.avatar.mode == Avatar.ENEMY){
+						if(! lane.avatar.isIdle()) cantEnemiesReachedEnd++;
+						trace("enemie "+ cantEnemiesReachedEnd + " reached end");
+					}else{						
+						win();
+					}			
+					lane.avatar.stop();
+				}
+			}			
+		}
+		
+		
+		override protected function win():void
+		{
+			assignBadge();
+			super.win();
+		}
+		
+		override protected function assignBadge():void 
 		{
 			if (cantEnemiesReachedEnd == 0) badge = BADGE_GOLD;
 			if (cantEnemiesReachedEnd == 1) badge = BADGE_SILVER;
-			if (cantEnemiesReachedEnd >= 2) badge = BADGE_BRONCE;
+			if (cantEnemiesReachedEnd == 2) badge = BADGE_BRONCE;
+			if (cantEnemiesReachedEnd > 2) badge = BADGE_LOOSER;
+			
+			trace("badge: " + badge);
 		}
 		
-		protected function checkColisions():void
-		{
-			
-		}
 		
 		override public function onKeyDown(key:KeyboardEvent):void 
 		{			
@@ -174,5 +158,5 @@ package game.sports
 			}
 		}
 	}
-
+	
 }
