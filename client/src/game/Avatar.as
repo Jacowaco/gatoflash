@@ -6,6 +6,7 @@ package game
 	import com.qb9.flashlib.tasks.Parallel;
 	import com.qb9.flashlib.tasks.Sequence;
 	import com.qb9.flashlib.tasks.TaskEvent;
+	import com.qb9.flashlib.tasks.Timeout;
 	import com.qb9.flashlib.tasks.Wait;
 	
 	import flash.display.MovieClip;
@@ -39,7 +40,7 @@ package game
 		private var speedIncrement:Number = 2.0;
 		// TODO estos tambien porque van a depender del juego
 		private var MAX_JUMP_DISTANCE:Number = 200;
-		private var MAX_JUMP_HEIGHT:Number = 75;
+		private var MAX_JUMP_HEIGHT:Number = 50;
 		private var maxSpeed:Number;
 		
 		
@@ -49,6 +50,7 @@ package game
 		private const JUMPING:int = 2;
 		private const SPINNING:int = 3;
 		private const THROWING:int = 4;
+		private const FALL:int = 5;
 		
 		private var state:int = IDLE;
 		
@@ -107,15 +109,18 @@ package game
 				}
 					
 				case JUMPING:
-				{
-					
+				{					
 					trace(">>>>>>>jumping");
-
-//					speed = Math.max(speed + speedDamping, 0);
-//					speed = Math.min(speed, MAX_SPEED);
-
+					
 					break;	
 				}
+					
+				case FALL:
+				{
+					trace(">>>>>>> fall");
+					break;
+				}
+					
 					
 					
 					
@@ -226,7 +231,7 @@ package game
 			
 			speed = Math.max(speed + speedDamping, 0);
 			speed = Math.min(speed, maxSpeed);	
-										
+			
 		}
 		
 		
@@ -276,7 +281,7 @@ package game
 		
 		public function get percentage():Number
 		{
-//			trace( speed / MAX_SPEED);
+			//			trace( speed / MAX_SPEED);
 			return speed / maxSpeed;
 		}
 		
@@ -289,6 +294,9 @@ package game
 		{
 			speed = 0;
 			asset.gotoAndStop("fall");
+			state = FALL;
+			var to:Timeout = new Timeout(setRunning, 600);
+			Game.taskRunner().add(to);
 		}
 		
 		public function jumpHurdle():void

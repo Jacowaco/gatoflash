@@ -73,7 +73,7 @@ package game.sports
 		
 		override public function update():void
 		{
-			if(Math.random() > 0.5)player.accelerate();
+//			if(Math.random() > 0.5)player.accelerate();
 			super.update();
 			checkColisions();
 		}
