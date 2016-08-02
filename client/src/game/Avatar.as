@@ -27,7 +27,7 @@ package game
 		public static const ENEMY:int = 0;
 		public static const PLAYER:int = 1;
 		
-		private var asset:MovieClip;
+		public var asset:MovieClip;
 		
 		//TODO implementar estados
 		//		private var jumps:Boolean;
@@ -109,6 +109,8 @@ package game
 					
 				case JUMPING:
 				{
+					
+					trace(">>>>>>>jumping");
 
 //					speed = Math.max(speed + speedDamping, 0);
 //					speed = Math.min(speed, MAX_SPEED);
@@ -185,6 +187,10 @@ package game
 			if(mode == ENEMY){
 				initEnemy();
 			}
+		}
+		public function isJumping():Boolean
+		{
+			return state == JUMPING;
 		}
 		
 		private function initEnemy():void
@@ -272,7 +278,7 @@ package game
 			return int(x / Sport.UNITS_PER_METER);
 		}
 		
-		public function collideHurdle():void
+		public function collide():void
 		{
 			speed = 0;
 			asset.gotoAndStop("fall");
@@ -280,8 +286,6 @@ package game
 		
 		public function jump():void
 		{
-			
-			
 			if (state == JUMPING) return;
 			asset.gotoAndStop("jump");
 			state = JUMPING;

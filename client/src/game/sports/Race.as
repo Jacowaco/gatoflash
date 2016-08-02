@@ -22,13 +22,11 @@ package game.sports
 	public class Race extends Sport 
 	{
 		
-		protected var finalMetres:int;
-		
+		protected var finalMetres:int;		
 		protected var cantEnemiesReachedEnd:int;
 		
 		
 		// la carrera tiene todo esto
-//		protected var players:Array; 			// son todas las instancias de avatar. (mas facil chequear las colisiones)
 		protected var departure:MovieClip;
 		protected var line:MovieClip;
 		protected var goal:MovieClip;
@@ -38,19 +36,16 @@ package game.sports
 		{
 
 		}
-		
-		
+
 		protected function create():void
 		{
 			levelDefinition = new assets.racesMC();			
-			createLane();
-			createEnemies();
-//			createPlayer();			
-//			addPlayerAndEnemies();
+			createLanes();
+			createPlayers();
 			
 		}
 		
-		private function createLane():void 
+		private function createLanes():void 
 		{
 			departure = levelDefinition.start;
 			line = levelDefinition.line
@@ -62,7 +57,6 @@ package game.sports
 			{
 				if( departure.getChildAt(ph).name.search("carril") != -1){
 					var loc:Point = departure.getChildAt(ph).localToGlobal(new Point());
-//					var stageLocation:Point = departure.localToGlobal(new Point(departure["carril"+i].x , departure["carril"+i].y));
 					var lane:Lane = new Lane();
 					lane.name = departure.getChildAt(ph).name;
 					lane.loc = loc;
@@ -71,16 +65,13 @@ package game.sports
 				
 			}
 			
-			
 			camera.addChild(departure);
 			camera.addChild(line);
 			camera.addChild(goal);
 		}
 		
-		private function createEnemies():void
+		private function createPlayers():void
 		{			
-//			players = new Array();		
-			
 			for(var lane:int = 0; lane < lanes.length; lane++){
 				if(lanes[lane].name == "carrilPlayer"){
 					player = new Avatar(new assets.CorredorMC);			
@@ -94,41 +85,14 @@ package game.sports
 					enemy.y = lanes[lane].loc.y;
 					enemy.setMode(Avatar.ENEMY);
 					lanes[lane].avatar = enemy;
-				}
-				
+				}				
 				camera.addChild(lanes[lane].avatar);
-				
-//				enemy.setCurrentLane("carril"+i);	
 			}
 		}
-		
-//		private function createPlayer():void
-//		{
-//			player = new Avatar(new assets.CorredorMC);
-//			var stageLocation:Point = departure.localToGlobal(new Point(departure["carrilPlayer"].x , departure["carrilPlayer"].y));			
-//			player.x = stageLocation.x;
-//			player.y = stageLocation.y;
-//			player.setMode(Avatar.PLAYER);
-//			player.setCurrentLane("carrilPlayer");
-//			
-//		}
-//		
-//		private function addPlayerAndEnemies():void 
-//		{
-//			for
-//			
-//			camera.addChild(players[1]);
-//			camera.addChild(player);			
-//			camera.addChild(players[2]);
-//			camera.addChild(players[3]);
-//		}
-				
-		
 		
 		protected function start():void
 		{
 			for each(var lane:Lane in lanes) lane.avatar.setRunning();
-//			player.setRunning();
 			playing = true;
 			trace("race started");
 		}

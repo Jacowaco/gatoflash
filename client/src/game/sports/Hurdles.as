@@ -15,55 +15,49 @@ package game.sports
 
 	public class Hurdles extends Race
 	{
-		private const CANT_HURDLES:int = 10;
-		public static const COLISION_RANGE:int = 60;
-//		private var hurdles:Array;
-		
+		private var numObstacles:Number;
+		private var collisionRange:Number;
 		public function Hurdles() 
 		{
 			currentSport = "sport0"; // esto es lo único que debería hardcodear...
 			finalMetres = settings.sports[currentSport].metres;			
+			numObstacles = settings.sports[currentSport].numObstacles;
+			collisionRange =  finalMetres * UNITS_PER_METER / numObstacles / 4 * 3; // 75% de distancia entre las vallas
+			
 			super.create();
 			createHurdles();
+			
 			// TODO aca seguro va a haber que poner una cuenta regresiva
 			start();
 		}
 		
 		private function createHurdles():void
-		{
-//			hurdles = new Array();
-			
+		{		
 			for each(var lane:Lane in lanes){
-				for(var i:int = 2; i < settings.sports[currentSport].numObstacles; i++){ // pongo vallas a partir de la segunda
+				for(var i:int = 2; i < numObstacles; i++){ // pongo vallas a partir de la segunda
 					var hurdle:Hurdle = new Hurdle(new assets.hurdleMC);
 					hurdle.y = lane.loc.y;
-					hurdle.x = lane.loc.x + (finalMetres * UNITS_PER_METER /  settings.sports[currentSport].numObstacles * i);
+					hurdle.x = lane.loc.x + (finalMetres * UNITS_PER_METER /  numObstacles * i);
 					lane.hurdles.push(hurdle);		
 					camera.addChildAt(hurdle, 0);
 				}
 			}
 			
-//				for(var player:int = 0; player < players.length; player++){
-//				
-//					
-//					hurdle.setCurrentLane(players[player].lane);
-//					
-//				}
-//			}
 		}
 		
 		override protected function checkColisions():void 
 		{
-			
 			for each(var lane:Lane in lanes){
-				for each(var hurdle:Hurdle in lane.hurdles){
+				if(lane.avatar.mode == Avatar.ENEMY) continue;
+				
+				// solo voy a chequear el player
+				for each(var hurdle:Hurdle in lane.hurdles){	
 					if(!hurdle.active) continue;
-					if(lane.avatar.mode == Avatar.ENEMY){
-						checkForJump(lane.avatar, hurdle);
+					var distToObstacle:Number = hurdle.x - lane.avatar.x;					
+					if(distToObstacle < collisionRange){
+						trace(distToObstacle, collisionRange);
 						collide(lane.avatar, hurdle);
-					}else{
-						collide(lane.avatar, hurdle);
-					}	
+					}				
 				}
 			}
 		}
@@ -74,22 +68,25 @@ package game.sports
 			checkColisions();
 		}
 		
-		private var jumpinThreshold:Number = 100;
+
 		private function checkForJump(avatar:Avatar, hurdle:Hurdle):void
-		{			
-			if(hurdle.x - avatar.x < jumpinThreshold){
+		{						
+			
 				hurdle.active = false;
 				var chance:int = 10;			
 				var nuance:int = Math.random() * 1000;	
 				if(nuance < chance) avatar.jump();
-			}			
+						
 		}
 		
-		private function collide(players:Avatar, hurdle:Hurdle):void{
-			if(player.hitTestObject(hurdle)){
-				hurdle.collide();
+		private var jumpinThreshold:Number = 20;
+		private function collide(avatar:Avatar, hurdle:Hurdle):void{			 			
+			var distToObstacle:Number = Math.abs(hurdle.x - avatar.x);
+			if(distToObstacle < jumpinThreshold && !avatar.isJumping()){
+				trace("collide");
 				hurdle.active = false;
-				player.collideHurdle();
+				hurdle.collide();				
+				player.collide();
 			}
 		}
 		
