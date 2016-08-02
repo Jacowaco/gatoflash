@@ -10,12 +10,9 @@ package game.sports
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 	
+	import game.Avatar;
 	import game.Ball;
 	import game.LevelEvents;
-//	import game.MovingObject;
-	import game.Avatar;
-	
-//	import gameobject.GameObject;
 	
 	
 	public class DiscusThrow extends Sport 
@@ -28,25 +25,43 @@ package game.sports
 		
 		protected var line:MovieClip;
 		protected var throwMeters:int;
+		private var base:MovieClip;
 		
 		public function DiscusThrow() 
 		{
-			super();
+			
+			
+			
+			create();
+			
+		}
+		
+		protected function create():void 
+		{
+
+			levelDefinition = new assets.throwingMC;
+			base = levelDefinition.base;
+			camera.addChild(base);
+			
+			player = new Avatar(new assets.CorredorMC);			
+			player.x = base.x;
+			player.y = base.y;
+			player.setMode(Avatar.PLAYER);					
+			addChild(player);
+			
 			
 			ballMovieClip = assets.discusMC;
 			rotate = false;
 			
 			throwMeters = 5;
-			createSport();
-			addThingsBeforePlayer();
-			player = new Avatar(new CorredorMC);
-		}
-		
-		override protected function createSport():void 
-		{
-		//	super.create();
 			
-			ball = new Ball(new ballMovieClip(), rotate);
+//			addThingsBeforePlayer();
+//			player = new Avatar(new CorredorMC);
+
+			
+			//	super.create();
+			
+			ball = new Ball(new assets.discusMC(), rotate);
 			ball.addEventListener("reached", ballReached);
 			camera.addChild(ball);
 			
@@ -112,10 +127,13 @@ package game.sports
 			}
 		}
 		
+		
+		override public function onKeyUp(key:KeyboardEvent):void 
+		{
+			
+		}
 		override public function onKeyDown(key:KeyboardEvent):void 
 		{
-			super.onKeyDown(key);
-			
 			if (ball.shot) return;
 			
 			if (key.keyCode == Keyboard.SPACE)

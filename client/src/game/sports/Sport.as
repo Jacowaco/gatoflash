@@ -71,12 +71,6 @@ package game.sports
 		// esto te obliga a implementar el metodo en todos los sports
 		// no se si es del todo necesario pero creo que te evita algunos quilombos
 		// tendría que pensarlo un cacho mas
-		
-		protected function createSport():void
-		{
-			throw new Error("uninplemented");
-		}
-				
 		public function update():void
 		{
 			throw new Error("uninplemented");

@@ -20,9 +20,6 @@ package game
 	
 	public class Avatar extends Sprite // extends MovingObject 
 	{
-		// no tiene nada que ver con el player. es una propiead de la carrera a lo sumo
-		//		public static var MIN_DISTANCE:int = 200;
-		//		public static var MAX_DISTANCE:int = 1000;
 		
 		private var currentMode:int;
 		public static const ENEMY:int = 0;
@@ -30,10 +27,7 @@ package game
 		
 		public var asset:MovieClip;
 		
-		//TODO implementar estados
-		//		private var jumps:Boolean;
-		//		private var spins:Boolean;
-		
+	
 		private var speed:Number;
 		// TODO externalizar por settings.
 		private var speedDamping:Number = -0.5;
@@ -42,8 +36,6 @@ package game
 		private var MAX_JUMP_DISTANCE:Number = 200;
 		private var MAX_JUMP_HEIGHT:Number = 50;
 		private var maxSpeed:Number;
-		
-		
 		
 		private const IDLE:int = 0;
 		private const RUNNING:int = 1;
@@ -55,23 +47,13 @@ package game
 		private var state:int = IDLE;
 		
 		private var currentAnimation:String;
-		private var currentLane:String; // es mas facil chequar colisiones
 		
-		private var offset:Point;
-		private var traveledDistance:Number;
-		
-		private var reached:Boolean;
-		private var onReached:Event;
-		
-		private var jumpingX:Number;
-		private var stopAtJump:Boolean;
 		
 		public var lookingRight:Boolean;
 		
 		private var spinningCont:int;
 		private var spinningTime:int;
-		private var move:Boolean;
-		
+
 		
 		// como estas tweens van a tener un evento, las dejo como miembro...
 		private var anim:Parallel;
@@ -86,8 +68,6 @@ package game
 		{
 			asset = mc;
 			addChild(mc);
-			onReached = new Event("reached");
-			offset = new Point();	
 			speed = 0;
 		}
 		
@@ -124,51 +104,12 @@ package game
 					
 					
 					
-					
 				default:
 				{
 					break;
 				}
 			}
 			
-			
-			//			
-			//			if (jumps)
-			//			{
-			//				if (!jumped || hurdleLevel)
-			//				{
-			//					speed = Math.max(speed - 0.25, 0);
-			//					speed = Math.min(speed, maxSpeed);
-			//					x += speed;
-			//				}
-			//				if (jumped)
-			//				{
-			//					if (hurdleLevel) {
-			//						y += offset.y;
-			//				}else {
-			//						x += jumpingX;
-			//						y = offset.y;
-			//					}
-			//					if (jumped && !reached && Game.taskRunner().empty)//offset.x == distance)
-			//					{
-			//						if (stopAtJump)
-			//						{
-			//							reached = true;
-			//							asset.gotoAndPlay("stand");
-			//							var wait:Wait = new Wait(200);
-			//							var dispatchReached:Func = new Func(function():void { dispatchEvent(onReached); } );
-			//							var seq:Sequence = new Sequence(wait, dispatchReached);
-			//							Game.taskRunner().add(seq);
-			//						}
-			//						else
-			//						{
-			//							jumped = false;
-			//						}
-			//					}
-			//				}
-			//			}
-			//			else
-			//			{
 			//				
 			//				var spinFactor:Number = (spins) ? 0.3 : 1;
 			//				x += speed*spinFactor;
@@ -214,14 +155,6 @@ package game
 			speed = maxSpeed;
 		}
 		
-		public function setCurrentLane(laneName:String):void
-		{
-			currentLane = laneName;
-		}
-		public function get lane():String
-		{
-			return currentLane;
-		}
 		
 		private function setRunning():void
 		{						
@@ -269,7 +202,7 @@ package game
 		public function stop():void
 		{
 			state = IDLE;
-			move = false;
+
 			//			jumps = false;
 			asset.gotoAndPlay("stand");
 			//			spins = false;
@@ -321,7 +254,7 @@ package game
 			
 			
 			asset.gotoAndStop("jump");			
-			offset.x = offset.y = 0;
+
 			
 			var time:Number = 250; //Math.max(Math.abs(distance), 500);
 			var distance:Number = MAX_JUMP_DISTANCE;
