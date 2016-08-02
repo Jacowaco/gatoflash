@@ -61,9 +61,10 @@ package game.sports
 			
 			//	super.create();
 			
-			ball = new Ball(new assets.discusMC(), rotate);
+			ball = new Ball(new assets.discusMC());
 			ball.addEventListener("reached", ballReached);
-			camera.addChild(ball);
+			ball.rotate(false);
+			player.addChild(ball);
 			
 			if (rotate) ballOffset = new Vector2D(20, -40);
 		}

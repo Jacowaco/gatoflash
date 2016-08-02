@@ -28,39 +28,34 @@ package game
 		private var distance:Number;
 		private var reached:Boolean;
 		private var playerX:Number;
-		private var rotate:Boolean;
 		private var mc:MovieClip;
 		
-		public function Ball(mc:MovieClip, _rotate:Boolean) 
+		public function Ball(mc:MovieClip) 
 		{
-//			super(mc);
+
 			this.mc = mc;
 			addChild(mc);
-			
-			rotate = _rotate;
-			
 			onReached = new Event("reached");
 			offset = new Point();
 		}
 		
 		 public function reset():void 
 		{
-//			super.reset();
-			
-			offset.x = offset.y = 0;
 			shot = false;
 			reached = false;
-			if (rotate) mc.rotation = START_ANGLE;
 		}
 		
 		public function setPlayerX(value:Number):void
 		{
 			playerX = value;
 		}
-		
+		public function rotate(rot:Boolean):void
+		{
+			if(rot)  mc.asset.gotoAndPlay(1);
+			if(!rot) mc.asset.stop();
+		}
 		public function update():void 
 		{
-//			super.run();
 			
 			if (shot && !reached && offset.x == distance)
 			{
