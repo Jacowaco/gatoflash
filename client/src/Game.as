@@ -121,6 +121,9 @@ package
 		
 		private function createGui():void
 		{
+			
+			
+			
 			gui = new Gui(new assets.guiMc());
 			gui.addEventListener(GuiEvents.CONFIRMATION_EXIT, onExitGame);
 			gui.addEventListener(GuiEvents.PAUSE, onPause);			
@@ -128,6 +131,8 @@ package
 			gui.addEventListener(GuiEvents.PLAY, onPlay);
 			gui.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);
 			
+			
+			var manager:Object = api.getOlympicTeam(); // blabla
 			var clubes:Array = ["club1", "club2", "club3"];
 			
 			gui.setClub(clubes[Math.floor(Math.random() * 3)]);
@@ -254,6 +259,9 @@ package
 
 		private function disposeSport(current:Sport):void
 		{
+			
+			api.addTeamReward("gold"); // blabla
+			
 			current.removeEventListener(LevelEvents.LEVEL_LOST, onSportLose);
 			current.removeEventListener(LevelEvents.LEVEL_WIN, onSportWin);
 			removeChild(current);
