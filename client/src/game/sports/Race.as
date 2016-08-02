@@ -32,6 +32,7 @@ package game.sports
 		protected var goal:MovieClip;
 		protected var lanes:Array;
 		
+		protected var playersMaxSpeed:Number;
 		public function Race() 
 		{
 
@@ -76,13 +77,15 @@ package game.sports
 				if(lanes[lane].name == "carrilPlayer"){
 					player = new Avatar(new assets.CorredorMC);			
 					player.x = lanes[lane].loc.x;
-					player.y = lanes[lane].loc.y;player.setMode(Avatar.PLAYER);
+					player.y = lanes[lane].loc.y;player.setMode(Avatar.PLAYER);					
+					player.setMaxSpeed(playersMaxSpeed);
 					player.setMode(Avatar.PLAYER);
 					lanes[lane].avatar = player;
 				}else{
 					var enemy:Avatar = new Avatar(new assets.CorredorMC ); 
 					enemy.x = lanes[lane].loc.x;
-					enemy.y = lanes[lane].loc.y;
+					enemy.y = lanes[lane].loc.y;					
+					enemy.setMaxSpeed(playersMaxSpeed);
 					enemy.setMode(Avatar.ENEMY);
 					lanes[lane].avatar = enemy;
 				}				

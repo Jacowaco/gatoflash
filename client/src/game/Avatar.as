@@ -38,9 +38,9 @@ package game
 		private var speedDamping:Number = -0.5;
 		private var speedIncrement:Number = 2.0;
 		// TODO estos tambien porque van a depender del juego
-		private var MAX_JUMP_DISTANCE:Number = 20;
-		private var MAX_JUMP_HEIGHT:Number = 50;
-		private var MAX_SPEED:Number = 20;
+		private var MAX_JUMP_DISTANCE:Number = 200;
+		private var MAX_JUMP_HEIGHT:Number = 75;
+		private var maxSpeed:Number;
 		
 		
 		
@@ -102,7 +102,6 @@ package game
 				{
 					updateSpeed();	
 					checkSpeedForAnimation();
-//					if(mode == PLAYER) trace(speed);
 					x += speed;
 					break;	
 				}
@@ -182,8 +181,7 @@ package game
 		}
 		
 		public function setMode(mode:int):void{
-			this.currentMode = mode;		
-			
+			this.currentMode = mode;					
 			if(mode == ENEMY){
 				initEnemy();
 			}
@@ -193,9 +191,16 @@ package game
 			return state == JUMPING;
 		}
 		
+		public function setMaxSpeed(speed:Number):void
+		{
+			maxSpeed = speed;
+		}
+		
 		private function initEnemy():void
 		{
-			speed = Math.min(MAX_SPEED / 10 + Math.random() * MAX_SPEED / 10 * 9, MAX_SPEED);
+			maxSpeed = Math.min(maxSpeed / 10 + Math.random() * maxSpeed / 10 * 9, maxSpeed);
+			trace(maxSpeed);
+			speed = maxSpeed;
 		}
 		
 		public function setCurrentLane(laneName:String):void
@@ -215,19 +220,21 @@ package game
 		private function updateSpeed():void
 		{	
 			if(mode == ENEMY){
+				accelerate();
 				
-			}else{
-				speed = Math.max(speed + speedDamping, 0);
-				speed = Math.min(speed, MAX_SPEED);	
-			}							
+			}	
+			
+			speed = Math.max(speed + speedDamping, 0);
+			speed = Math.min(speed, maxSpeed);	
+										
 		}
 		
 		
 		private function checkSpeedForAnimation():void
 		{
-			if(speed > 0 && speed < MAX_SPEED / 3 && asset.currentLabel != "run1") asset.gotoAndStop("run1");
-			if(speed > MAX_SPEED / 3 && speed < MAX_SPEED / 3 * 2 && asset.currentLabel != "run2") asset.gotoAndStop("run2");
-			if(speed > MAX_SPEED / 3 * 2 && speed < MAX_SPEED && asset.currentLabel != "run3") asset.gotoAndStop("run3");
+			if(speed > 0 && speed < maxSpeed / 3 && asset.currentLabel != "run1") asset.gotoAndStop("run1");
+			if(speed > maxSpeed / 3 && speed < maxSpeed / 3 * 2 && asset.currentLabel != "run2") asset.gotoAndStop("run2");
+			if(speed > maxSpeed / 3 * 2 && speed <= maxSpeed && asset.currentLabel != "run3") asset.gotoAndStop("run3");
 		}
 		
 		public function start():void
@@ -270,7 +277,7 @@ package game
 		public function get percentage():Number
 		{
 //			trace( speed / MAX_SPEED);
-			return speed / MAX_SPEED;
+			return speed / maxSpeed;
 		}
 		
 		public function getMeters():int
@@ -284,15 +291,15 @@ package game
 			asset.gotoAndStop("fall");
 		}
 		
-		public function jump():void
+		public function jumpHurdle():void
 		{
 			if (state == JUMPING) return;
 			asset.gotoAndStop("jump");
 			state = JUMPING;
 			offset.x = offset.y = 0;
 			
-			var time:Number = 500;
-			var distance:Number = speed * MAX_JUMP_DISTANCE;
+			var time:Number = 250; //Math.max(Math.abs(distance), 500);
+			var distance:Number = MAX_JUMP_DISTANCE;
 			var height:Number = MAX_JUMP_HEIGHT;
 			
 			var startX:Tween = new Tween(this, time, { x: x + distance/2 }, { transition:"linear" } );
@@ -306,8 +313,9 @@ package game
 			
 			var anim:Parallel = new Parallel(xtw, ytw);
 			
-			anim.addEventListener(TaskEvent.COMPLETE, function():void {
-				state = RUNNING;				
+			anim.addEventListener(TaskEvent.COMPLETE, function(e:Event){
+				setRunning();
+				e.currentTarget.removeEventListener(e.type, arguments.callee);
 			});			
 			Game.taskRunner().add(anim);
 		}
