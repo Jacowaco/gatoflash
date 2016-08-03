@@ -25,6 +25,9 @@ package ui
 		public static const ANIMATION_END:String = "animationEnd";
 		public static const ANIMATION_UPDATE:String = "animationUpdate";
 		
+		public static const COUNTDOWN:String = "countDown";
+		public static const COUNTDOWN_END:String = "countDownEnd";
+		
 		public function GuiEvents()
 		{
 		}

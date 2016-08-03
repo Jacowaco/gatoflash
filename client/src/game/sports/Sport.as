@@ -55,13 +55,12 @@ package game.sports
 		protected var playing:Boolean;
 		protected var leftKeyPressed:Boolean;
 		// para poder ubicar el setting de este sport en los settings
-		protected var currentSport:String; 
+		public var currentSport:String; 
 		
 		public function Sport() 
 		{
 			bg = new Background();
-			addChild(bg);
-			
+			addChild(bg);			
 			camera = new Sprite();
 			addChild(camera);
 			playerScreenPosition = Game.SCREEN_WIDTH / 4;
@@ -71,6 +70,15 @@ package game.sports
 		// esto te obliga a implementar el metodo en todos los sports
 		// no se si es del todo necesario pero creo que te evita algunos quilombos
 		// tendría que pensarlo un cacho mas
+		public function start():void
+		{
+			throw new Error("uninplemented");
+		}
+		
+		public function init():void
+		{
+			throw new Error("uninplemented");
+		}
 		public function update():void
 		{
 			throw new Error("uninplemented");

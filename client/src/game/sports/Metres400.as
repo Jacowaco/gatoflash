@@ -1,7 +1,10 @@
 package game.sports 
 {
+	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.ui.Keyboard;
+	
+	import ui.GuiEvents;
 	
 	public class Metres400 extends Metres100 
 	{
@@ -14,10 +17,13 @@ package game.sports
 			
 			super.create();
 			
-			// TODO aca seguro va a haber que poner una cuenta regresiva
-			start();
+			
 		}
-		
+		override public function init():void
+		{
+			trace("game ready. start");
+			dispatchEvent(new Event(GuiEvents.COUNTDOWN)); // el countdown me avisa cuando arrancar
+		}
 		override public function onKeyUp(key:KeyboardEvent):void
 		{
 			

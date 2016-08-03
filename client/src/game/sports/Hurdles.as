@@ -5,6 +5,7 @@ package game.sports
 	import com.qb9.flashlib.geom.Vector2D;
 	
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
@@ -12,6 +13,8 @@ package game.sports
 	import game.Avatar;
 	import game.Hurdle;
 	import game.Lane;
+	
+	import ui.GuiEvents;
 	
 	public class Hurdles extends Race
 	{
@@ -29,9 +32,14 @@ package game.sports
 			
 			super.create();
 			createHurdles();
+		
 			
-			// TODO aca seguro va a haber que poner una cuenta regresiva
-			start();
+		}
+		
+		override public function init():void
+		{
+			trace("game ready. start");
+			dispatchEvent(new Event(GuiEvents.COUNTDOWN)); // el countdown me avisa cuando arrancar
 		}
 		
 		private function createHurdles():void

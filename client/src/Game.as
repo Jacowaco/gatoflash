@@ -115,6 +115,9 @@ package
 			loadAudio();
 			createGui();
 			stage.addEventListener(Event.ENTER_FRAME, update);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			
 			// ready() le avisa al mmo que ya estoy para jugar (ie. dispatchEvent(MinigameEvent.READY));
 			ready();
 		}		
@@ -128,8 +131,9 @@ package
 			gui.addEventListener(GuiEvents.CONFIRMATION_EXIT, onExitGame);
 			gui.addEventListener(GuiEvents.PAUSE, onPause);			
 			gui.addEventListener(GuiEvents.RESUME, onResume);
-			gui.addEventListener(GuiEvents.PLAY, onPlay);
+//			gui.addEventListener(GuiEvents.PLAY, onPlay);
 			gui.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);
+			gui.addEventListener(GuiEvents.COUNTDOWN_END, onCountDownEnded);
 			
 			
 			var manager:Object = api.getOlympicTeam(); // blabla
@@ -203,22 +207,29 @@ package
 		
 		private function onSportWin(e:Event):void
 		{
-			logger.info("level win");
-			audio.fx.play("win");
+			logger.info("level win");			
+			gui.endgame(currentSport.badge);
+//			api.addTeamReward("gold"); // blabla
 				
 		}		
 		
-		private function onSportLose(e:Event):void
-		{						
-			logger.info("level lose");
-			audio.fx.play("lose");
-		}
+//		private function onSportLose(e:Event):void
+//		{						
+//			logger.info("level lose");
+//			audio.fx.play("lose");
+//		}
 		
 		
-		private function onPlay(e:Event):void
+//		private function onPlay(e:Event):void
+//		{
+//			// TODO sale de la pausa	
+//		}
+		
+		private function onCountDownEnded(e:Event):void
 		{
-			
+			if(currentSport.currentSport = "sport0") currentSport.start(); // esto es lo único que debería hardcodear...	
 		}
+		
 		
 		private function onNewMatch(e:Event):void
 		{
@@ -238,32 +249,32 @@ package
 			
 			if(currentSport) disposeSport(currentSport);
 				
-			var _sportClass:Class = getDefinitionByName("game.sports." + gui.currentSport) as Class;
-			currentSport = new _sportClass();	
-			
-			createSport();
-			stage.focus = this;
-		}
-		
-		private function createSport():void
-		{
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-			
+			var sportClass:Class = getDefinitionByName("game.sports." + gui.currentSport) as Class;
+			currentSport = new sportClass();				
 			currentSport.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);				
-			currentSport.addEventListener(LevelEvents.LEVEL_LOST, onSportLose);
 			currentSport.addEventListener(LevelEvents.LEVEL_WIN, onSportWin);
+			currentSport.addEventListener(GuiEvents.COUNTDOWN, showCountDown );
+			currentSport.init();
 			
 			addChildAt(currentSport, 0);
+			
+			stage.focus = this;
+			
 		}
-
-		private function disposeSport(current:Sport):void
+		
+		
+		private function showCountDown(e:Event):void
 		{
 			
-			api.addTeamReward("gold"); // blabla
-			
-			current.removeEventListener(LevelEvents.LEVEL_LOST, onSportLose);
+			gui.showCountDown();
+			e.currentTarget.removeEventListener(GuiEvents.COUNTDOWN, showCountDown);
+		}
+	
+		private function disposeSport(current:Sport):void
+		{			
 			current.removeEventListener(LevelEvents.LEVEL_WIN, onSportWin);
+			current.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);							
+//			current.addEventListener(GuiEvents.COUNTDOWN, showCountDown );			
 			removeChild(current);
 			current = null;
 		}

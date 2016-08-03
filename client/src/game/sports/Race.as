@@ -93,7 +93,7 @@ package game.sports
 			}
 		}
 		
-		protected function start():void
+		override public function start():void
 		{
 			for each(var lane:Lane in lanes) lane.avatar.start();
 			playing = true;
@@ -118,7 +118,8 @@ package game.sports
 					if(lane.avatar.mode == Avatar.ENEMY){
 						if(! lane.avatar.isIdle()) cantEnemiesReachedEnd++;
 						trace("enemie "+ cantEnemiesReachedEnd + " reached end");
-					}else{						
+					}else{		
+						for each( lane in lanes) lane.avatar.stop();
 						win();
 					}			
 					lane.avatar.stop();
