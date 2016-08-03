@@ -97,11 +97,11 @@ package game.sports
 		
 		override public function update():void 
 		{
-			if (!playing) return;
+//			if (!playing) return;
 			
-			super.update();
+//			super.update();
 			
-//			ball.setPlayerX(player.loc.x);
+			ball.setPlayerX(player.x);
 			ball.update();
 			
 			if (ball.localToGlobal(new Point(0, 0)).x  > Game.SCREEN_WIDTH / 2)
@@ -109,19 +109,18 @@ package game.sports
 				camera.x += ((Game.SCREEN_WIDTH / 2) - (ball.localToGlobal(new Point(0, 0)).x));
 			}
 			
-			if (player.x > line.x)
-			{
-				player.stop();
-				lose();
-			}
+//			if (player.x > line.x)
+//			{
+//				player.stop();
+//				lose();
+//			}
 			
 //			meters = ball.getMeters();
 //			hud.updateMeters(meters);
 			
 			if (!ball.shot)
 			{
-//				speedBar.percentage = player.percentage;
-				
+//				speedBar.percentage = player.percentage;				
 				var offsetX:Number = ballOffset.x * ((player.lookingRight) ? 1 : -1);
 				ball.x += offsetX;
 				ball.y += ballOffset.y;

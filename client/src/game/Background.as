@@ -17,6 +17,8 @@ package game
 		{
 			this.obj1 = new assets.backgroundMC();
 			this.obj2 = new assets.backgroundMC();
+			randomizeSign(obj1);
+			randomizeSign(obj2);
 			
 			addChild(obj1);
 			addChild(obj2);
@@ -44,9 +46,15 @@ package game
 				obj1 = obj2;
 				obj2 = tmp;
 				obj2.x = obj1.x + bgwidth - offset;
+				randomizeSign(obj2);
 			}
 		}
 		
+		private function randomizeSign(obj:MovieClip):void
+		{
+			obj.sign.gotoAndStop(1 + Math.floor(Math.random() * obj.sign.totalFrames));
+		}
+		
 	}
-
+	
 }
