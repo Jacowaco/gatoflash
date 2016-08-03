@@ -19,6 +19,7 @@ package game.sports
 	import utils.Utils;
 	
 	
+	
 	public class Race extends Sport 
 	{
 		
@@ -71,6 +72,8 @@ package game.sports
 			camera.addChild(goal);
 		}
 		
+		
+		
 		private function createPlayers():void
 		{			
 			for(var lane:int = 0; lane < lanes.length; lane++){
@@ -92,6 +95,7 @@ package game.sports
 				camera.addChild(lanes[lane].avatar);
 			}
 		}
+		
 		
 		override public function start():void
 		{

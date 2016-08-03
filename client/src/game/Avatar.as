@@ -14,7 +14,6 @@ package game
 	import flash.events.Event;
 	import flash.geom.Point;
 	
-	import game.sports.Metres100;
 	import game.sports.Sport;
 	
 	import utils.Utils;

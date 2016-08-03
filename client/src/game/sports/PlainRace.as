@@ -6,10 +6,10 @@ package game.sports
 	
 	import ui.GuiEvents;
 	
-	public class Metres400 extends Metres100 
+	public class PlainRace extends Race 
 	{
 		
-		public function Metres400() 
+		public function PlainRace() 
 		{	
 			currentSport = "sport1"; // esto es lo único que debería hardcodear...
 			finalMetres = settings.sports[currentSport].metres;			

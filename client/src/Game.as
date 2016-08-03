@@ -231,7 +231,9 @@ package
 		
 		private function onCountDownEnded(e:Event):void
 		{
-			if(currentSport.currentSport = "sport0") currentSport.start(); // esto es lo único que debería hardcodear...	
+			if(currentSport.currentSport == "sport0") currentSport.start(); // esto es lo único que debería hardcodear...
+			if(currentSport.currentSport == "sport1") currentSport.start(); // esto es lo único que debería hardcodear...
+			
 		}
 		
 		
@@ -239,14 +241,12 @@ package
 		{
 			trace("crear el level con ese juego: " + gui.currentSport);
 			
-			Metres100;
+			PlainRace;
 			LongJump;
 			ShotPut;
 			HighJump;
 			Hurdles;
 			DiscusThrow;
-			Metres400;
-			Metres1500;
 			PoleVault;
 			JavelinThrow;
 			
