@@ -72,9 +72,9 @@ package ui
 			
 			// countdown
 			countdown = asset.getChildByName("countdown") as MovieClip;
-//			countdown.addEventListener(Event.COMPLETE, go);
-//			countdown.stop();
-//			countdown.visible = false;
+			countdown.addEventListener(Event.COMPLETE, countdownEnded);
+			countdown.stop();
+			countdown.visible = false;
 			
 			// endgame popup
 			endGamePopup = new EndGamePopup();
@@ -157,8 +157,7 @@ package ui
 			
 			// asset tiene el marco amarillo
 			addChild(asset);
-			
-			
+		
 		}
 		
 		public function setClub(club:String):void
@@ -172,6 +171,15 @@ package ui
 			countdown.visible = true;
 			
 		}
+		
+		private function countdownEnded(e:Event):void
+		{
+			countdown.visible = false;
+			dispatchEvent(new Event(GuiEvents.COUNTDOWN_END));			
+			
+		}
+		
+		
 		
 		private function goPage(page:int):void
 		{

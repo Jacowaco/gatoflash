@@ -93,7 +93,7 @@ package game.sports
 			}
 		}
 		
-		protected function start():void
+		override public function start():void
 		{
 			for each(var lane:Lane in lanes) lane.avatar.start();
 			playing = true;

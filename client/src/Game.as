@@ -115,6 +115,9 @@ package
 			loadAudio();
 			createGui();
 			stage.addEventListener(Event.ENTER_FRAME, update);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			
 			// ready() le avisa al mmo que ya estoy para jugar (ie. dispatchEvent(MinigameEvent.READY));
 			ready();
 		}		
@@ -130,6 +133,7 @@ package
 			gui.addEventListener(GuiEvents.RESUME, onResume);
 			gui.addEventListener(GuiEvents.PLAY, onPlay);
 			gui.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);
+			gui.addEventListener(GuiEvents.COUNTDOWN_END, onCountDownEnded);
 			
 			
 			var manager:Object = api.getOlympicTeam(); // blabla
@@ -220,6 +224,12 @@ package
 			
 		}
 		
+		private function onCountDownEnded(e:Event):void
+		{
+			if(currentSport.currentSport = "sport0") currentSport.start(); // esto es lo único que debería hardcodear...	
+		}
+		
+		
 		private function onNewMatch(e:Event):void
 		{
 			trace("crear el level con ese juego: " + gui.currentSport);
@@ -238,25 +248,27 @@ package
 			
 			if(currentSport) disposeSport(currentSport);
 				
-			var _sportClass:Class = getDefinitionByName("game.sports." + gui.currentSport) as Class;
-			currentSport = new _sportClass();	
-			
-			createSport();
-			stage.focus = this;
-		}
-		
-		private function createSport():void
-		{
-			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-			
+			var sportClass:Class = getDefinitionByName("game.sports." + gui.currentSport) as Class;
+			currentSport = new sportClass();				
 			currentSport.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);				
 			currentSport.addEventListener(LevelEvents.LEVEL_LOST, onSportLose);
 			currentSport.addEventListener(LevelEvents.LEVEL_WIN, onSportWin);
+			currentSport.addEventListener(GuiEvents.COUNTDOWN, showCountDown );
+			currentSport.init();
 			
 			addChildAt(currentSport, 0);
+			
+			stage.focus = this;
+			
 		}
-
+		
+		
+		private function showCountDown(e:Event):void
+		{
+			gui.showCountDown();
+			e.currentTarget.removeEventListener(GuiEvents.COUNTDOWN, showCountDown);
+		}
+	
 		private function disposeSport(current:Sport):void
 		{
 			
