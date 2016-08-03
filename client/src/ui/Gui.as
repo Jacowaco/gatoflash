@@ -63,6 +63,7 @@ package ui
 			exitBtn.visible = false;
 			
 			
+			
 			// score
 			info = asset.getChildByName("display") as MovieClip;
 			info.label.text = api.getText(settings.sports.defaultValue.display.label);
@@ -297,7 +298,9 @@ package ui
 		
 		public function endgame(medal:int):void{
 			trace("gui endgame", medal);
-			sportsMenu.visible = true;	
+			sportsMenu.visible = true;
+			sportName(true);
+			
 			switch(medal)
 			{
 				case Sport.BADGE_LOOSER:

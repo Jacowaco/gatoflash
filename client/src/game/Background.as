@@ -5,6 +5,7 @@ package game
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.geom.Point;
+	import flash.utils.getQualifiedClassName;
 	
 	public class Background extends Sprite 
 	{
@@ -19,10 +20,25 @@ package game
 			this.obj2 = new assets.backgroundMC();
 			randomizeSign(obj1);
 			randomizeSign(obj2);
+			randomizeFans(obj1);
+			randomizeFans(obj2);
 			
 			addChild(obj1);
 			addChild(obj2);
 			reset();
+			
+			bot1;
+			bot2;
+			bot3;
+			bot4;
+			
+			hincha1;
+			hincha12;
+			hincha3;
+			hincha4;
+			hincha6;
+			hincha8;
+			
 		}
 		
 		public function reset():void
@@ -53,6 +69,19 @@ package game
 		private function randomizeSign(obj:MovieClip):void
 		{
 			obj.sign.gotoAndStop(1 + Math.floor(Math.random() * obj.sign.totalFrames));
+		}
+		
+		private function randomizeFans(obj:MovieClip):void{
+			for(var ph:int = 0 ; ph < obj.numChildren; ph++){
+				if(getQualifiedClassName(obj.getChildAt(ph)) == "assets::hinchaPh"){
+					obj.swapChildren(obj.getChildAt(ph), newRandomGuy()); 
+				}
+			}
+		}
+		
+		private function newRandomGuy():MovieClip{
+			
+			return
 		}
 		
 	}
