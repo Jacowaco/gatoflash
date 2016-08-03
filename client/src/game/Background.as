@@ -14,6 +14,15 @@ package game
 		private var offset:int = 0;
 		private var bgwidth:int = 800;
 		
+		private var guys:Array = [	
+			hincha1,
+			hincha12,
+			hincha3,
+			hincha4,
+			hincha6,
+			hincha8,
+			]
+			
 		public function Background() 
 		{
 			this.obj1 = new assets.backgroundMC();
@@ -74,14 +83,17 @@ package game
 		private function randomizeFans(obj:MovieClip):void{
 			for(var ph:int = 0 ; ph < obj.numChildren; ph++){
 				if(getQualifiedClassName(obj.getChildAt(ph)) == "assets::hinchaPh"){
-					obj.swapChildren(obj.getChildAt(ph), newRandomGuy()); 
+					var reference:MovieClip = obj.getChildAt(ph) as MovieClip;
+					while(reference.numChildren > 0 ) reference.removeChildAt(0);
+					var someGuy:MovieClip = newRandomGuy();
+					reference.addChild(someGuy);
+					 
 				}
 			}
 		}
 		
-		private function newRandomGuy():MovieClip{
-			
-			return
+		private function newRandomGuy():MovieClip{			
+			return new guys[Math.floor(Math.random() *guys.length)];
 		}
 		
 	}

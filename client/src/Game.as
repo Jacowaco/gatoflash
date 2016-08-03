@@ -189,9 +189,12 @@ package
 		private function update(e:Event):void
 		{
 			// update aprovecho para actualizar la gui con data del juego...
-			if (currentSport) currentSport.update();
-			gui.setTime("0");
-			gui.setScore("0");
+			if (currentSport) {
+				currentSport.update();
+				gui.setTime("0");
+				gui.setScore(currentSport.getPlayerMeters().toString());
+			}
+			
 		}
 		
 		// -----------------------------------
@@ -264,8 +267,7 @@ package
 		
 		
 		private function showCountDown(e:Event):void
-		{
-			
+		{			
 			gui.showCountDown();
 			e.currentTarget.removeEventListener(GuiEvents.COUNTDOWN, showCountDown);
 		}

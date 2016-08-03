@@ -19,20 +19,30 @@ package game.sports
 	{
 		protected var line:MovieClip;
 		protected var throwMeters:int;
+		private var base:MovieClip;
 		
 		public function LongJump() 
 		{
 			super();
 			
 			throwMeters = 8;
-//			addThingsBeforePlayer();
-			player = new Avatar(new CorredorMC);
+			
+			create();
+//			start();
 		}
 		
 		
 		public function create():void 
 		{
-//			super.create();
+			levelDefinition = new assets.throwingMC;
+			base = levelDefinition.base;
+			camera.addChild(base);
+			
+			player = new Avatar(new assets.CorredorMC);			
+			player.x = base.x;
+			player.y = base.y;
+			player.setMode(Avatar.PLAYER);					
+			addChild(player);
 			
 			player.addEventListener("reached", playerReached);
 //			player.setJumpVariables(150, 200, 1000);
@@ -47,13 +57,12 @@ package game.sports
 //			camera.addChild(line.asset);
 //		}
 		
-//		override public function reset():void 
+//		protected function start():void
 //		{
-//			super.reset();
-//			
-//			player.start(true);
+//			player.start();
+//			playing = true;
 //		}
-		
+//		
 		override public function update():void 
 		{
 			if (!playing) return;

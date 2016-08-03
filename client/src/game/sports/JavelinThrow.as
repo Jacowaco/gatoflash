@@ -10,16 +10,16 @@ package game.sports
 		{
 			super();
 			
-			ballMovieClip = assets.javelinMC;
-			rotate = true;
+			//ballMovieClip = assets.javelinMC;
+			//rotate = true;
 			
 			throwMeters = 10;
 		}
 		
-		override protected function startPlayer():void
-		{
-			player.start();
-		}
+		//override protected function startPlayer():void
+		//{
+			//player.start();
+		//}
 	}
 
 }

@@ -158,6 +158,11 @@ package game.sports
 				player.accelerate();
 			}
 		}
+		
+		override public function getPlayerMeters():int
+		{
+			return  Utils.map(player.getMeters(), 1, finalMetres, 0, finalMetres);
+		}
 	}
 	
 }

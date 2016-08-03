@@ -234,7 +234,15 @@ package ui
 			instructions(false);
 			sportName(false);	
 			sportsMenu.visible = false;			
+			inGameData(true);
 			dispatchEvent(new Event(GuiEvents.NEW_MATCH));			
+		}
+		
+		
+		private function inGameData(show:Boolean):void
+		{
+			power.visible = true;
+			info.visible = true;			
 		}
 		
 		private function playSportMenu(e:Event):void
@@ -293,13 +301,15 @@ package ui
 		
 		public function setScore(score:String):void
 		{
-//			this.info.field.text = score;
+			this.info.value.text = score;
 		}
 		
 		public function endgame(medal:int):void{
 			trace("gui endgame", medal);
 			sportsMenu.visible = true;
 			sportName(true);
+			inGameData(false);
+			
 			
 			switch(medal)
 			{
