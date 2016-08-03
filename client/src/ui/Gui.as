@@ -12,6 +12,7 @@ package ui
 	import flash.utils.getDefinitionByName;
 	
 	import mx.core.ButtonAsset;
+	import mx.olap.aggregators.CountAggregator;
 	
 	import popups.ConfirmationPopup;
 	import popups.EndGamePopup;
@@ -40,6 +41,7 @@ package ui
 		
 		private var club:String;
 		
+		private var countdown:MovieClip;
 		
 		public function Gui(asset:MovieClip)
 		{
@@ -68,7 +70,11 @@ package ui
 			// TODO doesnt work
 			power.stop();
 			
-			
+			// countdown
+			countdown = asset.getChildByName("countdown") as MovieClip;
+//			countdown.addEventListener(Event.COMPLETE, go);
+//			countdown.stop();
+//			countdown.visible = false;
 			
 			// endgame popup
 			endGamePopup = new EndGamePopup();
@@ -76,6 +82,8 @@ package ui
 			endGamePopup.visible = false;
 			endGamePopup.addEventListener(GuiEvents.PLAY, onPlay);
 			endGamePopup.addEventListener(GuiEvents.PAUSE, onConfirmationExit);
+			
+			
 			
 			// el menu que te deja elegir el juego			
 			sportsMenu = new McMenu();
@@ -156,6 +164,13 @@ package ui
 		public function setClub(club:String):void
 		{
 			this.club = club;
+		}
+		
+		public function showCountDown():void
+		{
+			countdown.gotoAndPlay(1);
+			countdown.visible = true;
+			
 		}
 		
 		private function goPage(page:int):void
