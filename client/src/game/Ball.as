@@ -27,7 +27,6 @@ package game
 		private var offset:Point;
 		private var distance:Number;
 		private var reached:Boolean;
-		private var playerX:Number;
 		private var mc:MovieClip;
 		
 		public function Ball(mc:MovieClip) 
@@ -37,26 +36,19 @@ package game
 			addChild(mc);
 			onReached = new Event("reached");
 			offset = new Point();
-		}
-		
-		 public function reset():void 
-		{
+			
 			shot = false;
 			reached = false;
 		}
 		
-		public function setPlayerX(value:Number):void
-		{
-			playerX = value;
-		}
 		public function rotate(rot:Boolean):void
 		{
 			if(rot)  mc.asset.gotoAndPlay(1);
 			if(!rot) mc.asset.stop();
 		}
-		public function update():void 
+		
+		public function update(_playerX:Number):void 
 		{
-			
 			if (shot && !reached && offset.x == distance)
 			{
 				reached = true;
@@ -66,7 +58,7 @@ package game
 				Game.taskRunner().add(seq);
 			}
 //			loc = new Vector2D(offset.x + playerX, initialLoc.y + offset.y);
-			x = offset.x + playerX;
+			x = offset.x + _playerX;
 			y = offset.y;
 		}
 		
@@ -74,6 +66,7 @@ package game
 		{
 			if (shot) return;
 			shot = true;
+			trace("SHOOTING");
 			distance = (_power * MAX_DISTANCE + MIN_DISTANCE) * ((_right) ? 1 : -1);
 			var time:Number = Math.max(Math.abs(distance), 500);
 			

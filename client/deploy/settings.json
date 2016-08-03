@@ -7,14 +7,20 @@
         "sport0": {
             "name": "CARRERA CON VALLAS",
             "id": "hurdles",
+            "metres": 250,
+            "numObstacles": 20,
+            "jumpThreshold": 40,
+            "maxSpeed": 20,
             "classID": "Hurdles",
             "display": {
                 "label": "METROS"
-            }
+            }            
         },
         "sport1": {
             "name": "CARRERA DE 400 METROS",
             "id": "fourHundreds",
+            "metres": 40, 
+            "maxSpeed": 20,           
             "classID": "Metres400",
             "display": {
                 "label": "METROS"

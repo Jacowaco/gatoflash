@@ -35,7 +35,8 @@ package game
 		// TODO estos tambien porque van a depender del juego
 		private var MAX_JUMP_DISTANCE:Number = 200;
 		private var MAX_JUMP_HEIGHT:Number = 50;
-		private var maxSpeed:Number;
+		private var maxSpeed:Number = 1;
+		private var spinFactor:Number = 0.3;
 		
 		private const IDLE:int = 0;
 		private const RUNNING:int = 1;
@@ -48,12 +49,10 @@ package game
 		
 		private var currentAnimation:String;
 		
-		
 		public var lookingRight:Boolean;
 		
 		private var spinningCont:int;
 		private var spinningTime:int;
-
 		
 		// como estas tweens van a tener un evento, las dejo como miembro...
 		private var anim:Parallel;
@@ -69,6 +68,7 @@ package game
 			asset = mc;
 			addChild(mc);
 			speed = 0;
+			lookingRight = true;
 		}
 		
 		public function update():void 
@@ -101,30 +101,26 @@ package game
 //					trace(">>>>>>> fall");
 					break;
 				}
-					
-					
-					
+				case SPINNING:
+				{
+					updateSpeed();
+					if (speed > maxSpeed * 0.1)
+					{
+						spinningCont++;
+						if (spinningCont > spinningTime)
+						{
+							spinningCont = 0;
+							spinningTime = Math.max(5, spinningTime - 1);
+							spin();
+						}
+					}
+					break;
+				}
 				default:
 				{
 					break;
 				}
 			}
-			
-			//				
-			//				var spinFactor:Number = (spins) ? 0.3 : 1;
-			//				x += speed*spinFactor;
-			//				
-			//				if (spins && speed > maxSpeed * 0.1)
-			//				{
-			//					spinningCont++;
-			//					if (spinningCont > spinningTime)
-			//					{
-			//						spinningCont = 0;
-			//						spinningTime = Math.max(5, spinningTime - 1);
-			//						spin();
-			//					}
-			//				}
-			//			}
 		}
 		
 		public function setMode(mode:int):void{
@@ -162,16 +158,24 @@ package game
 			state = RUNNING;			
 		}
 		
+		private function setIdle():void
+		{
+			state = IDLE;
+		}
+		
+		public function setSpinning():void
+		{
+			state = SPINNING;
+		}
+		
 		private function updateSpeed():void
 		{	
-			if(mode == ENEMY){
+			if (mode == ENEMY)
+			{
 				accelerate();
-				
-			}	
-			
+			}
 			speed = Math.max(speed + speedDamping, 0);
 			speed = Math.min(speed, maxSpeed);	
-			
 		}
 		
 		
@@ -213,13 +217,15 @@ package game
 			speed += speedIncrement;
 		}
 		
+		public function accelerateSpin():void
+		{
+			speed += speedIncrement;
+		}
+		
 		private function spin():void
 		{
-			//			if (spins)
-			//			{
-			//				lookingRight = !lookingRight;
-			//				asset.scaleX = -asset.scaleX;
-			//			}
+			lookingRight = !lookingRight;
+			asset.scaleX = -asset.scaleX;
 		}
 		
 		public function get percentage():Number

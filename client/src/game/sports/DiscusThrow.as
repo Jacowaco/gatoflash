@@ -20,8 +20,8 @@ package game.sports
 		private var ball:Ball;
 		private var ballOffset:Vector2D = new Vector2D(20, -30);
 		
-		protected var ballMovieClip:Class;
-		protected var rotate:Boolean;
+		//protected var ballMovieClip:Class;
+		//protected var rotate:Boolean;
 		
 		protected var line:MovieClip;
 		protected var throwMeters:int;
@@ -29,82 +29,60 @@ package game.sports
 		
 		public function DiscusThrow() 
 		{
-			
-			
-			
 			create();
 			
+			start();
 		}
 		
 		protected function create():void 
 		{
-
 			levelDefinition = new assets.throwingMC;
 			base = levelDefinition.base;
 			camera.addChild(base);
 			
+			//line = new assets.lineMC;
+			//camera.addChild(line);
+			
 			player = new Avatar(new assets.CorredorMC);			
 			player.x = base.x;
 			player.y = base.y;
+			//player.setMaxSpeed(playersMaxSpeed);
 			player.setMode(Avatar.PLAYER);					
 			addChild(player);
 			
-			
-			ballMovieClip = assets.discusMC;
-			rotate = false;
+			//ballMovieClip = assets.discusMC;
+			//rotate = false;
 			
 			throwMeters = 5;
 			
-//			addThingsBeforePlayer();
-//			player = new Avatar(new CorredorMC);
-
-			
-			//	super.create();
-			
 			ball = new Ball(new assets.discusMC());
+			ball.x = player.x + ballOffset.x;
+			ball.y = player.y + ballOffset.y;
 			ball.addEventListener("reached", ballReached);
 			ball.rotate(false);
-			player.addChild(ball);
+			camera.addChild(ball);
 			
-			if (rotate) ballOffset = new Vector2D(20, -40);
+			//if (rotate) ballOffset = new Vector2D(20, -40);
 		}
 		
-		
-		
-		 protected function addThingsBeforePlayer():void 
+		protected function start():void
 		{
-			line = new assets.lineMC;
-//			line.debug(false);
-//			line.loc = new Vector2D(start.loc.x + throwMeters * UNITS_PER_METER, start.loc.y);
-//			line.run();
-			camera.addChild(line.asset);
-		}
-		
-//		override public function reset():void 
-//		{
-//			super.reset();
-//			
-//			ball.init(start.loc);
-//			ball.reset();
-//			
-//			startPlayer();
-//		}
-//		
-		protected function startPlayer():void
-		{
-			player.start();
+			player.setSpinning();
+			//player.start();
+			playing = true;
 		}
 		
 		override public function update():void 
 		{
-//			if (!playing) return;
+			if (!playing) return;
 			
-//			super.update();
+			//camera.x += (playerScreenPosition - player.localToGlobal(new Point(0,0)).x);									
+			bg.follow(camera.x);
 			
-			ball.setPlayerX(player.x);
-			ball.update();
+			player.update();
+			ball.update(player.x);
 			
-			if (ball.localToGlobal(new Point(0, 0)).x  > Game.SCREEN_WIDTH / 2)
+			/*if (ball.localToGlobal(new Point(0, 0)).x  > Game.SCREEN_WIDTH / 2)
 			{			
 				camera.x += ((Game.SCREEN_WIDTH / 2) - (ball.localToGlobal(new Point(0, 0)).x));
 			}
@@ -124,7 +102,7 @@ package game.sports
 				var offsetX:Number = ballOffset.x * ((player.lookingRight) ? 1 : -1);
 				ball.x += offsetX;
 				ball.y += ballOffset.y;
-			}
+			}*/
 		}
 		
 		
@@ -140,18 +118,19 @@ package game.sports
 			{
 				player.stop();
 //				speedBar.stop();
+				ball.shoot(player.percentage, -ballOffset.y, player.lookingRight);
 //				if (!rotate) ball.shoot(speedBar.percentage, -ballOffset.y, player.lookingRight);
 //				else ball.shoot(speedBar.percentage, 0, player.lookingRight);
 			}
 			else if (key.keyCode == Keyboard.LEFT && !leftKeyPressed)
 			{
 				leftKeyPressed = true;
-				player.accelerate();
+				player.accelerateSpin();
 			}
 			else if (key.keyCode == Keyboard.RIGHT && leftKeyPressed)
 			{
 				leftKeyPressed = false;
-				player.accelerate();
+				player.accelerateSpin();
 			}
 		}
 		

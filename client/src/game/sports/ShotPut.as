@@ -10,8 +10,8 @@ package game.sports
 		{
 			super();
 			
-			ballMovieClip = assets.ballMC;
-			rotate = false;
+			//ballMovieClip = assets.ballMC;
+			//rotate = false;
 		}
 		
 	}
