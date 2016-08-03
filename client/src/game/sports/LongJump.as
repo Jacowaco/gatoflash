@@ -12,15 +12,12 @@ package game.sports
 	
 	import game.Ball;
 	import game.LevelEvents;
-	import game.MovingObject;
-	import game.Player;
 
-//	import gameobject.GameObject;
-	
-	
+	import game.Avatar;
+
 	public class LongJump extends Sport 
 	{
-		protected var line:MovingObject;
+		protected var line:MovieClip;
 		protected var throwMeters:int;
 		
 		public function LongJump() 
@@ -28,33 +25,34 @@ package game.sports
 			super();
 			
 			throwMeters = 8;
-			addThingsBeforePlayer();
-			player = new Player(new CorredorMC);
+//			addThingsBeforePlayer();
+			player = new Avatar(new CorredorMC);
 		}
 		
-		 public function create():void 
+		
+		public function create():void 
 		{
 //			super.create();
 			
 			player.addEventListener("reached", playerReached);
-			player.setJumpVariables(150, 200, 1000);
+//			player.setJumpVariables(150, 200, 1000);
 		}
 		
-		 protected function addThingsBeforePlayer():void 
-		{
-			line = new MovingObject(new assets.lineMC);
-//			line.debug(false);
-			line.loc = new Vector2D(start.loc.x + throwMeters * UNITS_PER_METER, start.loc.y);
-//			line.run();
-			camera.addChild(line.asset);
-		}
+//		 protected function addThingsBeforePlayer():void 
+//		{
+//			line = new MovingObject(new assets.lineMC);
+////			line.debug(false);
+//			line.loc = new Vector2D(start.loc.x + throwMeters * UNITS_PER_METER, start.loc.y);
+////			line.run();
+//			camera.addChild(line.asset);
+//		}
 		
-		override public function reset():void 
-		{
-			super.reset();
-			
-			player.start(true);
-		}
+//		override public function reset():void 
+//		{
+//			super.reset();
+//			
+//			player.start(true);
+//		}
 		
 		override public function update():void 
 		{
@@ -62,18 +60,18 @@ package game.sports
 			
 			super.update();
 			
-			camera.x += ((Game.SCREEN_WIDTH / 2) - player.asset.localToGlobal(new Point(0, 0)).x);
+			camera.x += ((Game.SCREEN_WIDTH / 2) - player.localToGlobal(new Point(0, 0)).x);
 			camera.x = Math.min(0, camera.x);
 			
-			if (!player.jumped && player.loc.x > line.loc.x)
-			{
-				player.stop();
-				lose();
-			}
+//			if (!player.jumped && player.loc.x > line.loc.x)
+//			{
+//				player.stop();
+//				lose();
+//			}
 			
 //			speedBar.percentage = player.percentage;
 			
-			meters = player.getMeters();
+//			meters = player.getMeters();
 //			hud.updateMeters(meters);
 		}
 		
@@ -81,7 +79,7 @@ package game.sports
 		{
 			super.onKeyDown(key);
 			
-			if (player.jumped) return;
+//			if (player.jumped) return;
 			
 			if (key.keyCode == Keyboard.SPACE)
 			{
@@ -102,17 +100,17 @@ package game.sports
 		
 		public function playerReached(e:Event):void
 		{
-			if (player.loc.x > line.loc.x)
+			if (player.x > line.x)
 				win();
 			else
 				lose();
 		}
 		
-		override public function assignBadge():void 
+		override protected function assignBadge():void 
 		{
-			if (meters >= 0) 						  badgeObtained = BADGE_BRONCE;
-			if (meters >= Player.MAX_DISTANCE * 0.5)  badgeObtained = BADGE_SILVER;
-			if (meters >= Player.MAX_DISTANCE) 	      badgeObtained = BADGE_GOLD;
+//			if (meters >= 0) 						  badge = BADGE_BRONCE;
+//			if (meters >= Player.MAX_DISTANCE * 0.5)  badge = BADGE_SILVER;
+//			if (meters >= Player.MAX_DISTANCE) 	      badge = BADGE_GOLD;
 		}
 		
 	}

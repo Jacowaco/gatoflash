@@ -10,9 +10,9 @@ package game.sports
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 	
-	import game.Enemy;
+	
 	import game.LevelEvents;
-	import game.MovingObject;
+//	import game.MovingObject;
 	
 	import utils.Utils;
 	

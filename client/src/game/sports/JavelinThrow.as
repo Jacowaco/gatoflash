@@ -18,7 +18,7 @@ package game.sports
 		
 		override protected function startPlayer():void
 		{
-			player.start(false);
+			player.start();
 		}
 	}
 

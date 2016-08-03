@@ -5,12 +5,14 @@ package game
 	import com.qb9.flashlib.tasks.Func;
 	import com.qb9.flashlib.tasks.Sequence;
 	import com.qb9.flashlib.tasks.Wait;
+	
 	import flash.display.MovieClip;
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;
 	
 	
-	public class Ball extends MovingObject 
+	public class Ball extends Sprite // MovingObject 
 	{
 		public static const MIN_DISTANCE:int = 500;
 		public static const MAX_DISTANCE:int = 2500;
@@ -26,36 +28,34 @@ package game
 		private var distance:Number;
 		private var reached:Boolean;
 		private var playerX:Number;
-		private var rotate:Boolean;
+		private var mc:MovieClip;
 		
-		public function Ball(mc:MovieClip, _rotate:Boolean) 
+		public function Ball(mc:MovieClip) 
 		{
-			super(mc);
-			
-			rotate = _rotate;
-			
+
+			this.mc = mc;
+			addChild(mc);
 			onReached = new Event("reached");
 			offset = new Point();
 		}
 		
-		override public function reset():void 
+		 public function reset():void 
 		{
-			super.reset();
-			
-			offset.x = offset.y = 0;
 			shot = false;
 			reached = false;
-			if (rotate) mc.rotation = START_ANGLE;
 		}
 		
 		public function setPlayerX(value:Number):void
 		{
 			playerX = value;
 		}
-		
+		public function rotate(rot:Boolean):void
+		{
+			if(rot)  mc.asset.gotoAndPlay(1);
+			if(!rot) mc.asset.stop();
+		}
 		public function update():void 
 		{
-			super.run();
 			
 			if (shot && !reached && offset.x == distance)
 			{
@@ -65,7 +65,9 @@ package game
 				var seq:Sequence = new Sequence(wait, dispatchReached);
 				Game.taskRunner().add(seq);
 			}
-			loc = new Vector2D(offset.x + playerX, initialLoc.y + offset.y);
+//			loc = new Vector2D(offset.x + playerX, initialLoc.y + offset.y);
+			x = offset.x + playerX;
+			y = offset.y;
 		}
 		
 		public function shoot(_power:Number, offsetY:Number, _right:Boolean=true):void

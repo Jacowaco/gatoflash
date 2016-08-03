@@ -4,6 +4,7 @@ package game.sports
 	
 	import com.qb9.flashlib.geom.Vector2D;
 	import com.qb9.flashlib.lang.AssertionError;
+	import com.qb9.flashlib.lang.foreach;
 	
 	import flash.display.MovieClip;
 	import flash.events.Event;
@@ -11,152 +12,141 @@ package game.sports
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 	
-	import game.Enemy;
+	import game.Avatar;
+	import game.Lane;
 	import game.LevelEvents;
-	import game.MovingObject;
-	import game.Player;
-	
-	import mx.core.mx_internal;
 	
 	import utils.Utils;
 	
 	
 	public class Race extends Sport 
 	{
-		protected const CANT_ENEMIES:int = 4;
-		protected var enemies:Array;
 		
-		protected var finalMetres:int;
-		
+		protected var finalMetres:int;		
 		protected var cantEnemiesReachedEnd:int;
-		protected var end:MovingObject;
+		
+		// la carrera tiene todo esto
+		protected var departure:MovieClip;
+		protected var line:MovieClip;
+		protected var goal:MovieClip;
+		// los lanes estan para poder meter juntos corredores y vallas
+		protected var lanes:Array;		
+		protected var playersMaxSpeed:Number;
 		
 		public function Race() 
 		{
-			super();
-			finalMetres = 100;			
-			addGoalLine();
-			createPlayerAndEnemies();
-			reset();
-			
 			
 		}
 		
-		public function createPlayerAndEnemies():void 
+		protected function create():void
 		{
-
-			enemies = new Array();
+			levelDefinition = new assets.racesMC();			
+			createLanes();
+			createPlayers();			
+		}
+		
+		private function createLanes():void 
+		{
+			departure = levelDefinition.start;
+			line = levelDefinition.line
+			goal = levelDefinition.goal;
 			
-			for (var i:int = 0; i < CANT_ENEMIES; i++)
+			lanes = new Array();
+			
+			for(var ph:int = 0; ph < departure.numChildren; ph++)
 			{
-				enemies[i] = new Enemy(new assets.CorredorMC, settings.sports.minEnemySpeed + Math.random() * settings.sports.maxEnemySpeed );
+				if( departure.getChildAt(ph).name.search("carril") != -1){
+					var loc:Point = departure.getChildAt(ph).localToGlobal(new Point());
+					var lane:Lane = new Lane();
+					lane.name = departure.getChildAt(ph).name;
+					lane.loc = loc;
+					lanes.push(lane);
+				}				
 			}
 			
+			goal.x = finalMetres * UNITS_PER_METER;
 			
-			camera.addChild(enemies[0].asset);
-			camera.addChild(enemies[1].asset);
-			
-			player = new Player(new assets.CorredorMC);
-			camera.addChild(player.asset);
-			
-			camera.addChild(enemies[2].asset);
-			camera.addChild(enemies[3].asset);
+			camera.addChild(departure);
+			camera.addChild(line);
+			camera.addChild(goal);
 		}
 		
-		protected function addGoalLine():void 
-		{
-			end = new MovingObject(new assets.endMC());			
-			end.init(new Vector2D(start.loc.x + finalMetres * UNITS_PER_METER, start.loc.y));
-			camera.addChild(end.asset);
-		}
-		
-		override public function reset():void 
-		{
-			super.reset();
-			
-			cantEnemiesReachedEnd = 0;
-			
-			enemies[0].init(new Vector2D(start.asset.carril1.x, start.asset.carril1.y));
-			enemies[1].init(new Vector2D(start.asset.carril2.x, start.asset.carril2.y));
-			enemies[2].init(new Vector2D(start.asset.carril4.x, start.asset.carril4.y));
-			enemies[3].init(new Vector2D(start.asset.carril5.x, start.asset.carril5.y));
-			
-			for (var i:int = 0; i < CANT_ENEMIES; i++)
-			{
-				
-				enemies[i].reset();
-				enemies[i].start();
+		private function createPlayers():void
+		{			
+			for(var lane:int = 0; lane < lanes.length; lane++){
+				if(lanes[lane].name == "carrilPlayer"){ // si es el corredor...
+					player = new Avatar(new assets.CorredorMC);			
+					player.x = lanes[lane].loc.x;
+					player.y = lanes[lane].loc.y;player.setMode(Avatar.PLAYER);					
+					player.setMaxSpeed(playersMaxSpeed);
+					player.setMode(Avatar.PLAYER);	// lo creo en modo player
+					lanes[lane].avatar = player;
+				}else{
+					var enemy:Avatar = new Avatar(new assets.CorredorMC ); 
+					enemy.x = lanes[lane].loc.x;
+					enemy.y = lanes[lane].loc.y;					
+					enemy.setMaxSpeed(playersMaxSpeed);
+					enemy.setMode(Avatar.ENEMY);
+					lanes[lane].avatar = enemy;
+				}				
+				camera.addChild(lanes[lane].avatar);
 			}
-			
-			startPlayer();
 		}
 		
-		protected function startPlayer():void
+		protected function start():void
 		{
-			player.start(false);
+			for each(var lane:Lane in lanes) lane.avatar.start();
+			playing = true;
 		}
 		
 		override public function update():void 
 		{
 			if (!playing) return;
 			
-			super.update();
+			camera.x += (playerScreenPosition - player.localToGlobal(new Point(0,0)).x);									
+			bg.follow(camera.x);
 			
-			checkColisions();
-			
-			for (var i:int = 0; i < CANT_ENEMIES; i++)
-			{
-				enemies[i].update();
-			}
-			
-//			speedBar.percentage = player.percentage;
-			
-			camera.x += ((Game.SCREEN_WIDTH / 2) - player.asset.localToGlobal(new Point(0, 0)).x);
-			camera.x = Math.min(0, camera.x);
-			
-			meters = player.getMeters();
-//			hud.updateMeters(meters);
-			
-			if (meters >= finalMetres)
-			{
-				player.stop();
-				win();
-			}
-			else 
-			{
-				for (i = 0; i < CANT_ENEMIES; i++)
-				{
-					if (enemies[i].move && enemies[i].getMeters() >= finalMetres)
-					{
-						enemies[i].stop();
-						cantEnemiesReachedEnd++;
-						if (cantEnemiesReachedEnd >= 3)
-						{
-							player.stop();
-							lose();
-						}
-					}
+			for each(var lane:Lane in lanes) lane.avatar.update();						
+			checkIfWin();
+		}
+		
+		private function checkIfWin():void
+		{
+			for each(var lane:Lane in lanes) {			
+				if (lane.avatar.getMeters() >= finalMetres)
+				{					
+					if(lane.avatar.mode == Avatar.ENEMY){
+						if(! lane.avatar.isIdle()) cantEnemiesReachedEnd++;
+						trace("enemie "+ cantEnemiesReachedEnd + " reached end");
+					}else{						
+						win();
+					}			
+					lane.avatar.stop();
 				}
-			}
+			}			
 		}
 		
-		override public function assignBadge():void 
+		
+		override protected function win():void
 		{
-			if (cantEnemiesReachedEnd == 0) badgeObtained = BADGE_GOLD;
-			if (cantEnemiesReachedEnd == 1) badgeObtained = BADGE_SILVER;
-			if (cantEnemiesReachedEnd >= 2) badgeObtained = BADGE_BRONCE;
+			assignBadge();
+			super.win();
 		}
 		
-		protected function checkColisions():void
+		override protected function assignBadge():void 
 		{
+			if (cantEnemiesReachedEnd == 0) badge = BADGE_GOLD;
+			if (cantEnemiesReachedEnd == 1) badge = BADGE_SILVER;
+			if (cantEnemiesReachedEnd == 2) badge = BADGE_BRONCE;
+			if (cantEnemiesReachedEnd > 2) badge = BADGE_LOOSER;
 			
+			trace("badge: " + badge);
 		}
+		
 		
 		override public function onKeyDown(key:KeyboardEvent):void 
-		{
-			super.onKeyDown(key);
-			
-			if (key.keyCode == Keyboard.LEFT && !leftKeyPressed)
+		{			
+			if (key.keyCode == Keyboard.LEFT && ! leftKeyPressed)
 			{
 				leftKeyPressed = true;
 				player.accelerate();
@@ -168,5 +158,5 @@ package game.sports
 			}
 		}
 	}
-
+	
 }

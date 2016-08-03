@@ -33,12 +33,13 @@ package
 	import flash.ui.Keyboard;
 	import flash.ui.Mouse;
 	import flash.utils.ByteArray;
+	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 	import flash.utils.setTimeout;
 	
 	import game.LevelEvents;
-	import game.sports.Sport;
 	import game.sports.*;
+	import game.sports.Sport;
 	
 	import popups.*;
 	import popups.ConfirmationPopup;
@@ -48,7 +49,6 @@ package
 	
 	import utils.Stopwatch;
 	import utils.Utils;
-	import flash.utils.getDefinitionByName;
 	
 	[SWF(width='800', height='480', backgroundColor='0xF9D611', frameRate='25')]
 	public class Game extends BaseGame
@@ -121,12 +121,22 @@ package
 		
 		private function createGui():void
 		{
+			
+			
+			
 			gui = new Gui(new assets.guiMc());
 			gui.addEventListener(GuiEvents.CONFIRMATION_EXIT, onExitGame);
 			gui.addEventListener(GuiEvents.PAUSE, onPause);			
 			gui.addEventListener(GuiEvents.RESUME, onResume);
 			gui.addEventListener(GuiEvents.PLAY, onPlay);
 			gui.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);
+			
+			
+			var manager:Object = api.getOlympicTeam(); // blabla
+			var clubes:Array = ["club1", "club2", "club3"];
+			
+			gui.setClub(clubes[Math.floor(Math.random() * 3)]);
+			
 			addChild(gui);						
 		}
 		
@@ -229,7 +239,8 @@ package
 			if(currentSport) disposeSport(currentSport);
 				
 			var _sportClass:Class = getDefinitionByName("game.sports." + gui.currentSport) as Class;
-			currentSport = new _sportClass();			
+			currentSport = new _sportClass();	
+			
 			createSport();
 			stage.focus = this;
 		}
@@ -239,17 +250,18 @@ package
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
 			
-			
+			currentSport.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);				
 			currentSport.addEventListener(LevelEvents.LEVEL_LOST, onSportLose);
 			currentSport.addEventListener(LevelEvents.LEVEL_WIN, onSportWin);
-//			currentSport.create();
-			currentSport.reset();
 			
 			addChildAt(currentSport, 0);
 		}
 
 		private function disposeSport(current:Sport):void
 		{
+			
+			api.addTeamReward("gold"); // blabla
+			
 			current.removeEventListener(LevelEvents.LEVEL_LOST, onSportLose);
 			current.removeEventListener(LevelEvents.LEVEL_WIN, onSportWin);
 			removeChild(current);

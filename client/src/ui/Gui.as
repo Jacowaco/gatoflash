@@ -38,6 +38,7 @@ package ui
 		private var confirmationPopup:ConfirmationPopup;
 		private var endGamePopup:EndGamePopup;
 		
+		private var club:String;
 		
 		
 		public function Gui(asset:MovieClip)
@@ -136,6 +137,7 @@ package ui
 			sportsMenu.instructionsMc.visible = false;
 			sportsMenu.txtClub.visible = false;
 			
+			
 			addChild(sportsMenu);
 			
 			// confirmation popup
@@ -149,6 +151,11 @@ package ui
 			addChild(asset);
 			
 			
+		}
+		
+		public function setClub(club:String):void
+		{
+			this.club = club;
 		}
 		
 		private function goPage(page:int):void
@@ -206,6 +213,7 @@ package ui
 			sportsMenu.txt_sportTitle.text = settings.sports[e.currentTarget.name].name;
 			sportSelected = settings.sports[e.currentTarget.name].classID;			
 			sportsMenu.txt_details.text = settings.sports[e.currentTarget.name].name;
+			sportsMenu.clubPh.gotoAndStop(club);
 			
 		}
 		
@@ -214,6 +222,7 @@ package ui
 			sportsMenu.instructionsMc.visible = show;
 			sportsMenu.txtClub.visible = show;
 			sportsMenu.clubPh.visible = show;
+			
 		}
 		
 		

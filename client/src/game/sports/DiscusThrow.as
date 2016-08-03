@@ -10,12 +10,9 @@ package game.sports
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 	
+	import game.Avatar;
 	import game.Ball;
 	import game.LevelEvents;
-	import game.MovingObject;
-	import game.Player;
-	
-//	import gameobject.GameObject;
 	
 	
 	public class DiscusThrow extends Sport 
@@ -26,55 +23,76 @@ package game.sports
 		protected var ballMovieClip:Class;
 		protected var rotate:Boolean;
 		
-		protected var line:MovingObject;
+		protected var line:MovieClip;
 		protected var throwMeters:int;
+		private var base:MovieClip;
 		
 		public function DiscusThrow() 
 		{
-			super();
+			
+			
+			
+			create();
+			
+		}
+		
+		protected function create():void 
+		{
+
+			levelDefinition = new assets.throwingMC;
+			base = levelDefinition.base;
+			camera.addChild(base);
+			
+			player = new Avatar(new assets.CorredorMC);			
+			player.x = base.x;
+			player.y = base.y;
+			player.setMode(Avatar.PLAYER);					
+			addChild(player);
+			
 			
 			ballMovieClip = assets.discusMC;
 			rotate = false;
 			
 			throwMeters = 5;
-			create();
-			addThingsBeforePlayer();
-			player = new Player(new CorredorMC);
-		}
-		
-		 public function create():void 
-		{
-		//	super.create();
 			
-			ball = new Ball(new ballMovieClip(), rotate);
+//			addThingsBeforePlayer();
+//			player = new Avatar(new CorredorMC);
+
+			
+			//	super.create();
+			
+			ball = new Ball(new assets.discusMC());
 			ball.addEventListener("reached", ballReached);
-			camera.addChild(ball.asset);
+			ball.rotate(false);
+			player.addChild(ball);
 			
 			if (rotate) ballOffset = new Vector2D(20, -40);
 		}
 		
+		
+		
 		 protected function addThingsBeforePlayer():void 
 		{
-			line = new MovingObject(new assets.lineMC);
+			line = new assets.lineMC;
 //			line.debug(false);
-			line.loc = new Vector2D(start.loc.x + throwMeters * UNITS_PER_METER, start.loc.y);
+//			line.loc = new Vector2D(start.loc.x + throwMeters * UNITS_PER_METER, start.loc.y);
 //			line.run();
 			camera.addChild(line.asset);
 		}
 		
-		override public function reset():void 
-		{
-			super.reset();
-			
-			ball.init(start.loc);
-			ball.reset();
-			
-			startPlayer();
-		}
-		
+//		override public function reset():void 
+//		{
+//			super.reset();
+//			
+//			ball.init(start.loc);
+//			ball.reset();
+//			
+//			startPlayer();
+//		}
+//		
 		protected function startPlayer():void
 		{
-			player.start(false, true);
+			player.start();
 		}
 		
 		override public function update():void 
@@ -83,21 +101,21 @@ package game.sports
 			
 			super.update();
 			
-			ball.setPlayerX(player.loc.x);
+//			ball.setPlayerX(player.loc.x);
 			ball.update();
 			
-			if (ball.asset.localToGlobal(new Point(0, 0)).x  > Game.SCREEN_WIDTH / 2)
+			if (ball.localToGlobal(new Point(0, 0)).x  > Game.SCREEN_WIDTH / 2)
 			{			
-				camera.x += ((Game.SCREEN_WIDTH / 2) - (ball.asset.localToGlobal(new Point(0, 0)).x));
+				camera.x += ((Game.SCREEN_WIDTH / 2) - (ball.localToGlobal(new Point(0, 0)).x));
 			}
 			
-			if (player.loc.x > line.loc.x)
+			if (player.x > line.x)
 			{
 				player.stop();
 				lose();
 			}
 			
-			meters = ball.getMeters();
+//			meters = ball.getMeters();
 //			hud.updateMeters(meters);
 			
 			if (!ball.shot)
@@ -105,15 +123,18 @@ package game.sports
 //				speedBar.percentage = player.percentage;
 				
 				var offsetX:Number = ballOffset.x * ((player.lookingRight) ? 1 : -1);
-				ball.asset.x += offsetX;
-				ball.asset.y += ballOffset.y;
+				ball.x += offsetX;
+				ball.y += ballOffset.y;
 			}
 		}
 		
+		
+		override public function onKeyUp(key:KeyboardEvent):void 
+		{
+			
+		}
 		override public function onKeyDown(key:KeyboardEvent):void 
 		{
-			super.onKeyDown(key);
-			
 			if (ball.shot) return;
 			
 			if (key.keyCode == Keyboard.SPACE)
@@ -140,11 +161,11 @@ package game.sports
 			win();
 		}
 		
-		override public function assignBadge():void 
+		override protected function assignBadge():void 
 		{
-			if (meters >= 0) 						badgeObtained = BADGE_BRONCE;
-			if (meters >= Ball.MAX_DISTANCE * 0.5)  badgeObtained = BADGE_SILVER;
-			if (meters >= Ball.MAX_DISTANCE) 	    badgeObtained = BADGE_GOLD;
+//			if (meters >= 0) 						badge = BADGE_BRONCE;
+//			if (meters >= Ball.MAX_DISTANCE * 0.5)  badge = BADGE_SILVER;
+//			if (meters >= Ball.MAX_DISTANCE) 	    badge = BADGE_GOLD;
 		}
 		
 	}

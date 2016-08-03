@@ -14,7 +14,7 @@ package game.sports
 		{
 			super.create();
 			
-			player.setJumpVariables(250, 100, 200);
+//			player.setJumpVariables(250, 100, 200);
 		}
 		
 	}

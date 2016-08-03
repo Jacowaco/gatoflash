@@ -1,127 +1,117 @@
 package game.sports 
 {
 	import assets.*;
+	
 	import com.qb9.flashlib.geom.Vector2D;
+	
+	import flash.display.Sprite;
 	import flash.events.KeyboardEvent;
+	import flash.geom.Point;
 	import flash.ui.Keyboard;
+	
+	import game.Avatar;
 	import game.Hurdle;
-
-	public class Hurdles extends Metres100
+	import game.Lane;
+	
+	public class Hurdles extends Race
 	{
-		private const CANT_HURDLES:int = 10;
-		public static const COLISION_RANGE:int = 60;
-		private var hurdles:Array;
-		
+		private var numObstacles:Number;
+		private var collisionRange:Number;
+		private var jumpinThreshold:Number;
 		public function Hurdles() 
 		{
-			super();		
-			finalMetres = 110;
+			currentSport = "sport0"; // esto es lo único que debería hardcodear...
+			finalMetres = settings.sports[currentSport].metres;			
+			numObstacles = settings.sports[currentSport].numObstacles;
+			collisionRange =  finalMetres * UNITS_PER_METER / numObstacles / 4 * 3; // 75% de distancia entre las vallas
+			jumpinThreshold =	settings.sports[currentSport].jumpThreshold;
+			playersMaxSpeed = 	settings.sports[currentSport].maxSpeed;
+			
+			super.create();
+			createHurdles();
+			
+			// TODO aca seguro va a haber que poner una cuenta regresiva
+			start();
 		}
 		
-		public function create():void 
-		{
-//			super.create();
-			
-			//usar esto para accelerar o desaccelerar a los enemigos en este juego particular
-			//for (var i:int = 0; i < CANT_ENEMIES; i++)
-			//{
-				//enemies[i].baseAccel += 0.02;
-			//}
-			
-			player.setJumpVariables(120, 0, 300, false, true);
-		}
-		
-		override protected function addGoalLine():void 
-		{
-			hurdles = new Array();
-			for (var e:int = 0; e < CANT_ENEMIES + 1; e++)
-			{
-				hurdles[e] = new Array();
-				for (var i:int = 0; i < CANT_HURDLES; i++)
-				{
-					hurdles[e][i] = new Hurdle(new assets.hurdleMC);
-					camera.addChild(hurdles[e][i].asset);
+		private function createHurdles():void
+		{		
+			numObstacles += 4; // engania pichanga para que cree la cantidad de vallas que dice el settings.json
+			for each(var lane:Lane in lanes){
+				for(var i:int = 2; i < numObstacles - 2; i++){ // pongo vallas a partir de la segunda
+					var hurdle:Hurdle = new Hurdle(new assets.hurdleMC);
+					hurdle.y = lane.loc.y;
+					hurdle.x = lane.loc.x + (finalMetres * UNITS_PER_METER /  numObstacles * i);
+					lane.hurdles.push(hurdle);		
+					camera.addChildAt(hurdle, 0);
 				}
-			}
-			
-			super.addGoalLine();
+			}			
 		}
 		
-		override public function reset():void 
+		private function checkColisions():void 
 		{
-			super.reset();
-			
-			for (var e:int = 0; e < CANT_ENEMIES + 1; e++)
-			{
-				for (var i:int = 0; i < CANT_HURDLES; i++)
-				{
-					if (e == CANT_ENEMIES)
-						hurdles[e][i].initLoc(start.loc.x + 2000 + i * 900, player.loc.y);
-					else
-						hurdles[e][i].initLoc(start.loc.x + 2000 + i * 900, enemies[e].loc.y);
-					hurdles[e][i].run();
+			for each(var lane:Lane in lanes){				
+				if(lane.avatar.mode == Avatar.ENEMY){
+					for each(var hurdle:Hurdle in lane.hurdles){
+						if(!hurdle.active) continue;
+						var distToObstacle:Number = hurdle.x - lane.avatar.x;	
+						if(distToObstacle < collisionRange){							
+							checkForJump(lane.avatar, hurdle);
+							collide(lane.avatar, hurdle);
+						}	
+					}					
+				}else{
+					for each(hurdle in lane.hurdles){	
+						if(!hurdle.active) continue;
+						distToObstacle = hurdle.x - lane.avatar.x;					
+						if(distToObstacle < collisionRange){							
+							collide(lane.avatar, hurdle);
+						}				
+					}		
+				}				
+			}
+		}
+		
+		override public function update():void
+		{
+			super.update();
+			checkColisions();
+		}
+		
+		
+		private function checkForJump(avatar:Avatar, hurdle:Hurdle):void
+		{									
+			var distToObstacle:Number = Math.abs(hurdle.x - avatar.x);
+			if(distToObstacle < jumpinThreshold && ! avatar.isJumping()){
+				var chance:int = 500;			
+				var nounce:int = Math.random() * 1000;	
+				if(nounce < chance) {
+					avatar.jumpHurdle();
 				}
+			}			
+		}
+		
+		private function collide(avatar:Avatar, hurdle:Hurdle):void{			 			
+			var distToObstacle:Number = Math.abs(hurdle.x - avatar.x);
+			if(distToObstacle < jumpinThreshold && ! avatar.isJumping()){
+				hurdle.active = false;
+				hurdle.collide();				
+				avatar.collide();
 			}
 		}
 		
-		override protected function startPlayer():void 
-		{
-			player.start(true);
-		}
 		
-		override protected function checkColisions():void 
+		override public function onKeyUp(key:KeyboardEvent):void
 		{
-			for (var e:int = 0; e < CANT_ENEMIES + 1; e++)
-			{
-				for (var i:int = 0; i < CANT_HURDLES; i++)
-				{
-					if (e == CANT_ENEMIES)
-					{
-						if (!hurdles[e][i].collided && player.loc.distance(hurdles[e][i].loc) < COLISION_RANGE)
-						{
-							//trace("colliding player");
-							hurdles[e][i].collide();
-							player.collideHurdle();
-						}
-					}
-					else
-					{
-						var enemyDistToHurdle:Number = hurdles[e][i].loc.x - enemies[e].loc.x;
-						if (!hurdles[e][i].collided && enemyDistToHurdle >= 0 && enemyDistToHurdle < enemies[e].nextJumpDist)
-						{
-							//trace("enemy jumping");
-							enemies[e].jump(1, 0);
-						}
-						if (!hurdles[e][i].collided && enemies[e].loc.distance(hurdles[e][i].loc) < COLISION_RANGE)
-						{
-							//trace("colliding enemy");
-							hurdles[e][i].collide();
-							enemies[e].collideHurdle();
-						}
-					}
-				}
-			}
+			
 		}
 		
 		override public function onKeyDown(key:KeyboardEvent):void 
-		{
-			if (key.keyCode == Keyboard.LEFT && !leftKeyPressed)
-			{
-				leftKeyPressed = true;
-				player.accelerate();
-			}
-			else if (key.keyCode == Keyboard.RIGHT && leftKeyPressed)
-			{
-				leftKeyPressed = false;
-				player.accelerate();
-			}
-			else if (key.keyCode == Keyboard.SPACE)
-			{
-				player.jump(1, 0);
-			}
-			
+		{			
+			if (key.keyCode == Keyboard.SPACE) player.jumpHurdle();			
+			super.onKeyDown(key);			
 		}
 		
 	}
-
+	
 }
