@@ -137,9 +137,9 @@ package
 			
 			
 			var manager:Object = api.getOlympicTeam(); // blabla
-			var clubes:Array = ["club1", "club2", "club3"];
+//			var clubes:Array = ["club1", "club2", "club3"];
 			
-			gui.setClub(clubes[Math.floor(Math.random() * 3)]);
+			gui.setClub(Math.floor(Math.random() * 3));
 			
 			addChild(gui);						
 		}

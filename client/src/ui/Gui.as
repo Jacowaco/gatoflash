@@ -40,7 +40,7 @@ package ui
 		private var confirmationPopup:ConfirmationPopup;
 		
 		
-		private var club:String;
+		private var club:int;
 		
 		private var countdown:MovieClip;
 		private var trainer:MovieClip;
@@ -171,7 +171,7 @@ package ui
 		
 		}
 		
-		public function setClub(club:String):void
+		public function setClub(club:int):void
 		{
 			this.club = club;
 		}
@@ -257,9 +257,14 @@ package ui
 			sportsMenu.txt_sportTitle.text = settings.sports[e.currentTarget.name].name;
 			sportSelected = settings.sports[e.currentTarget.name].classID;			
 			sportsMenu.txt_details.text = settings.sports[e.currentTarget.name].name;
+			
+			sportsMenu.clubPh.label.text = api.getText(settings.teams[club]);
 			sportsMenu.clubPh.gotoAndStop(club);
 			
+			
 		}
+
+		
 		
 		private function instructions(show:Boolean):void
 		{
