@@ -193,6 +193,7 @@ package
 				currentSport.update();
 				gui.setTime("0");
 				gui.setScore(currentSport.getPlayerMeters().toString());
+				gui.setPower(currentSport.getPlayerPower());
 			}
 			
 		}
@@ -294,7 +295,8 @@ package
 		private function onExitGame(e:Event=null):void
 		{
 			audio.fx.play("click");
-			logger.info("scoring: ", maxSessionScore.value);			
+			logger.info("scoring: ", maxSessionScore.value);
+			disposeSport(currentSport);
 			if(online){
 				// medallas ganadas a los teams		
 			}

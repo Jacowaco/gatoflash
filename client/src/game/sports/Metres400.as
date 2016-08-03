@@ -31,7 +31,7 @@ package game.sports
 		
 		override public function onKeyDown(key:KeyboardEvent):void 
 		{			
-			if (key.keyCode == Keyboard.SPACE) player.jumpHurdle();			
+//			if (key.keyCode == Keyboard.SPACE) player.jumpHurdle();			
 			super.onKeyDown(key);			
 		}
 		

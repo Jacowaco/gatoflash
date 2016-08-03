@@ -125,9 +125,18 @@ package game.sports
 		{
 			dispatchEvent(new Event(GuiEvents.NEW_MATCH));			
 		}
-		public function getPlayerMeters():int{
+		
+		public function getPlayerMeters():int
+		{
 			return 0;
 		}
+		
+		
+		public function getPlayerPower():Number
+		{
+			return player.getPower();	
+		}
+		
 	}
 
 }

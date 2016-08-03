@@ -20,6 +20,8 @@ package ui
 	import popups.ConfirmationPopup;
 	import popups.McMenu;
 	
+	import utils.Utils;
+	
 	
 	
 	
@@ -71,8 +73,9 @@ package ui
 			
 			// power
 			power = asset.getChildByName("power") as MovieClip;
-			// TODO doesnt work
+			power.visible = false;
 			power.stop();
+			
 			
 			// countdown
 			countdown = asset.getChildByName("countdown") as MovieClip;
@@ -82,11 +85,11 @@ package ui
 			
 			
 			
-			
 			// el menu que te deja elegir el juego			
 			sportsMenu = new McMenu();
 			sportsMenu.txt_title.text = settings.gui.title;
 			sportsMenu.txt_details.text = settings.gui.details;
+	
 			
 			
 			
@@ -200,8 +203,8 @@ package ui
 					instructions(false);
 					playbtn(false);
 					sportName(false);
-					trainer.visible = false;
-					medal.visible = false;
+					rewards(false);
+					inGameInfo(false);
 					sportsMenu.nextWeek.visible = false;
 					break;
 				
@@ -214,7 +217,18 @@ package ui
 			
 			
 		}
-		
+		private function inGameInfo(show:Boolean):void
+		{
+			power.visible = show;
+			info.visible = show;
+			
+		}
+		private function rewards(show:Boolean):void
+		{
+			trainer.visible = show;
+			medal.visible = show;
+			
+		}
 		private function arrows(show:Boolean):void
 		{
 			sportsMenu.pg2.visible = show;
@@ -234,16 +248,11 @@ package ui
 			instructions(false);
 			sportName(false);	
 			sportsMenu.visible = false;			
-			inGameData(true);
+			inGameInfo(true);
 			dispatchEvent(new Event(GuiEvents.NEW_MATCH));			
 		}
 		
-		
-		private function inGameData(show:Boolean):void
-		{
-			power.visible = true;
-			info.visible = true;			
-		}
+	
 		
 		private function playSportMenu(e:Event):void
 		{						
@@ -305,6 +314,12 @@ package ui
 //			asset.timer.field.text = time;
 		}
 		
+		public function setPower(pow:Number):void
+		{
+			this.power.gotoAndStop( Math.floor(Utils.map(pow, 0, 1, 1, this.power.totalFrames)));	
+		}
+		
+		
 		public function setScore(score:String):void
 		{
 			this.info.value.text = score;
@@ -314,7 +329,7 @@ package ui
 			trace("gui endgame", medal);
 			sportsMenu.visible = true;
 			sportName(true);
-			inGameData(false);
+			inGameInfo(false);
 			
 			
 			switch(medal)

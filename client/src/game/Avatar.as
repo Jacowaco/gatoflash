@@ -17,6 +17,8 @@ package game
 	import game.sports.Metres100;
 	import game.sports.Sport;
 	
+	import utils.Utils;
+	
 	
 	public class Avatar extends Sprite // extends MovingObject 
 	{
@@ -239,6 +241,10 @@ package game
 			return int(x / Sport.UNITS_PER_METER);
 		}
 		
+		public function getPower():Number
+		{
+			return Utils.map(speed, 0, maxSpeed, 0, 1);
+		}
 		
 		public function collide():void
 		{
