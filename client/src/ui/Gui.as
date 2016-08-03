@@ -151,11 +151,12 @@ package ui
 			
 			goPage(1);
 			
-			sportsMenu.instructionsMc.visible = false;
+			sportsMenu.instructions.visible = false;
 			sportsMenu.txtClub.visible = false;
 			
 			
 			addChild(sportsMenu);
+			
 			
 			
 			
@@ -254,6 +255,7 @@ package ui
 		
 	
 		
+		
 		private function playSportMenu(e:Event):void
 		{						
 			buttons(false);
@@ -263,12 +265,19 @@ package ui
 			sportName(true);			
 			details(false);
 			
-			sportsMenu.txt_sportTitle.text = settings.sports[e.currentTarget.name].name;
+			
+//			sportsMenu.txt_sportTitle.text = settings.sports[e.currentTarget.name].name;
+			sportsMenu.txt_sportTitle.visible = false;
 			sportSelected = settings.sports[e.currentTarget.name].classID;			
 			sportsMenu.txt_details.text = settings.sports[e.currentTarget.name].name;
 			
 			sportsMenu.clubPh.label.text = api.getText(settings.teams[club]);
 			sportsMenu.clubPh.gotoAndStop(club);
+			
+			sportsMenu.instructions.gotoAndStop(settings.sports[e.currentTarget.name].classID);
+			sportsMenu.instructions.txt_inst.text = api.getText(settings.sports[e.currentTarget.name].inst);
+			
+			
 			
 			
 		}
@@ -277,7 +286,7 @@ package ui
 		
 		private function instructions(show:Boolean):void
 		{
-			sportsMenu.instructionsMc.visible = show;
+			sportsMenu.instructions.visible = show;
 			sportsMenu.txtClub.visible = show;
 			sportsMenu.clubPh.visible = show;
 			
