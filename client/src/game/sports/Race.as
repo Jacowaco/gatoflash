@@ -118,7 +118,8 @@ package game.sports
 					if(lane.avatar.mode == Avatar.ENEMY){
 						if(! lane.avatar.isIdle()) cantEnemiesReachedEnd++;
 						trace("enemie "+ cantEnemiesReachedEnd + " reached end");
-					}else{						
+					}else{		
+						for each( lane in lanes) lane.avatar.stop();
 						win();
 					}			
 					lane.avatar.stop();

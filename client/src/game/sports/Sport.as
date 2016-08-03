@@ -60,8 +60,7 @@ package game.sports
 		public function Sport() 
 		{
 			bg = new Background();
-			addChild(bg);
-			
+			addChild(bg);			
 			camera = new Sprite();
 			addChild(camera);
 			playerScreenPosition = Game.SCREEN_WIDTH / 4;

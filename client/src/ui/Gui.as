@@ -11,12 +11,13 @@ package ui
 	import flash.net.getClassByAlias;
 	import flash.utils.getDefinitionByName;
 	
+	import game.Avatar;
+	import game.sports.Sport;
+	
 	import mx.core.ButtonAsset;
 	import mx.olap.aggregators.CountAggregator;
 	
 	import popups.ConfirmationPopup;
-	import popups.EndGamePopup;
-	import popups.InstructionsPopup;
 	import popups.McMenu;
 	
 	
@@ -37,11 +38,13 @@ package ui
 		private var sportSelected:String;
 
 		private var confirmationPopup:ConfirmationPopup;
-		private var endGamePopup:EndGamePopup;
+		
 		
 		private var club:String;
 		
 		private var countdown:MovieClip;
+		private var trainer:MovieClip;
+		private var medal:MovieClip;
 		
 		public function Gui(asset:MovieClip)
 		{
@@ -76,12 +79,6 @@ package ui
 			countdown.stop();
 			countdown.visible = false;
 			
-			// endgame popup
-			endGamePopup = new EndGamePopup();
-			addChild(endGamePopup);
-			endGamePopup.visible = false;
-			endGamePopup.addEventListener(GuiEvents.PLAY, onPlay);
-			endGamePopup.addEventListener(GuiEvents.PAUSE, onConfirmationExit);
 			
 			
 			
@@ -111,6 +108,14 @@ package ui
 			sportsMenu.pg1.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ goPage(1) });
 						
 			sportsMenu.nextWeek.visible = false;
+			
+			trainer = sportsMenu.getChildByName("trainer") as MovieClip;
+			trainer.stop();
+			trainer.visible = false;
+			
+			medal = sportsMenu.getChildByName("medal") as MovieClip;
+			medal.stop();
+			medal.visible = false;
 			
 			// botones de los juegos
 			hurdles_btn;
@@ -148,6 +153,11 @@ package ui
 			
 			addChild(sportsMenu);
 			
+			
+			
+			
+			
+			
 			// confirmation popup
 			confirmationPopup = new ConfirmationPopup();
 			confirmationPopup.visible = false;
@@ -167,9 +177,8 @@ package ui
 		
 		public function showCountDown():void
 		{
-			countdown.gotoAndPlay(1);
-			countdown.visible = true;
-			
+			countdown.gotoAndPlay(2);
+			countdown.visible = true;			
 		}
 		
 		private function countdownEnded(e:Event):void
@@ -190,7 +199,8 @@ package ui
 					instructions(false);
 					playbtn(false);
 					sportName(false);
-					
+					trainer.visible = false;
+					medal.visible = false;
 					sportsMenu.nextWeek.visible = false;
 					break;
 				
@@ -220,6 +230,8 @@ package ui
 		
 		private function playSport(e:Event):void
 		{
+			instructions(false);
+			sportName(false);	
 			sportsMenu.visible = false;			
 			dispatchEvent(new Event(GuiEvents.NEW_MATCH));			
 		}
@@ -265,32 +277,11 @@ package ui
 			sportsMenu.txt_details.visible = show;
 		}
 		
-		//		public function showWinScreen(result:int, score:Number, bonus:Number, endScore:Number, isLastLevel:Boolean = false):void
-		//		{
-		//			logger.info("showWinScreen()");
-		//			endGamePopup.show(result, score, bonus, endScore, isLastLevel);
-		//			exitBtn.visible = false;
-		//		}
+
 		
-		
-		public function showWinner(mc:Sprite, isLastRound:Boolean, isLastLevel:Boolean = false):void
-		{
-			//logger.info("showWinScreen()");
-			endGamePopup.showWinner(mc, isLastRound, isLastLevel);
-			exitBtn.visible = false;
-		}
-		
-		public function showNext():void
-		{
-			logger.info("showNext");
-			//			endGamePopup.show(result, score, bonus, endScore, isLastLevel);
-			endGamePopup.next();
-			exitBtn.visible = false;
-		}
 		
 		public function reset():void
 		{
-			endGamePopup.hide();
 			exitBtn.visible = true;
 		}
 		
@@ -304,7 +295,54 @@ package ui
 //			this.info.field.text = score;
 		}
 		
-		// eventos
+		public function endgame(medal:int):void{
+			trace("gui endgame", medal);
+			sportsMenu.visible = true;	
+			switch(medal)
+			{
+				case Sport.BADGE_LOOSER:
+				{
+					showTrainer("lose");
+					break;
+				}
+				case Sport.BADGE_BRONCE:
+				{
+					showTrainer("win");
+					showMedal(Sport.BADGE_BRONCE);
+					break;
+				}
+				case Sport.BADGE_SILVER:
+				{
+					showTrainer("win");
+					showMedal(Sport.BADGE_SILVER);
+					break;
+				}
+				case Sport.BADGE_GOLD:
+				{
+					showTrainer("win");
+					showMedal(Sport.BADGE_GOLD);
+					break;
+				}
+				
+				default:
+				{
+					break;
+				}
+			}
+			
+		}
+
+		private function showTrainer(frame:String):void
+		{
+			trainer.visible = true;
+			trainer.gotoAndStop(frame);
+		}
+		
+		private function showMedal(frame:int):void
+		{
+			medal.visible = true;
+			medal.gotoAndStop(frame);
+		}
 		
 		private function onExitBtn(e:Event):void
 		{
@@ -318,59 +356,25 @@ package ui
 			dispatchEvent(new Event(GuiEvents.CONFIRMATION_EXIT));
 		}
 		
-		private function onResume(e:Event=null):void
-		{
-			audio.fx.play("click");
-			confirmationPopup.visible = false;
-			dispatchEvent(new Event(GuiEvents.RESUME));
-		}
 		
 		private function onOver(e:Event):void
 		{
 			audio.fx.play("rollover");
 		}
 		
-		private function onPlay(e:Event):void
+//		private function onPlay(e:Event):void
+//		{			
+//			audio.fx.play("click");			
+//			dispatchEvent(new Event(GuiEvents.PLAY));			
+//		}
+
+		private function onResume(e:Event=null):void
 		{
-			//				if(e.currentTarget == instructionsPopup){
-			//					e.currentTarget.removeEventListener(e.type, arguments.callee);
-			//					removeChild(instructionsPopup);
-			//					score.visible = true;
-			//				}
-			
-			
-			dispatchEvent(new Event(GuiEvents.PLAY));
-			
+			audio.fx.play("click");
+			confirmationPopup.visible = false;
+			dispatchEvent(new Event(GuiEvents.RESUME));
 		}
-		
-		public function runCutscene():void
-		{
-			//			endCutscene.visible = true;
-			//			score.visible = false;
-			//			exitBtn.visible = false;
-			//			endCutscene.gotoAndPlay(1);
-			//			endCutscene.addEventListener(Event.ENTER_FRAME, onCutsceneEnterFrame);			
-		}
-		
-		
-		
-		
-		
-		private function onCutsceneEnterFrame(e:Event):void			
-		{
-			
-			//			if((endCutscene as MovieClip).currentLabel == "showText"){
-			//				endCutscene.ballon.visible = true;
-			//			}
-			//			
-			//			
-			//			if((endCutscene as MovieClip).currentLabel == "end"){
-			//				endCutscene.visible = false;
-			//				endCutscene.removeEventListener(Event.ENTER_FRAME, onCutsceneEnterFrame);
-			//				dispatchEvent(new Event(GuiEvents.ANIMATION_END));
-			//			}
-		}
-		
+
 		public function get currentSport():String
 		{
 			return sportSelected;
