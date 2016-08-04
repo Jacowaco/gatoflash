@@ -47,7 +47,7 @@ package game.sports
 			numObstacles += 4; // engania pichanga para que cree la cantidad de vallas que dice el settings.json
 			for each(var lane:Lane in lanes){
 				for(var i:int = 2; i < numObstacles - 2; i++){ // pongo vallas a partir de la segunda
-					var hurdle:Hurdle = new Hurdle(new assets.hurdleMC);
+					var hurdle:Hurdle = new Hurdle(new assets.cucumber);
 					hurdle.y = lane.loc.y;
 					hurdle.x = lane.loc.x + (finalMetres * UNITS_PER_METER /  numObstacles * i);
 					lane.hurdles.push(hurdle);		
@@ -55,6 +55,7 @@ package game.sports
 				}
 			}			
 		}
+		
 		
 		private function checkColisions():void 
 		{
