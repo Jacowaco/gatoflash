@@ -89,7 +89,7 @@ package game.sports
 					var enemy:Avatar = new Avatar(new avatar.corredorMC ); 
 					enemy.x = lanes[lane].loc.x;
 					enemy.y = lanes[lane].loc.y;					
-					enemy.setMaxSpeed(playersMaxSpeed);
+					enemy.setMaxSpeed(playersMaxSpeed * 0.95);
 					enemy.setSpeedIncrement(playersSpeedIncrement);
 					enemy.setMode(Avatar.ENEMY);
 					lanes[lane].avatar = enemy;
@@ -103,6 +103,7 @@ package game.sports
 		{
 			for each(var lane:Lane in lanes) lane.avatar.start();
 			playing = true;
+			audio.fx.loop("correr");
 		}
 		
 		override public function update():void 
@@ -137,6 +138,11 @@ package game.sports
 		override protected function win():void
 		{
 			assignBadge();
+			if(badge != BADGE_LOOSER){
+				audio.fx.play("bu");
+			}else{
+				audio.fx.play("ovacion");
+			}
 			super.win();
 		}
 		

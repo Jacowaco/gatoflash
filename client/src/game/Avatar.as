@@ -256,6 +256,7 @@ package game
 		public function collide():void
 		{
 			trace("collided")
+			audio.fx.play("valla");
 			speed = 0;
 			trace("speed: ", speed);
 			asset.gotoAndStop("fall");
@@ -278,6 +279,7 @@ package game
 			if (state == JUMPING) return;
 //			if(mode == PLAYER ) trace("jump added: jumping: " , state ==JUMPING);
 			state = JUMPING;
+			audio.fx.play("saltoCorto");
 			
 			
 			asset.gotoAndStop("jump");			

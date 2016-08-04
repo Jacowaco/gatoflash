@@ -160,19 +160,18 @@ package
 			audio.registerFx("estadio", "estadio");
 			audio.registerFx("bInstruc", "bInstruc");
 			audio.registerFx("correr", "correr");
-			
-			//						audio.registerFx("ganar", "ganar");
+			audio.registerFx("saltoCorto", "saltoCorto");
 			
 			audio.registerFx("reward", "reward");
 			audio.registerFx("click", "click");			
 			audio.registerFx("move", "correPieza");
 			audio.registerFx("fix", "encajaPieza");
-			//			audio.registerFx("gameover", "gameover");
-			//			audio.registerFx("infraccion", "infraccion");
-			//			audio.registerFx("mSatisfactorio", "mSatisfactorio");
-			//			audio.registerFx("obstaculo", "obstaculo");
-			//			audio.registerFx("powerup", "powerup");
-			//			audio.registerFx("puntoMuerto", "puntoMuerto");
+			audio.registerFx("ovacion", "ovacion");
+			audio.registerFx("aplausos", "aplausos");
+			audio.registerFx("ow", "ow");
+			audio.registerFx("bu", "bu");
+			audio.registerFx("valla", "valla");
+						audio.registerFx("lanza", "lanza");
 			//			audio.registerFx("puntos", "puntos");
 			//			audio.registerFx("recuento", "recuento");
 			//			audio.registerFx("satisfactorio", "satisfactorio");

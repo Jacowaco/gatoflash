@@ -128,6 +128,7 @@ package game.sports
 		
 		private function releasePizza():void
 		{
+			audio.fx.play("lanza");
 			screenPoint = player.localToGlobal(new Point(pizza.x, pizza.y));				
 			camera.addChild(pizza);			
 			pizza.animate();
@@ -150,6 +151,13 @@ package game.sports
 			if(pizza.x > Throwie.MAX_DISTANCE / 3 && pizza.x < Throwie.MAX_DISTANCE / 3 * 2) badge = BADGE_SILVER;
 			if(pizza.x > Throwie.MAX_DISTANCE / 3 * 2) badge = BADGE_GOLD;
 			if(!player.lookingRight) badge = BADGE_LOOSER;
+			
+			if(badge != BADGE_LOOSER){
+				audio.fx.play("bu");
+			}else{
+				audio.fx.play("ovacion");
+			}
+			
 			super.win();
 		}
 		
