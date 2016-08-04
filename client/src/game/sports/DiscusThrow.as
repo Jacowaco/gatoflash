@@ -125,7 +125,7 @@ package game.sports
 			pizza.animate();
 			pizza.x = screenPoint.x;
 			pizza.y = screenPoint.y;				
-			player.lookingRight = true; //ENGANIA
+//			player.lookingRight = true; //ENGANIA
 			pizza.shoot(player.percentage, 0, player.lookingRight);
 			
 		}
@@ -134,7 +134,19 @@ package game.sports
 		{
 			trace("onReach");
 			pizza.stop();
-//			win();
+			checkWin();
+			
+		}
+		
+		private function checkWin():void
+		{
+			
+			
+			if(pizza.x > 0 && pizza.x < Throwie.MAX_DISTANCE / 3) badge = BADGE_BRONCE;
+			if(pizza.x > Throwie.MAX_DISTANCE / 3 && pizza.x < Throwie.MAX_DISTANCE / 3 * 2) badge = BADGE_SILVER;
+			if(pizza.x > Throwie.MAX_DISTANCE / 3 * 2 && pizza.x < Throwie.MAX_DISTANCE) badge = BADGE_GOLD;
+			if(!player.lookingRight) badge = BADGE_LOOSER;
+			super.win();
 		}
 		
 		override protected function assignBadge():void 
