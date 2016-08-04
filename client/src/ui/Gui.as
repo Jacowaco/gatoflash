@@ -90,7 +90,8 @@ package ui
 			sportsMenu = new McMenu();
 			sportsMenu.txt_title.text = settings.gui.title;
 			sportsMenu.txt_details.text = settings.gui.details;
-	
+			
+			
 			
 			
 			
@@ -117,6 +118,8 @@ package ui
 			trainer = sportsMenu.getChildByName("trainer") as MovieClip;
 			trainer.stop();
 			trainer.visible = false;
+			
+			trainerTxt(false);
 			
 			medal = sportsMenu.getChildByName("medal") as MovieClip;
 			medal.stop();
@@ -209,6 +212,7 @@ package ui
 					sportName(false);
 					rewards(false);
 					inGameInfo(false);
+					trainerTxt(false);
 					sportsMenu.nextWeek.visible = false;
 					break;
 				
@@ -272,9 +276,9 @@ package ui
 //			sportsMenu.txt_sportTitle.text = settings.sports[e.currentTarget.name].name;
 			sportsMenu.txt_sportTitle.visible = false;
 			sportSelected = settings.sports[e.currentTarget.name].classID;
-			trace(JSON.encode(settings));
+			
 			sportsMenu.txt_details.text = settings.sports[e.currentTarget.name].name;
-			trace(JSON.encode(settings));
+			
 			sportsMenu.clubPh.label.text = api.getText(settings.teams[club]);
 			sportsMenu.clubPh.gotoAndStop(club);
 			
@@ -310,13 +314,18 @@ package ui
 			sportsMenu.txt_sportTitle.visible = show;
 		}
 		
-		private function details(show:Boolean):void
+		
+		private function trainerTxt(show:Boolean, text:String=""):void
 		{			
-			sportsMenu.txt_details.visible = show;
+			sportsMenu.txt_trainer.visible = show;
+			if(text != "") sportsMenu.txt_trainer.text = text;
 		}
 		
-
-		
+		private function details(show:Boolean, text:String=""):void
+		{			
+			sportsMenu.txt_details.visible = show;
+			if(text != "") sportsMenu.txt_details.text = text;
+		}
 		
 		public function reset():void
 		{
@@ -342,8 +351,9 @@ package ui
 		public function endgame(medal:int):void{
 			trace("gui endgame", medal);
 			sportsMenu.visible = true;
-			sportName(true);
+		
 			inGameInfo(false);
+			
 			
 			
 			switch(medal)
@@ -352,24 +362,30 @@ package ui
 				{
 					showTrainer("lose");
 					showMedal(Sport.BADGE_LOOSER);
+					trainerTxt(true, api.getText(settings.gui.win.loose));
+							
 					break;
 				}
 				case Sport.BADGE_BRONCE:
 				{
 					showTrainer("win");
 					showMedal(Sport.BADGE_BRONCE);
+					trainerTxt(true, api.getText(settings.gui.win.win));
+					
 					break;
 				}
 				case Sport.BADGE_SILVER:
 				{
 					showTrainer("win");
 					showMedal(Sport.BADGE_SILVER);
+					trainerTxt(true, api.getText(settings.gui.win.win));
 					break;
 				}
 				case Sport.BADGE_GOLD:
 				{
 					showTrainer("win");
 					showMedal(Sport.BADGE_GOLD);
+					trainerTxt(true, api.getText(settings.gui.win.win));
 					break;
 				}
 				
