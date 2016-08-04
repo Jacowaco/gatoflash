@@ -1,6 +1,6 @@
 {
     "defaultValue": {
-        "soundsEnable": false
+        "soundsEnable": true
     },
     "teams": [
         "MEGA ELÁSTICO",
@@ -10,7 +10,7 @@
     "sports": {
         "sportsQty": 4,
         "sport0": {
-            "name": "CARRERA CON VALLAS",
+            "name": "CARRERA CON PEPINOS",
             "id": "hurdles",
             "metres": 250,
             "numObstacles": 20,
@@ -108,8 +108,8 @@
             "bonus": "BONUS:",
             "again": "JUGAR",
             "exit": "SALIR",
-            "loose": "¡TE CAISTE!",
-            "end": "¡LOS DISEÑASTE TODOS!",
+            "loose": "NO PASA NADA, ¡INTÉNTALO DE NUEVO!",
+            "win": "¡MUY BIEN! GANASTE PARA TU EQUIPO",
             "end2": "ERES UN ARTISTA MAGNÍFICO",
             "lastRound": "¡LO LOGRASTE!",
             "lastRound2": "RECLAMA TU HUEVO",
