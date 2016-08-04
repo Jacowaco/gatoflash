@@ -2,6 +2,7 @@ package ui
 {
 	import assets.*;
 	
+	import com.adobe.serialization.json.JSON;
 	import com.qb9.flashlib.movieclip.actions.GotoAndStopAction;
 	
 	import flash.display.MovieClip;
@@ -177,6 +178,8 @@ package ui
 		
 		public function setClub(club:int):void
 		{
+	
+			//TODO parsear el nombre del club al int
 			this.club = club;
 		}
 		
@@ -268,17 +271,19 @@ package ui
 			
 //			sportsMenu.txt_sportTitle.text = settings.sports[e.currentTarget.name].name;
 			sportsMenu.txt_sportTitle.visible = false;
-			sportSelected = settings.sports[e.currentTarget.name].classID;			
+			sportSelected = settings.sports[e.currentTarget.name].classID;
+			trace(JSON.encode(settings));
 			sportsMenu.txt_details.text = settings.sports[e.currentTarget.name].name;
-			
+			trace(JSON.encode(settings));
 			sportsMenu.clubPh.label.text = api.getText(settings.teams[club]);
 			sportsMenu.clubPh.gotoAndStop(club);
 			
+			
 			sportsMenu.instructions.gotoAndStop(settings.sports[e.currentTarget.name].classID);
 			sportsMenu.instructions.txt_inst.text = api.getText(settings.sports[e.currentTarget.name].inst);
+		
 			
-			
-			
+		
 			
 		}
 
@@ -346,6 +351,7 @@ package ui
 				case Sport.BADGE_LOOSER:
 				{
 					showTrainer("lose");
+					showMedal(Sport.BADGE_LOOSER);
 					break;
 				}
 				case Sport.BADGE_BRONCE:
@@ -383,6 +389,10 @@ package ui
 		
 		private function showMedal(frame:int):void
 		{
+			if(frame == 0){ 
+				medal.visible = false;
+				return;
+			}
 			medal.visible = true;
 			medal.gotoAndStop(frame);
 		}

@@ -136,8 +136,9 @@ package
 			gui.addEventListener(GuiEvents.COUNTDOWN_END, onCountDownEnded);
 			
 			
-			var manager:Object = api.getOlympicTeam(); // blabla
+			var team:String = api.getOlympicTeam(); // blabla
 //			var clubes:Array = ["club1", "club2", "club3"];
+			trace(team);
 			
 			gui.setClub(Math.floor(Math.random() * 3));
 			
@@ -296,7 +297,7 @@ package
 		{
 			audio.fx.play("click");
 			logger.info("scoring: ", maxSessionScore.value);
-			disposeSport(currentSport);
+			if(currentSport) disposeSport(currentSport);
 			if(online){
 				// medallas ganadas a los teams		
 			}

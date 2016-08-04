@@ -2,6 +2,11 @@
     "defaultValue": {
         "soundsEnable": false
     },
+    "teams": [
+        "MEGA ELÁSTICO",
+        "ULTRA RÁPIDO",
+        "SÚPER ÁGIL"
+    ],
     "sports": {
         "sportsQty": 4,
         "sport0": {
@@ -12,16 +17,18 @@
             "jumpThreshold": 40,
             "maxSpeed": 20,
             "classID": "Hurdles",
+            "inst": "CORRE Y SALTA LOS OBSTÁCULOS",
             "display": {
                 "label": "METROS"
             }            
         },
         "sport1": {
-            "name": "CARRERA DE 400 METROS",
+            "name": "CARRERA DE 100 METROS",
             "id": "fourHundreds",
-            "metres": 40, 
+            "metres": 15, 
             "maxSpeed": 20,           
-            "classID": "Metres400",
+            "classID": "PlainRace",
+            "inst": "CORRE Y LLEGA PRIMERO A LA META",
             "display": {
                 "label": "METROS"
             }
@@ -30,6 +37,7 @@
             "name": "LANZAMIENTO DE PIZZA",
             "id": "pizza",
             "classID": "DiscusThrow",
+            "inst": "CORRE Y LANZA LEJOS LA PIZZA",
             "display": {
                 "label": "METROS"
             }
@@ -37,6 +45,7 @@
         "sport3": {
             "name": "SALTO EN ALTO",
             "id": "highJump",
+            "inst": "CORRE Y SALTA ALTO",
             "classID": "HighJump",
             "display": {
                 "label": "METROS"
@@ -45,7 +54,7 @@
 
         "defaultValue": {
             "display": {
-                "label": "default"
+                "label": "METROS"
             }
         }
     },
