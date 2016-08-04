@@ -2,6 +2,8 @@ package game.sports
 {
 	import assets.*;
 	
+	import avatar.corredorMC;
+	
 	import com.qb9.flashlib.geom.Vector2D;
 	
 	import flash.display.MovieClip;
@@ -11,14 +13,13 @@ package game.sports
 	import flash.ui.Keyboard;
 	
 	import game.Avatar;
-	import game.Ball;
 	import game.LevelEvents;
-	
+	import game.Throwie;
 	
 	public class DiscusThrow extends Sport 
 	{
-		private var ball:Ball;
-		private var ballOffset:Vector2D = new Vector2D(20, -30);
+		private var pizza:Throwie;
+//		private var ballOffset:Vector2D = new Vector2D(20, -30);
 		
 		//protected var ballMovieClip:Class;
 		//protected var rotate:Boolean;
@@ -29,6 +30,8 @@ package game.sports
 		
 		public function DiscusThrow() 
 		{
+			currentSport = "sport2"; // esto es lo único que debería hardcodear...
+			
 			create();
 			
 		
@@ -45,27 +48,28 @@ package game.sports
 			base = levelDefinition.base;
 			camera.addChild(base);
 			
-			//line = new assets.lineMC;
-			//camera.addChild(line);
-			
-			player = new Avatar(new assets.CorredorMC);			
+			player = new Avatar(new avatar.corredorMC);			
 			player.x = base.x;
 			player.y = base.y;
-			//player.setMaxSpeed(playersMaxSpeed);
-			player.setMode(Avatar.PLAYER);					
-			addChild(player);
+			player.setMode(Avatar.PLAYER);	
+			player.setMaxSpeed(settings.sports[currentSport].maxSpeed);
+			player.setSpinIncrement(settings.sports[currentSport].spinIncrement);
+			camera.addChild(player);
+			
 			
 			//ballMovieClip = assets.discusMC;
 			//rotate = false;
 			
 			throwMeters = 5;
 			
-			ball = new Ball(new assets.discusMC());
-			ball.x = player.x + ballOffset.x;
-			ball.y = player.y + ballOffset.y;
-			ball.addEventListener("reached", ballReached);
-			ball.rotate(false);
-			camera.addChild(ball);
+			pizza = new Throwie(new assets.discusMC());
+			pizza.addEventListener(Throwie.ON_REACH, onReach);
+			
+//			ball.x = player.x + ballOffset.x;
+//			ball.y = player.y + ballOffset.y;
+//			ball.addEventListener("reached", ballReached);
+//			ball.rotate(false);
+			player.addChild(pizza);
 			
 			//if (rotate) ballOffset = new Vector2D(20, -40);
 		}
@@ -81,11 +85,15 @@ package game.sports
 		{
 			if (!playing) return;
 			
-			//camera.x += (playerScreenPosition - player.localToGlobal(new Point(0,0)).x);									
-			bg.follow(camera.x);
+			if(player.lookingRight){
+				camera.x = screenPoint.x - pizza.x;
+				bg.follow(camera.x);
+			}
+												
+			
 			
 			player.update();
-			ball.update(player.x);
+//			ball.update(player.x);
 			
 			/*if (ball.localToGlobal(new Point(0, 0)).x  > Game.SCREEN_WIDTH / 2)
 			{			
@@ -115,15 +123,23 @@ package game.sports
 		{
 			
 		}
+		var screenPoint:Point = new Point();;
 		override public function onKeyDown(key:KeyboardEvent):void 
 		{
-			if (ball.shot) return;
+			if (pizza.shot) return;
 			
 			if (key.keyCode == Keyboard.SPACE)
 			{
-				player.stop();
+				player.throwing();
+				screenPoint = player.localToGlobal(new Point(pizza.x, pizza.y));
+				trace(screenPoint);
+				addChild(pizza);
+				pizza.animate();
+				pizza.x = screenPoint.x;
+				pizza.y = screenPoint.y;
 //				speedBar.stop();
-				ball.shoot(player.percentage, -ballOffset.y, player.lookingRight);
+				
+				pizza.shoot(player.percentage, 0, player.lookingRight);//  
 //				if (!rotate) ball.shoot(speedBar.percentage, -ballOffset.y, player.lookingRight);
 //				else ball.shoot(speedBar.percentage, 0, player.lookingRight);
 			}
@@ -139,9 +155,11 @@ package game.sports
 			}
 		}
 		
-		public function ballReached(e:Event):void
+		public function onReach(e:Event):void
 		{
-			win();
+			trace("onReach");
+			pizza.stop();
+//			win();
 		}
 		
 		override protected function assignBadge():void 

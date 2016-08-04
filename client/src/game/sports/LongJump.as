@@ -10,11 +10,11 @@ package game.sports
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 	
-	import game.Ball;
+	import game.Throwie;
 	import game.LevelEvents;
 
 	import game.Avatar;
-
+	import avatar.corredorMC;
 	public class LongJump extends Sport 
 	{
 		protected var line:MovieClip;
@@ -38,7 +38,7 @@ package game.sports
 			base = levelDefinition.base;
 			camera.addChild(base);
 			
-			player = new Avatar(new assets.CorredorMC);			
+			player = new Avatar(new avatar.corredorMC);			
 			player.x = base.x;
 			player.y = base.y;
 			player.setMode(Avatar.PLAYER);					

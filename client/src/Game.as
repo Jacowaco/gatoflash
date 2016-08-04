@@ -128,6 +128,8 @@ package
 			
 			
 			
+			
+			
 			gui = new Gui(new assets.guiMc());
 			gui.addEventListener(GuiEvents.CONFIRMATION_EXIT, onExitGame);
 			gui.addEventListener(GuiEvents.PAUSE, onPause);			
@@ -135,6 +137,7 @@ package
 //			gui.addEventListener(GuiEvents.PLAY, onPlay);
 			gui.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);
 			gui.addEventListener(GuiEvents.COUNTDOWN_END, onCountDownEnded);
+			
 			
 			
 			var team:String = api.getOlympicTeam(); // blabla
@@ -145,6 +148,8 @@ package
 			
 			addChild(gui);						
 		}
+		
+		
 		
 		private function loadAudio():void
 		{
@@ -214,6 +219,7 @@ package
 		
 		private function onSportWin(e:Event):void
 		{
+			
 			logger.info("level win");			
 			gui.endgame(currentSport.badge);
 //			api.addTeamReward("gold"); // blabla

@@ -32,7 +32,7 @@ package game
 		private var speed:Number;
 		// TODO externalizar por settings.
 		private var speedDamping:Number = -0.5;
-		private var speedIncrement:Number = 2.0;
+		private var speedIncrement:Number; 
 		// TODO estos tambien porque van a depender del juego
 		private var MAX_JUMP_DISTANCE:Number = 200;
 		private var MAX_JUMP_HEIGHT:Number = 50;
@@ -59,6 +59,8 @@ package game
 		private var anim:Parallel;
 		private var to:Timeout;
 		
+		
+		
 		// null como default no. 
 		// no esta bueno porque no arma una interfase. definir las interfases es importante. 
 		// o sea, cada vez que creas un MovingObject tenes que saber que le tenes que pasar un mc.
@@ -67,6 +69,7 @@ package game
 		public function Avatar(mc:MovieClip)  
 		{
 			asset = mc;
+			
 			addChild(mc);
 			speed = 0;
 			lookingRight = true;
@@ -143,6 +146,11 @@ package game
 		public function setMaxSpeed(speed:Number):void
 		{
 			maxSpeed = speed;
+		}
+		
+		public function setSpinIncrement(speed:Number):void
+		{
+			speedIncrement = speed; 
 		}
 		
 		
@@ -226,7 +234,7 @@ package game
 		private function spin():void
 		{
 			lookingRight = !lookingRight;
-			asset.scaleX = -asset.scaleX;
+			scaleX = -scaleX;
 		}
 		
 		public function get percentage():Number
@@ -255,6 +263,12 @@ package game
 				Game.taskRunner().add(to);	
 			}			
 			state = FALL;
+		}
+		public function throwing():void
+		{
+			state = THROWING;
+			asset.gotoAndPlay("throw");
+			
 		}
 		
 		public function jumpHurdle():void

@@ -19,6 +19,7 @@ package game.sports
 	import utils.Utils;
 	
 	
+	import avatar.corredorMC;
 	
 	public class Race extends Sport 
 	{
@@ -74,18 +75,19 @@ package game.sports
 		
 		
 		
+		
 		private function createPlayers():void
 		{			
 			for(var lane:int = 0; lane < lanes.length; lane++){
 				if(lanes[lane].name == "carrilPlayer"){ // si es el corredor...
-					player = new Avatar(new assets.CorredorMC);			
+					player = new Avatar(new avatar.corredorMC);			
 					player.x = lanes[lane].loc.x;
 					player.y = lanes[lane].loc.y;player.setMode(Avatar.PLAYER);					
 					player.setMaxSpeed(playersMaxSpeed);
 					player.setMode(Avatar.PLAYER);	// lo creo en modo player
 					lanes[lane].avatar = player;
 				}else{
-					var enemy:Avatar = new Avatar(new assets.CorredorMC ); 
+					var enemy:Avatar = new Avatar(new avatar.corredorMC ); 
 					enemy.x = lanes[lane].loc.x;
 					enemy.y = lanes[lane].loc.y;					
 					enemy.setMaxSpeed(playersMaxSpeed);
