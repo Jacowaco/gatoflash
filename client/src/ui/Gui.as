@@ -92,9 +92,6 @@ package ui
 			sportsMenu.txt_details.text = settings.gui.details;
 			
 			
-			
-			
-			
 			sportsMenu.backBtn.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ goPage(1) });
 			sportsMenu.backBtn.addEventListener(MouseEvent.ROLL_OVER, onOver);
 			sportsMenu.backBtn.text.text = api.getText(settings.gui.confirmation.back);
@@ -111,8 +108,9 @@ package ui
 			sportsMenu.exitBtn.visible = true;
 
 			sportsMenu.pg2.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ goPage(2) });
+			sportsMenu.pg2.addEventListener(MouseEvent.ROLL_OVER, onOver);
 			sportsMenu.pg1.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ goPage(1) });
-						
+			sportsMenu.pg1.addEventListener(MouseEvent.ROLL_OVER, onOver);			
 			sportsMenu.nextWeek.visible = false;
 			
 			trainer = sportsMenu.getChildByName("trainer") as MovieClip;
@@ -146,7 +144,8 @@ package ui
 				newButton.x = x;
 				newButton.y = y;
 				newButton.visible = false;
-				newButton.addEventListener(MouseEvent.CLICK, playSportMenu);
+				newButton.addEventListener(MouseEvent.CLICK, onPlaySportMenu);
+				newButton.addEventListener(MouseEvent.ROLL_OVER, onOver);
 				
 				sportsMenuButtons.push(newButton);		
 				sportsMenu.removeChild(buttonToReplace);				
@@ -203,6 +202,7 @@ package ui
 		
 		private function goPage(page:int):void
 		{
+			audio.fx.play("click");
 			switch (page){
 				case 1:
 					buttons(true);
@@ -263,8 +263,9 @@ package ui
 	
 		
 		
-		private function playSportMenu(e:Event):void
+		private function onPlaySportMenu(e:Event):void
 		{						
+			audio.fx.play("bInstruc");
 			buttons(false);
 			arrows(false);
 			playbtn(true);

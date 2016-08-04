@@ -40,6 +40,7 @@ package game.sports
 		{
 			trace("game ready. start");
 			dispatchEvent(new Event(GuiEvents.COUNTDOWN)); // el countdown me avisa cuando arrancar
+			audio.fx.loop("correr");
 		}
 		
 		private function createHurdles():void

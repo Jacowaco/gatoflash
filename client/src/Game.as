@@ -113,6 +113,7 @@ package
 		private function settingsLoaded():void
 		{									
 			loadAudio();
+			audio.fx.loop("estadio");
 			createGui();
 			stage.addEventListener(Event.ENTER_FRAME, update);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
@@ -149,18 +150,18 @@ package
 		{
 			audio = new AudioManager(new PlayableFactory(makeAbsoluteURL("sfx/"),"mp3"));			
 			logger.info("registering audio");			
-			audio.registerMusic("inicio", "music_intro");
-			audio.registerFx("bonus", "bonus");
-			audio.registerFx("bInstruc", "bInstruc");
 			
+//			audio.registerMusic("inicio", "music_intro");
+			audio.registerFx("estadio", "estadio");
+			audio.registerFx("bInstruc", "bInstruc");
+			audio.registerFx("correr", "correr");
 			
 			//						audio.registerFx("ganar", "ganar");
 			
 			audio.registerFx("reward", "reward");
-			audio.registerFx("click", "click");
-			
-						audio.registerFx("move", "correPieza");
-						audio.registerFx("fix", "encajaPieza");
+			audio.registerFx("click", "click");			
+			audio.registerFx("move", "correPieza");
+			audio.registerFx("fix", "encajaPieza");
 			//			audio.registerFx("gameover", "gameover");
 			//			audio.registerFx("infraccion", "infraccion");
 			//			audio.registerFx("mSatisfactorio", "mSatisfactorio");
@@ -171,7 +172,8 @@ package
 			//			audio.registerFx("recuento", "recuento");
 			//			audio.registerFx("satisfactorio", "satisfactorio");
 			
-			audio.registerFx("jump", "jump");
+//			audio.registerFx("jump", "jump");
+			
 			audio.registerFx("lose", "perder");
 			audio.registerFx("win", "ganar");
 			audio.registerFx("rollover", "rollover");
@@ -180,7 +182,7 @@ package
 			//			audio.registerMusic("music_intro", "music_intro");
 			
 			//						audio.registerMusic("musica", "AmbienteNavidad");
-			audio.music.loop("inicio");
+//			audio.music.loop("inicio");
 			
 			if(!settings.defaultValue.soundsEnable){
 				audio.gain(null, 0.001);
@@ -218,17 +220,7 @@ package
 				
 		}		
 		
-//		private function onSportLose(e:Event):void
-//		{						
-//			logger.info("level lose");
-//			audio.fx.play("lose");
-//		}
-		
-		
-//		private function onPlay(e:Event):void
-//		{
-//			// TODO sale de la pausa	
-//		}
+
 		
 		private function onCountDownEnded(e:Event):void
 		{
