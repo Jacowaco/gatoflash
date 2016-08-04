@@ -29,7 +29,7 @@ package game.sports
 			collisionRange =  finalMetres * UNITS_PER_METER / numObstacles / 4 * 3; // 75% de distancia entre las vallas
 			jumpinThreshold =	settings.sports[currentSport].jumpThreshold;
 			playersMaxSpeed = 	settings.sports[currentSport].maxSpeed;
-			
+			playersSpeedIncrement  = settings.sports[currentSport].speedIncrement;
 			super.create();
 			createHurdles();
 		

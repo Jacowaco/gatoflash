@@ -148,7 +148,7 @@ package game
 			maxSpeed = speed;
 		}
 		
-		public function setSpinIncrement(speed:Number):void
+		public function setSpeedIncrement(speed:Number):void
 		{
 			speedIncrement = speed; 
 		}
@@ -179,17 +179,25 @@ package game
 		
 		private function updateSpeed():void
 		{	
+			if(mode == PLAYER) {
+				speed = Math.max(speed + speedDamping, 0);
+				speed = Math.min(speed, maxSpeed);	
+				trace("speed: ", speed);
+				trace("max: ", maxSpeed);
+			}
+			
 			if (mode == ENEMY)
 			{
 				accelerate();
+				speed = Math.max(speed + speedDamping, 0);
+				speed = Math.min(speed, maxSpeed);
 			}
-			speed = Math.max(speed + speedDamping, 0);
-			speed = Math.min(speed, maxSpeed);	
 		}
 		
 		
 		private function checkSpeedForAnimation():void
 		{
+			if(speed == 0) asset.gotoAndStop("idle");
 			if(speed > 0 && speed < maxSpeed / 3 && asset.currentLabel != "run1") asset.gotoAndStop("run1");
 			if(speed > maxSpeed / 3 && speed < maxSpeed / 3 * 2 && asset.currentLabel != "run2") asset.gotoAndStop("run2");
 			if(speed > maxSpeed / 3 * 2 && speed <= maxSpeed && asset.currentLabel != "run3") asset.gotoAndStop("run3");
@@ -198,27 +206,12 @@ package game
 		public function start():void
 		{
 			state = RUNNING;
-			
-			//			jumps = _jumps;
-			//			spins = _spins;
-//			speed = 0;
-//			asset.gotoAndPlay("stand"); 
-			
-			//			jumped = false;
-//			reached = false;
-//			lookingRight = true;
-//			spinningCont = 0;
-//			spinningTime = 12;
-//			move = true;
 		}
 		
 		public function stop():void
 		{
 			state = IDLE;
-
-			//			jumps = false;
 			asset.gotoAndPlay("stand");
-			//			spins = false;
 		}
 		
 		public function accelerate():void
@@ -253,9 +246,18 @@ package game
 			return Utils.map(speed, 0, maxSpeed, 0, 1);
 		}
 		
+		public function crash():void
+		{
+			asset.gotoAndStop("fall");
+		}
+		
+		
+		
 		public function collide():void
 		{
+			trace("collided")
 			speed = 0;
+			trace("speed: ", speed);
 			asset.gotoAndStop("fall");
 			if(to && to.running) to.dispose() ;
 			if(!isJumping()){ // ENGANIA PICHANGA... si vengo saltando, por mas que choque me voy a poner en running eso caga la fruta

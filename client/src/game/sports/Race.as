@@ -34,6 +34,7 @@ package game.sports
 		// los lanes estan para poder meter juntos corredores y vallas
 		protected var lanes:Array;		
 		protected var playersMaxSpeed:Number;
+		protected var playersSpeedIncrement:Number;
 		
 		public function Race() 
 		{
@@ -73,9 +74,6 @@ package game.sports
 			camera.addChild(goal);
 		}
 		
-		
-		
-		
 		private function createPlayers():void
 		{			
 			for(var lane:int = 0; lane < lanes.length; lane++){
@@ -84,6 +82,7 @@ package game.sports
 					player.x = lanes[lane].loc.x;
 					player.y = lanes[lane].loc.y;player.setMode(Avatar.PLAYER);					
 					player.setMaxSpeed(playersMaxSpeed);
+					player.setSpeedIncrement(playersSpeedIncrement);
 					player.setMode(Avatar.PLAYER);	// lo creo en modo player
 					lanes[lane].avatar = player;
 				}else{
@@ -91,6 +90,7 @@ package game.sports
 					enemy.x = lanes[lane].loc.x;
 					enemy.y = lanes[lane].loc.y;					
 					enemy.setMaxSpeed(playersMaxSpeed);
+					enemy.setSpeedIncrement(playersSpeedIncrement);
 					enemy.setMode(Avatar.ENEMY);
 					lanes[lane].avatar = enemy;
 				}				
@@ -151,8 +151,10 @@ package game.sports
 		}
 		
 		
+		
 		override public function onKeyDown(key:KeyboardEvent):void 
 		{			
+			if (!playing) return;
 			if (key.keyCode == Keyboard.LEFT && ! leftKeyPressed)
 			{
 				leftKeyPressed = true;

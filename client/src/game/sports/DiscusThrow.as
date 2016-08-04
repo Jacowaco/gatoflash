@@ -19,10 +19,8 @@ package game.sports
 	public class DiscusThrow extends Sport 
 	{
 		private var pizza:Throwie;
-//		private var ballOffset:Vector2D = new Vector2D(20, -30);
-		
-		//protected var ballMovieClip:Class;
-		//protected var rotate:Boolean;
+		// TODO esto tendría que estar adentro del Throwie
+		private var screenPoint:Point = new Point();
 		
 		protected var line:MovieClip;
 		protected var throwMeters:int;
@@ -30,11 +28,8 @@ package game.sports
 		
 		public function DiscusThrow() 
 		{
-			currentSport = "sport2"; // esto es lo único que debería hardcodear...
-			
+			currentSport = "sport2"; // esto es lo único que debería hardcodear...			
 			create();
-			
-		
 		}
 		
 		override public  function init():void
@@ -53,7 +48,7 @@ package game.sports
 			player.y = base.y;
 			player.setMode(Avatar.PLAYER);	
 			player.setMaxSpeed(settings.sports[currentSport].maxSpeed);
-			player.setSpinIncrement(settings.sports[currentSport].spinIncrement);
+			player.setSpeedIncrement(settings.sports[currentSport].speedIncrement);
 			camera.addChild(player);
 			
 			
@@ -89,33 +84,9 @@ package game.sports
 				camera.x = screenPoint.x - pizza.x;
 				bg.follow(camera.x);
 			}
-												
-			
 			
 			player.update();
-//			ball.update(player.x);
-			
-			/*if (ball.localToGlobal(new Point(0, 0)).x  > Game.SCREEN_WIDTH / 2)
-			{			
-				camera.x += ((Game.SCREEN_WIDTH / 2) - (ball.localToGlobal(new Point(0, 0)).x));
-			}
-			
-//			if (player.x > line.x)
-//			{
-//				player.stop();
-//				lose();
-//			}
-			
-//			meters = ball.getMeters();
-//			hud.updateMeters(meters);
-			
-			if (!ball.shot)
-			{
-//				speedBar.percentage = player.percentage;				
-				var offsetX:Number = ballOffset.x * ((player.lookingRight) ? 1 : -1);
-				ball.x += offsetX;
-				ball.y += ballOffset.y;
-			}*/
+
 		}
 		
 		
@@ -123,26 +94,23 @@ package game.sports
 		{
 			
 		}
-		var screenPoint:Point = new Point();;
 		override public function onKeyDown(key:KeyboardEvent):void 
 		{
 			if (pizza.shot) return;
 			
 			if (key.keyCode == Keyboard.SPACE)
 			{
-				player.throwing();
-				screenPoint = player.localToGlobal(new Point(pizza.x, pizza.y));
-				trace(screenPoint);
-				addChild(pizza);
-				pizza.animate();
-				pizza.x = screenPoint.x;
-				pizza.y = screenPoint.y;
-//				speedBar.stop();
 				
-				pizza.shoot(player.percentage, 0, player.lookingRight);//  
-//				if (!rotate) ball.shoot(speedBar.percentage, -ballOffset.y, player.lookingRight);
-//				else ball.shoot(speedBar.percentage, 0, player.lookingRight);
+				releasePizza();
+				if(player.lookingRight){
+					player.throwing();	
+				}else{
+					player.collide();
+				}
+				
+				
 			}
+
 			else if (key.keyCode == Keyboard.LEFT && !leftKeyPressed)
 			{
 				leftKeyPressed = true;
@@ -153,6 +121,16 @@ package game.sports
 				leftKeyPressed = false;
 				player.accelerateSpin();
 			}
+		}
+		private function releasePizza():void
+		{
+			screenPoint = player.localToGlobal(new Point(pizza.x, pizza.y));				
+			addChild(pizza);
+			pizza.animate();
+			pizza.x = screenPoint.x;
+			pizza.y = screenPoint.y;				
+			pizza.shoot(player.percentage, 0, player.lookingRight);
+			
 		}
 		
 		public function onReach(e:Event):void

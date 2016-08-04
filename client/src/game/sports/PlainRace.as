@@ -11,10 +11,11 @@ package game.sports
 		
 		public function PlainRace() 
 		{	
+			// TODO habilitar que la carrera pueda levantar settings individuales
 			currentSport = "sport1"; // esto es lo único que debería hardcodear...
 			finalMetres = settings.sports[currentSport].metres;			
 			playersMaxSpeed = 	settings.sports[currentSport].maxSpeed;
-			
+			playersSpeedIncrement  = settings.sports[currentSport].speedIncrement;
 			super.create();
 			
 			
