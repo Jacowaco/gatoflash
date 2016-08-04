@@ -182,8 +182,8 @@ package game
 			if(mode == PLAYER) {
 				speed = Math.max(speed + speedDamping, 0);
 				speed = Math.min(speed, maxSpeed);	
-				trace("speed: ", speed);
-				trace("max: ", maxSpeed);
+//				trace("speed: ", speed);
+//				trace("max: ", maxSpeed);
 			}
 			
 			if (mode == ENEMY)

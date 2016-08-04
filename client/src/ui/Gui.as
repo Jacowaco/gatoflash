@@ -144,6 +144,7 @@ package ui
 				newButton.x = x;
 				newButton.y = y;
 				newButton.visible = false;
+				newButton.label.text = api.getText(settings.sports["sport"+i].name);
 				newButton.addEventListener(MouseEvent.CLICK, onPlaySportMenu);
 				newButton.addEventListener(MouseEvent.ROLL_OVER, onOver);
 				
@@ -151,6 +152,9 @@ package ui
 				sportsMenu.removeChild(buttonToReplace);				
 				sportsMenu.addChild(newButton);	
 			}
+			
+			
+			
 			
 			goPage(1);
 			

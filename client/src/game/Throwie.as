@@ -17,14 +17,14 @@ package game
 
 		
 		public static const MIN_DISTANCE:int = 2;
-		public static const MAX_DISTANCE:int = 1000;
+		public static const MAX_DISTANCE:int = 2500;
 		public static const ON_REACH:String = "onReach";
 //		
 //		private const START_ANGLE:int = -40;
 //		private const END_ANGLE:int = 40;
 		
 //		private var TIME:int = 2000;
-		private var DISTANCE_Y:int = 20;
+		private var DISTANCE_Y:int = 120;
 //		private var onReached:Event;
 		public var shot:Boolean;
 //		private var offset:Point;
@@ -77,20 +77,28 @@ package game
 			shot = true;
 			trace("SHOOTING");
 			trace(_power, offsetY, _right);
-			distance = (_power * MAX_DISTANCE + MIN_DISTANCE) * (_right ? 1 : -1) ;
+			distance = (_power * MAX_DISTANCE + MIN_DISTANCE);
 			trace(distance);
 			var time:Number = Math.max(Math.abs(distance), 500);
+			if(!_right) {
+				 distance = -MAX_DISTANCE;
+				 time = 250;
+			}
 			
 			var startX:Tween = new Tween(this, time, { x: x + distance / 2 }, { transition:"linear" } );
 			var startY:Tween = new Tween(this, time, { y: y - DISTANCE_Y }, { transition:"Quad.easeOut" } );
 			
 			var endX:Tween   = new Tween(this, time, { x: x + distance },     { transition:"linear" } );
-			var endY:Tween   = new Tween(this, time, { y: y + offsetY },      { transition:"Quad.easeIn" } );
-			var sequenceX:Sequence = new Sequence(startX, endX);
-			var sequenceY:Sequence = new Sequence(startY, endY);
-			var para:Parallel = new Parallel(sequenceX, sequenceY);
-			para.addEventListener(TaskEvent.COMPLETE, function(e:Event):void{dispatchEvent(new Event(ON_REACH));});
-			Game.taskRunner().add(para);
+			var endY:Tween   = new Tween(this, time, { y: y },      { transition:"Quad.easeIn" } );
+			
+			var inmov:Parallel = new Parallel(startX, startY);
+			var outmot:Parallel = new Parallel(endX, endY);
+			
+			var seq:Sequence = new Sequence(inmov, outmot);
+			
+//			seq.addEventListener(TaskEvent.UPDATE, function():void {trace("x", x);});;
+			seq.addEventListener(TaskEvent.COMPLETE, function(e:Event):void{dispatchEvent(new Event(ON_REACH));});
+			Game.taskRunner().add(seq);
 			
 			
 //			if (rotate)

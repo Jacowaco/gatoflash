@@ -7,14 +7,18 @@ package game.sports
 	import com.qb9.flashlib.geom.Vector2D;
 	
 	import flash.display.MovieClip;
+	import flash.display.Scene;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
+	import flash.utils.setTimeout;
 	
 	import game.Avatar;
 	import game.LevelEvents;
 	import game.Throwie;
+	
+	import utils.Utils;
 	
 	public class DiscusThrow extends Sport 
 	{
@@ -71,7 +75,12 @@ package game.sports
 			if (!playing) return;
 			
 			if(player.lookingRight){
-				camera.x = screenPoint.x - this.localToGlobal(new Point(pizza.x, pizza.y)).x;
+				
+				camera.x = -(pizza.x -screenPoint.x);
+				
+				trace("screenPoin", screenPoint.x);
+				trace("piz", pizza.x);
+				trace("cam",camera.x);
 				bg.follow(camera.x);
 			}
 			
@@ -103,10 +112,8 @@ package game.sports
 				}else{
 					player.collide();
 				}
-				
-				
 			}
-
+			
 			else if (key.keyCode == Keyboard.LEFT && !leftKeyPressed)
 			{
 				leftKeyPressed = true;
@@ -118,43 +125,40 @@ package game.sports
 				player.accelerateSpin();
 			}
 		}
+		
 		private function releasePizza():void
 		{
 			screenPoint = player.localToGlobal(new Point(pizza.x, pizza.y));				
-			addChild(pizza);
+			camera.addChild(pizza);			
 			pizza.animate();
 			pizza.x = screenPoint.x;
 			pizza.y = screenPoint.y;				
-//			player.lookingRight = true; //ENGANIA
-			pizza.shoot(player.percentage, 0, player.lookingRight);
-			
+			pizza.shoot(player.percentage, 0, player.lookingRight);			
 		}
 		
 		public function onReach(e:Event):void
 		{
 			trace("onReach");
 			pizza.stop();
-			checkWin();
-			
+			setTimeout(checkWin, 1000);			
 		}
 		
 		private function checkWin():void
-		{
-			
-			
+		{			
+			trace("distance: ", pizza.x);
 			if(pizza.x > 0 && pizza.x < Throwie.MAX_DISTANCE / 3) badge = BADGE_BRONCE;
 			if(pizza.x > Throwie.MAX_DISTANCE / 3 && pizza.x < Throwie.MAX_DISTANCE / 3 * 2) badge = BADGE_SILVER;
-			if(pizza.x > Throwie.MAX_DISTANCE / 3 * 2 && pizza.x < Throwie.MAX_DISTANCE) badge = BADGE_GOLD;
+			if(pizza.x > Throwie.MAX_DISTANCE / 3 * 2) badge = BADGE_GOLD;
 			if(!player.lookingRight) badge = BADGE_LOOSER;
 			super.win();
 		}
 		
-		override protected function assignBadge():void 
-		{
-//			if (meters >= 0) 						badge = BADGE_BRONCE;
-//			if (meters >= Ball.MAX_DISTANCE * 0.5)  badge = BADGE_SILVER;
-//			if (meters >= Ball.MAX_DISTANCE) 	    badge = BADGE_GOLD;
-		}
+//		override protected function assignBadge():void 
+//		{
+////			if (meters >= 0) 						badge = BADGE_BRONCE;
+////			if (meters >= Ball.MAX_DISTANCE * 0.5)  badge = BADGE_SILVER;
+////			if (meters >= Ball.MAX_DISTANCE) 	    badge = BADGE_GOLD;
+//		}
 		
 	}
 
