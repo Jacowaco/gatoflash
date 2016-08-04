@@ -1,6 +1,6 @@
 {
     "defaultValue": {
-        "soundsEnable": true
+        "soundsEnable": false
     },
     "teams": [
         "MEGA ELÁSTICO",
@@ -12,10 +12,11 @@
         "sport0": {
             "name": "CARRERA CON PEPINOS",
             "id": "hurdles",
-            "metres": 250,
+            "metres": 110,
             "numObstacles": 20,
             "jumpThreshold": 40,
-            "maxSpeed": 20,
+            "maxSpeed": 13,
+            "speedIncrement": 2,
             "classID": "Hurdles",
             "inst": "CORRE Y SALTA LOS OBSTÁCULOS",
             "display": {
@@ -25,8 +26,9 @@
         "sport1": {
             "name": "CARRERA DE 100 METROS",
             "id": "fourHundreds",
-            "metres": 15, 
-            "maxSpeed": 20,           
+            "metres": 100, 
+            "maxSpeed": 13,           
+            "speedIncrement": 2,    
             "classID": "PlainRace",
             "inst": "CORRE Y LLEGA PRIMERO A LA META",
             "display": {
@@ -36,6 +38,8 @@
         "sport2": {
             "name": "LANZAMIENTO DE PIZZA",
             "id": "pizza",
+             "maxSpeed": 200,  
+             "speedIncrement": 15,
             "classID": "DiscusThrow",
             "inst": "CORRE Y LANZA LEJOS LA PIZZA",
             "display": {

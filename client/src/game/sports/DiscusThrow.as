@@ -52,27 +52,17 @@ package game.sports
 			camera.addChild(player);
 			
 			
-			//ballMovieClip = assets.discusMC;
-			//rotate = false;
-			
 			throwMeters = 5;
 			
 			pizza = new Throwie(new assets.discusMC());
 			pizza.addEventListener(Throwie.ON_REACH, onReach);
-			
-//			ball.x = player.x + ballOffset.x;
-//			ball.y = player.y + ballOffset.y;
-//			ball.addEventListener("reached", ballReached);
-//			ball.rotate(false);
 			player.addChild(pizza);
 			
-			//if (rotate) ballOffset = new Vector2D(20, -40);
 		}
 		
 		override public function start():void
 		{
 			player.setSpinning();
-			//player.start();
 			playing = true;
 		}
 		
@@ -81,7 +71,7 @@ package game.sports
 			if (!playing) return;
 			
 			if(player.lookingRight){
-				camera.x = screenPoint.x - pizza.x;
+				camera.x = screenPoint.x - this.localToGlobal(new Point(pizza.x, pizza.y)).x;
 				bg.follow(camera.x);
 			}
 			
@@ -89,6 +79,12 @@ package game.sports
 
 		}
 		
+		override public function getPlayerMeters():int
+		{
+			if(player.lookingRight) return pizza.x /Sport.UNITS_PER_METER;
+			return 0;
+		}
+
 		
 		override public function onKeyUp(key:KeyboardEvent):void 
 		{
@@ -129,6 +125,7 @@ package game.sports
 			pizza.animate();
 			pizza.x = screenPoint.x;
 			pizza.y = screenPoint.y;				
+			player.lookingRight = true; //ENGANIA
 			pizza.shoot(player.percentage, 0, player.lookingRight);
 			
 		}

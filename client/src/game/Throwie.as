@@ -1,24 +1,23 @@
 package game 
 {
 	import com.qb9.flashlib.easing.Tween;
-	import com.qb9.flashlib.geom.Vector2D;
-	import com.qb9.flashlib.tasks.Func;
 	import com.qb9.flashlib.tasks.Parallel;
 	import com.qb9.flashlib.tasks.Sequence;
 	import com.qb9.flashlib.tasks.TaskEvent;
-	import com.qb9.flashlib.tasks.Wait;
 	
 	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.geom.Point;
+	
+	import game.sports.Sport;
 	
 	
 	public class Throwie extends Sprite // MovingObject 
 	{
 
-		public static const MIN_DISTANCE:int = 100;
-		public static const MAX_DISTANCE:int = 2500;
+		
+		public static const MIN_DISTANCE:int = 2;
+		public static const MAX_DISTANCE:int = 1000;
 		public static const ON_REACH:String = "onReach";
 //		
 //		private const START_ANGLE:int = -40;
@@ -78,7 +77,7 @@ package game
 			shot = true;
 			trace("SHOOTING");
 			trace(_power, offsetY, _right);
-			distance = (_power * MAX_DISTANCE + MIN_DISTANCE) * (_right ? 1 : -1);
+			distance = (_power * MAX_DISTANCE + MIN_DISTANCE) * (_right ? 1 : -1) ;
 			trace(distance);
 			var time:Number = Math.max(Math.abs(distance), 500);
 			
