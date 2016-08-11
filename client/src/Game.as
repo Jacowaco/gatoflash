@@ -138,13 +138,7 @@ package
 			gui.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);
 			gui.addEventListener(GuiEvents.COUNTDOWN_END, onCountDownEnded);
 			
-			
-			
-			var team:String = api.getOlympicTeam(); // blabla
-//			var clubes:Array = ["club1", "club2", "club3"];
-			trace(team);
-			
-			gui.setClub(Math.floor(Math.random() * 3));
+			gui.setClub( api.getOlympicTeam() );
 			
 			addChild(gui);						
 		}
@@ -221,9 +215,14 @@ package
 			
 			logger.info("level win");			
 			gui.endgame(currentSport.badge);
-//			api.addTeamReward("gold"); // blabla
+			api.addOlympicTeamReward(currentSport.badge);
 				
-		}		
+		}
+		
+		private function onSportLost(e:Event):void
+		{
+			gui.endgame(currentSport.badge);
+		}
 		
 
 		
@@ -255,6 +254,7 @@ package
 			currentSport = new sportClass();				
 			currentSport.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);				
 			currentSport.addEventListener(LevelEvents.LEVEL_WIN, onSportWin);
+			currentSport.addEventListener(LevelEvents.LEVEL_LOST, onSportLost);
 			currentSport.addEventListener(GuiEvents.COUNTDOWN, showCountDown );
 			currentSport.init();
 			

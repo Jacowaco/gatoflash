@@ -156,7 +156,10 @@ package game.sports
 			trace("badge: " + badge);
 		}
 		
-		
+		override public function registerSoundsToStopAtGameEnd():void 
+		{
+			sportSounds = ["bu", "ovacion", "correr"];
+		}
 		
 		override public function onKeyDown(key:KeyboardEvent):void 
 		{			

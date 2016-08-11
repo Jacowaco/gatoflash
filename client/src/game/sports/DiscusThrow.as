@@ -64,6 +64,11 @@ package game.sports
 			
 		}
 		
+		override public function registerSoundsToStopAtGameEnd():void 
+		{
+			sportSounds = ["lanza", "bu", "ovacion"];
+		}
+	    
 		override public function start():void
 		{
 			player.setSpinning();
@@ -134,7 +139,7 @@ package game.sports
 			pizza.animate();
 			pizza.x = screenPoint.x;
 			pizza.y = screenPoint.y;				
-			pizza.shoot(player.percentage, 0, player.lookingRight);			
+			pizza.shoot(player.percentage, 0, player.lookingRight);
 		}
 		
 		public function onReach(e:Event):void

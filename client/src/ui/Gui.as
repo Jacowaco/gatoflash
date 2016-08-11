@@ -14,9 +14,7 @@ package ui
 	
 	import game.Avatar;
 	import game.sports.Sport;
-	
-	import mx.core.ButtonAsset;
-	import mx.olap.aggregators.CountAggregator;
+
 	
 	import popups.ConfirmationPopup;
 	import popups.McMenu;
@@ -182,11 +180,22 @@ package ui
 		
 		}
 		
-		public function setClub(club:int):void
+		public function setClub(club:String):void
 		{
-	
+			var clubINT:int;
+			switch (club) {
+				case "megaElastico":
+					clubINT = 0;
+					break;
+				case "ultraRapido":
+					clubINT = 1;
+					break;
+				case "superAgil":
+					clubINT = 2;
+					break;
+			}
 			//TODO parsear el nombre del club al int
-			this.club = club;
+			this.club = clubINT;
 		}
 		
 		public function showCountDown():void

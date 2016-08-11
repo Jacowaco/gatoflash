@@ -1,6 +1,6 @@
 {
     "defaultValue": {
-        "soundsEnable": false
+        "soundsEnable": true
     },
     "teams": [
         "MEGA ELÁSTICO",
@@ -39,7 +39,7 @@
             "name": "LANZAMIENTO DE PIZZA",
             "id": "pizza",
              "maxSpeed": 200,  
-             "speedIncrement": 15,
+             "speedIncrement": 5,
             "classID": "DiscusThrow",
             "inst": "CORRE Y LANZA LEJOS LA PIZZA",
             "display": {
