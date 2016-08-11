@@ -316,6 +316,11 @@ package game
 			return currentMode;
 		}
 		
+		
+		public function toggleMode():void
+		{
+			currentMode = (currentMode == PLAYER) ? ENEMY : PLAYER;
+		}
 	}
 	
 }

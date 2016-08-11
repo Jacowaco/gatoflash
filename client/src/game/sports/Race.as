@@ -2,7 +2,10 @@ package game.sports
 {
 	import assets.*;
 	
+	import avatar.corredorMC;
+	
 	import com.qb9.flashlib.geom.Vector2D;
+	import com.qb9.flashlib.input.Keys;
 	import com.qb9.flashlib.lang.AssertionError;
 	import com.qb9.flashlib.lang.foreach;
 	
@@ -17,9 +20,6 @@ package game.sports
 	import game.LevelEvents;
 	
 	import utils.Utils;
-	
-	
-	import avatar.corredorMC;
 	
 	public class Race extends Sport 
 	{
@@ -174,6 +174,8 @@ package game.sports
 				leftKeyPressed = false;
 				player.accelerate();
 			}
+			
+			if(key.keyCode == 83) player.toggleMode(); // s
 		}
 		
 		override public function getPlayerMeters():int

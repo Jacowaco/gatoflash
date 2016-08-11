@@ -144,7 +144,7 @@ package
 		private function loadAudio():void
 		{
 			audio = new AudioManager(new PlayableFactory(makeAbsoluteURL("sfx/"),"mp3"));			
-			logger.info("registering audio");			
+			logger.info("registering audio manager");			
 			
 //			audio.registerMusic("inicio", "music_intro");
 			audio.registerFx("estadio", "estadio");

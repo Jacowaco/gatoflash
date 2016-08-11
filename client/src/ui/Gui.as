@@ -26,8 +26,7 @@ package ui
 	
 	public class Gui extends Sprite
 	{
-		private var asset:MovieClip; // gui
-		
+		private var asset:MovieClip; // gui		
 		
 		private var exitBtn:MovieClip; //	salir en la gui ingame		
 		private var info:MovieClip;    //	muestra la data del juego actual (tiempo/metros)
@@ -211,8 +210,6 @@ package ui
 			
 		}
 		
-		
-		
 		private function goPage(page:int):void
 		{
 			audio.fx.play("click");
@@ -242,14 +239,16 @@ package ui
 		{
 			power.visible = show;
 			info.visible = show;
-			
+			exitBtn.visible = show;			
 		}
+		
+		
 		private function rewards(show:Boolean):void
 		{
 			trainer.visible = show;
-			medal.visible = show;
-			
+			medal.visible = show;			
 		}
+		
 		private function arrows(show:Boolean):void
 		{
 			sportsMenu.pg2.visible = show;
