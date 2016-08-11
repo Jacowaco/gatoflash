@@ -57,7 +57,7 @@ package game.sports
 		protected var leftKeyPressed:Boolean;
 		// para poder ubicar el setting de este sport en los settings
 		public var currentSport:String; 
-		protected var exitButton:assets.exitButtonAll;
+//		protected var exitButton:assets.exitButtonAll;
 		protected var sportSounds:Array;
 		
 		public function Sport() 
@@ -70,26 +70,26 @@ package game.sports
 			
 			
 			/*           BOTON PARA SALIRSE EN EL MEDIO DE UNA PARTIDA             */
-			registerSoundsToStopAtGameEnd();
-			exitButton  = new exitButtonAll();
-			addChild(exitButton);
-			exitButton.x = 640; //bg.width - exitButton.width / 2;
-			exitButton.y = 410; //bg.height - exitButton.height / 2;
-			exitButton.addEventListener(MouseEvent.CLICK, onExitClick);
+//			registerSoundsToStopAtGameEnd();
+//			exitButton  = new exitButtonAll();
+//			addChild(exitButton);
+//			exitButton.x = 640; //bg.width - exitButton.width / 2;
+//			exitButton.y = 410; //bg.height - exitButton.height / 2;
+//			exitButton.addEventListener(MouseEvent.CLICK, onExitClick);
 			// ****************************************************************** //
 		}
 		
-		public function onExitClick(e:MouseEvent):void
-		{
-			if ( !playing ) return;
-			
-			for (var i:int = 0; i < sportSounds.length; i++) {
-				audio.fx.stop(sportSounds[i]);
-			}
-			
-			badge = BADGE_LOOSER;
-			lose();
-		}
+//		public function onExitClick(e:MouseEvent):void
+//		{
+//			if ( !playing ) return;
+//			
+//			for (var i:int = 0; i < sportSounds.length; i++) {
+//				audio.fx.stop(sportSounds[i]);
+//			}
+//			
+//			badge = BADGE_LOOSER;
+//			lose();
+//		}
 		
 		
 		// esto te obliga a implementar el metodo en todos los sports
@@ -136,10 +136,10 @@ package game.sports
 			dispatchEvent(new Event(LevelEvents.LEVEL_LOST));
 		}
 		
-		public function registerSoundsToStopAtGameEnd():void
-		{
-			sportSounds = [];
-		}
+//		public function registerSoundsToStopAtGameEnd():void
+//		{
+//			sportSounds = [];
+//		}
 		
 		public function get badge():int
 		{

@@ -125,19 +125,15 @@ package
 		
 		private function createGui():void
 		{
-			
-			
-			
-			
-			
 			gui = new Gui(new assets.guiMc());
 			gui.addEventListener(GuiEvents.CONFIRMATION_EXIT, onExitGame);
 			gui.addEventListener(GuiEvents.PAUSE, onPause);			
 			gui.addEventListener(GuiEvents.RESUME, onResume);
-//			gui.addEventListener(GuiEvents.PLAY, onPlay);
 			gui.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);
 			gui.addEventListener(GuiEvents.COUNTDOWN_END, onCountDownEnded);
-			
+
+			// INTERFASE con el api de clubes
+			// levanto el nombre del club
 			gui.setClub( api.getOlympicTeam() );
 			
 			addChild(gui);						
@@ -165,21 +161,12 @@ package
 			audio.registerFx("ow", "ow");
 			audio.registerFx("bu", "bu");
 			audio.registerFx("valla", "valla");
-						audio.registerFx("lanza", "lanza");
-			//			audio.registerFx("puntos", "puntos");
-			//			audio.registerFx("recuento", "recuento");
-			//			audio.registerFx("satisfactorio", "satisfactorio");
-			
-//			audio.registerFx("jump", "jump");
+			audio.registerFx("lanza", "lanza");
 			
 			audio.registerFx("lose", "perder");
 			audio.registerFx("win", "ganar");
 			audio.registerFx("rollover", "rollover");
 			
-			//			
-			//			audio.registerMusic("music_intro", "music_intro");
-			
-			//						audio.registerMusic("musica", "AmbienteNavidad");
 //			audio.music.loop("inicio");
 			
 			if(!settings.defaultValue.soundsEnable){
@@ -195,8 +182,7 @@ package
 				gui.setTime("0");
 				gui.setScore(currentSport.getPlayerMeters().toString());
 				gui.setPower(currentSport.getPlayerPower());
-			}
-			
+			}			
 		}
 		
 		// -----------------------------------
@@ -211,26 +197,24 @@ package
 		}
 		
 		private function onSportWin(e:Event):void
-		{
-			
+		{			
 			logger.info("level win");			
 			gui.endgame(currentSport.badge);
-			api.addOlympicTeamReward(currentSport.badge);
-				
+			api.addOlympicTeamReward(currentSport.badge);				
 		}
 		
 		private function onSportLost(e:Event):void
 		{
+			logger.info("level lost");
 			gui.endgame(currentSport.badge);
+			api.addOlympicTeamReward(currentSport.badge);
 		}
 		
-
 		
 		private function onCountDownEnded(e:Event):void
 		{
 			if(currentSport.currentSport == "sport0") currentSport.start(); // esto es lo único que debería hardcodear...
-			if(currentSport.currentSport == "sport1") currentSport.start(); // esto es lo único que debería hardcodear...
-			
+			if(currentSport.currentSport == "sport1") currentSport.start(); // esto es lo único que debería hardcodear...	
 		}
 		
 		
@@ -255,11 +239,10 @@ package
 			currentSport.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);				
 			currentSport.addEventListener(LevelEvents.LEVEL_WIN, onSportWin);
 			currentSport.addEventListener(LevelEvents.LEVEL_LOST, onSportLost);
-			currentSport.addEventListener(GuiEvents.COUNTDOWN, showCountDown );
+			currentSport.addEventListener(GuiEvents.COUNTDOWN, showCountDown ); // algunos sports tienen countdown
 			currentSport.init();
 			
-			addChildAt(currentSport, 0);
-			
+			addChildAt(currentSport, 0);			
 			stage.focus = this;
 			
 		}
@@ -271,13 +254,14 @@ package
 			e.currentTarget.removeEventListener(GuiEvents.COUNTDOWN, showCountDown);
 		}
 	
-		private function disposeSport(current:Sport):void
+		private function disposeSport(currentSport:Sport):void
 		{			
-			current.removeEventListener(LevelEvents.LEVEL_WIN, onSportWin);
-			current.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);							
-//			current.addEventListener(GuiEvents.COUNTDOWN, showCountDown );			
-			removeChild(current);
-			current = null;
+			currentSport.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);				
+			currentSport.addEventListener(LevelEvents.LEVEL_WIN, onSportWin);
+			currentSport.addEventListener(LevelEvents.LEVEL_LOST, onSportLost);
+			
+			removeChild(currentSport);
+			currentSport = null;
 		}
 		
 		private function onKeyDown(key:KeyboardEvent):void

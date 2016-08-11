@@ -64,10 +64,10 @@ package game.sports
 			
 		}
 		
-		override public function registerSoundsToStopAtGameEnd():void 
-		{
-			sportSounds = ["lanza", "bu", "ovacion"];
-		}
+//		override public function registerSoundsToStopAtGameEnd():void 
+//		{
+//			sportSounds = ["lanza", "bu", "ovacion"];
+//		}
 	    
 		override public function start():void
 		{
