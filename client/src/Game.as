@@ -176,7 +176,7 @@ package
 			audio.registerFx("lose", "perder");			
 			audio.registerFx("bu", "bu");
 			
-			audio.registerFx("win", "ganar");
+			audio.registerFx("win", "win");
 			audio.registerFx("ovacion", "ovacion");
 			
 			
@@ -198,6 +198,7 @@ package
 			}
 		}
 				
+		
 		private function update(e:Event):void
 		{
 			// MVC
