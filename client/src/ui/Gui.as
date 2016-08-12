@@ -14,7 +14,6 @@ package ui
 	
 	import game.Avatar;
 	import game.sports.Sport;
-
 	
 	import popups.ConfirmationPopup;
 	import popups.McMenu;
@@ -42,7 +41,11 @@ package ui
 		
 		private var trainer:MovieClip;
 		private var medal:MovieClip;
+		private var feedbackMeters:MovieClip;
+		private var feedbackTime:MovieClip;
 		
+		
+
 
 		// menues standar
 		private var confirmationPopup:ConfirmationPopup;
@@ -68,8 +71,9 @@ package ui
 			// time
 			time = asset.getChildByName("time") as MovieClip;
 			time.label.text = api.getText("TIEMPO");
-			time.value.text = "xxxxx";
 			time.visible = false;
+			
+			
 			
 			// power
 			power = asset.getChildByName("power") as MovieClip;
@@ -97,7 +101,7 @@ package ui
 			sportsMenu.backBtn.text.text = api.getText(settings.gui.confirmation.back);
 			sportsMenu.backBtn.visible = false;
 			
-			sportsMenu.playGameBtn.addEventListener(MouseEvent.CLICK, playSport);
+			sportsMenu.playGameBtn.addEventListener(MouseEvent.CLICK, onPlaySport);
 			sportsMenu.playGameBtn.addEventListener(MouseEvent.ROLL_OVER, onOver);
 			sportsMenu.playGameBtn.text.text = api.getText(settings.gui.confirmation.play);
 			sportsMenu.playGameBtn.visible = false;
@@ -113,6 +117,8 @@ package ui
 			sportsMenu.pg1.addEventListener(MouseEvent.ROLL_OVER, onOver);			
 			sportsMenu.nextWeek.visible = false;
 			
+			
+			
 			trainer = sportsMenu.getChildByName("trainer") as MovieClip;
 			trainer.stop();
 			trainer.visible = false;
@@ -122,6 +128,12 @@ package ui
 			medal = sportsMenu.getChildByName("medal") as MovieClip;
 			medal.stop();
 			medal.visible = false;
+			
+			feedbackMeters = sportsMenu.getChildByName("fb_meters") as MovieClip; 			
+			feedbackMeters.visible = false;
+			
+			feedbackTime = sportsMenu.getChildByName("fb_time") as MovieClip; 			
+			feedbackTime.visible = false;
 			
 			// botones de los juegos
 			hurdles_btn;
@@ -215,7 +227,9 @@ package ui
 		
 		private function goPage(page:int):void
 		{
+			audio.fx.stop();
 			audio.fx.play("click");
+				
 			switch (page){
 				case 1:
 					buttons(true);
@@ -238,13 +252,6 @@ package ui
 			
 			
 		}
-//		private function inGameInfo(show:Boolean):void
-//		{
-//			power.visible = show;
-//			meters.visible = show;
-//			exitBtn.visible = show;			
-//		}
-		
 		
 		private function rewards(show:Boolean):void
 		{
@@ -266,13 +273,17 @@ package ui
 			}			
 		}
 		
-		private function playSport(e:Event):void
+		private function onPlaySport(e:Event):void
 		{
 			instructions(false);
 			sportName(false);	
 			sportsMenu.visible = false;			
 			ingameData(true);
-			dispatchEvent(new Event(GuiEvents.NEW_MATCH));			
+			dispatchEvent(new Event(GuiEvents.NEW_MATCH));
+			
+			audio.fx.loop("estadio");
+			audio.fx.stop("music_rio");
+			
 		}
 		
 	
@@ -280,6 +291,7 @@ package ui
 		// muestra el menu del deporte con sus instrucciones
 		private function onPlaySportMenu(e:Event):void
 		{						
+			audio.fx.play("click");
 			ingameData(false);			
 			buttons(false);
 			arrows(false);
@@ -346,8 +358,6 @@ package ui
 		
 		public function setTime(currenttime:String):void
 		{
-			trace("settime", currenttime);
-			
 			time.value.text = currenttime;
 		}
 		
@@ -375,6 +385,7 @@ package ui
 					showTrainer("lose");
 					showMedal(Sport.BADGE_LOOSER);
 					trainerTxt(true, api.getText(settings.gui.win.loose));
+					
 							
 					break;
 				}

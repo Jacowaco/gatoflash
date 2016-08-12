@@ -11,7 +11,6 @@ package game.sports
 	import flash.ui.Keyboard;
 	
 	import game.Throwie;
-	import game.LevelEvents;
 
 	import game.Avatar;
 	import avatar.corredorMC;

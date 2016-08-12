@@ -15,7 +15,7 @@ package game.sports
 	import flash.utils.setTimeout;
 	
 	import game.Avatar;
-	import game.LevelEvents;
+
 	import game.Throwie;
 	
 	import utils.Utils;

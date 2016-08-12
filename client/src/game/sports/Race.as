@@ -17,7 +17,7 @@ package game.sports
 	
 	import game.Avatar;
 	import game.Lane;
-	import game.LevelEvents;
+	
 	
 	import utils.Utils;
 	
@@ -103,15 +103,12 @@ package game.sports
 		{
 			for each(var lane:Lane in lanes) lane.avatar.start();
 			playing = true;
-			audio.fx.loop("correr");
 			timer.go();
 		}
 		
 		override public function update():void 
 		{
 			if (!playing) return;
-			
-			trace(timer.hms());
 			camera.x += (playerScreenPosition - player.localToGlobal(new Point(0,0)).x);									
 			bg.follow(camera.x);
 			
@@ -140,11 +137,13 @@ package game.sports
 		override protected function win():void
 		{
 			assignBadge();
-			if(badge != BADGE_LOOSER){
+			if(badge == BADGE_LOOSER){
 				audio.fx.play("bu");
 			}else{
 				audio.fx.play("ovacion");
 			}
+			
+			
 			super.win();
 		}
 		

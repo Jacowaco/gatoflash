@@ -15,7 +15,7 @@ package game.sports
 	
 	import game.Avatar;
 	import game.Background;
-	import game.LevelEvents;
+	
 	
 	import ui.GuiEvents;
 	
@@ -35,6 +35,13 @@ package game.sports
 		public static const BADGE_BRONCE:int = 1;
 		public static const BADGE_SILVER:int = 2;
 		public static const BADGE_GOLD:int = 3;
+		
+		public static const COMPETITION_START:String = "competitionStart";
+		public static const COMPETITION_END:String = "competitionEnd";
+		public static const COMPETITION_READY:String = "competitionReady";
+		public static const COMPETITION_WIN:String = "competitionWin";
+		public static const COMPETITION_LOST:String = "competitionLost";
+		
 		
 		// esto es privado. no quiero que nadie toque este valor
 		// a lo sumo te doy un metodo publico para que lo leas.
@@ -81,14 +88,17 @@ package game.sports
 		// configuro todo
 		public function init():void
 		{
-			throw new Error("uninplemented");
+			dispatchEvent(new Event(Sport.COMPETITION_READY));
 		}
 
 		// la competencia arranca
 		public function start():void
 		{
-			throw new Error("uninplemented");
+			dispatchEvent(new Event(Sport.COMPETITION_START));
 		}
+		
+		
+		
 		
 		// actualizo
 		public function update():void
@@ -116,13 +126,13 @@ package game.sports
 		protected function win():void
 		{			
 			playing = false;
-			dispatchEvent(new Event(LevelEvents.LEVEL_WIN));
+			dispatchEvent(new Event(Sport.COMPETITION_WIN));
 		}
 		
 		protected function lose():void
 		{
 			playing = false;
-			dispatchEvent(new Event(LevelEvents.LEVEL_LOST));
+			dispatchEvent(new Event(Sport.COMPETITION_LOST));
 		}
 		
 		public function get badge():int

@@ -37,7 +37,6 @@ package
 	import flash.utils.getQualifiedClassName;
 	import flash.utils.setTimeout;
 	
-	import game.LevelEvents;
 	import game.sports.*;
 	import game.sports.Sport;
 	
@@ -113,7 +112,7 @@ package
 		private function settingsLoaded():void
 		{									
 			loadAudio();
-			audio.fx.loop("estadio");
+//			audio.fx.loop("estadio");
 			createGui();
 			stage.addEventListener(Event.ENTER_FRAME, update);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
@@ -140,12 +139,28 @@ package
 		}
 		
 		
+		private var currentScheme:String;
+		
+		private var soundScheme:Object = {
+			"menu": ["music_rio"],
+			"ingame": ["estadio"],
+			"end": ["end_music"]
+		}
+			
+		public function playAudioScheme(name:String):void{		
+			if(name == currentScheme) return;
+			audio.music.stop();			
+			var audios:Array = soundScheme[name];			
+			for each(var s:String in audios) audio.music.loop(s);			
+		}
+		
 		
 		private function loadAudio():void
 		{
 			audio = new AudioManager(new PlayableFactory(makeAbsoluteURL("sfx/"),"mp3"));			
 			logger.info("registering audio manager");			
 			// gui
+	
 			audio.registerFx("bInstruc", "bInstruc");
 			audio.registerFx("click", "click");			
 			audio.registerFx("rollover", "rollover");			
@@ -154,6 +169,7 @@ package
 			audio.registerFx("fix", "encajaPieza");
 			audio.registerFx("lose", "perder");
 			audio.registerFx("win", "ganar");
+			audio.registerFx("music_rio", "music_rio");
 			
 //			audio.registerMusic("inicio", "music_intro");
 			audio.registerFx("estadio", "estadio");
@@ -167,7 +183,7 @@ package
 			audio.registerFx("lanza", "lanza");
 			
 			
-//			audio.music.loop("inicio");
+			
 			
 			if(!settings.defaultValue.soundsEnable){
 				audio.gain(null, 0.001);
@@ -237,8 +253,8 @@ package
 			var sportClass:Class = getDefinitionByName("game.sports." + gui.currentSport) as Class;
 			currentSport = new sportClass();				
 			currentSport.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);				
-			currentSport.addEventListener(LevelEvents.LEVEL_WIN, onSportWin);
-			currentSport.addEventListener(LevelEvents.LEVEL_LOST, onSportLost);
+			currentSport.addEventListener(Sport.COMPETITION_WIN, onSportWin);
+			currentSport.addEventListener(Sport.COMPETITION_LOST, onSportLost);
 			currentSport.addEventListener(GuiEvents.COUNTDOWN, showCountDown ); // algunos sports tienen countdown
 			currentSport.init();
 			
@@ -256,8 +272,8 @@ package
 		private function disposeSport(currentSport:Sport):void
 		{			
 			currentSport.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);				
-			currentSport.addEventListener(LevelEvents.LEVEL_WIN, onSportWin);
-			currentSport.addEventListener(LevelEvents.LEVEL_LOST, onSportLost);			
+			currentSport.addEventListener(Sport.COMPETITION_WIN, onSportWin);
+			currentSport.addEventListener(Sport.COMPETITION_LOST, onSportLost);			
 			removeChild(currentSport);
 			currentSport = null;
 		}
@@ -287,8 +303,9 @@ package
 		override public function dispose():void
 		{
 			audio.music.stop();
+			audio.fx.stop();
 			stage.removeEventListener(Event.ENTER_FRAME, update);
-			disposeSport(currentSport);
+			if(currentSport) disposeSport(currentSport);
 			removeChild(gui); gui = null;			
 		}
 
