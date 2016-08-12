@@ -67,7 +67,8 @@ package ui
 			
 			// time
 			time = asset.getChildByName("time") as MovieClip;
-			time.label.text = api.getText(settings.sports.defaultValue.display.label);
+			time.label.text = api.getText("TIEMPO");
+			time.value.text = "xxxxx";
 			time.visible = false;
 			
 			// power
@@ -223,7 +224,7 @@ package ui
 					playbtn(false);
 					sportName(false);
 					rewards(false);
-					inGameInfo(false);
+					ingameData(false);
 					trainerTxt(false);
 					sportsMenu.nextWeek.visible = false;
 					break;
@@ -237,12 +238,12 @@ package ui
 			
 			
 		}
-		private function inGameInfo(show:Boolean):void
-		{
-			power.visible = show;
-			meters.visible = show;
-			exitBtn.visible = show;			
-		}
+//		private function inGameInfo(show:Boolean):void
+//		{
+//			power.visible = show;
+//			meters.visible = show;
+//			exitBtn.visible = show;			
+//		}
 		
 		
 		private function rewards(show:Boolean):void
@@ -270,7 +271,7 @@ package ui
 			instructions(false);
 			sportName(false);	
 			sportsMenu.visible = false;			
-			inGameInfo(true);
+			ingameData(true);
 			dispatchEvent(new Event(GuiEvents.NEW_MATCH));			
 		}
 		
@@ -343,9 +344,11 @@ package ui
 			exitBtn.visible = true;
 		}
 		
-		public function setTime(time:String):void
+		public function setTime(currenttime:String):void
 		{
-//			asset.timer.field.text = time;
+			trace("settime", currenttime);
+			
+			time.value.text = currenttime;
 		}
 		
 		public function setPower(pow:Number):void
@@ -363,9 +366,7 @@ package ui
 			trace("gui endgame", medal);
 			sportsMenu.visible = true;
 		
-			inGameInfo(false);
-			
-			
+			ingameData(false);
 			
 			switch(medal)
 			{

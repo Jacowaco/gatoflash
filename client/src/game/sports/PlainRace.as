@@ -22,8 +22,7 @@ package game.sports
 		}
 		override public function init():void
 		{
-			trace("game ready. start");
-			timer.go();
+			trace("game ready. start");			
 			dispatchEvent(new Event(GuiEvents.COUNTDOWN)); // el countdown me avisa cuando arrancar
 		}
 		override public function onKeyUp(key:KeyboardEvent):void

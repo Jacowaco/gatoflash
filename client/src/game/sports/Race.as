@@ -104,6 +104,7 @@ package game.sports
 			for each(var lane:Lane in lanes) lane.avatar.start();
 			playing = true;
 			audio.fx.loop("correr");
+			timer.go();
 		}
 		
 		override public function update():void 

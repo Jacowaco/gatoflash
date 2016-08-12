@@ -178,9 +178,9 @@ package game.sports
 			return player.getPower();	
 		}
 		
-		public function getGameplayTime():Number
+		public function getGameplayTime():String
 		{
-			return timer.getIntSec();	
+			return timer.ms();	
 		}
 	}
 

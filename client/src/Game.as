@@ -179,7 +179,7 @@ package
 			// update aprovecho para actualizar la gui con data del juego...
 			if (currentSport) {
 				currentSport.update();
-				gui.setTime("0");
+				gui.setTime(currentSport.getGameplayTime());
 				gui.setScore(currentSport.getPlayerMeters().toString());
 				gui.setPower(currentSport.getPlayerPower());
 			}			
