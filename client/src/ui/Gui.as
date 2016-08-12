@@ -84,8 +84,11 @@ package ui
 			// countdown
 			countdown = asset.getChildByName("countdown") as MovieClip;
 			countdown.addEventListener(Event.COMPLETE, countdownEnded);
+			countdown.addEventListener("ding", function():void { audio.fx.play("click");});
 			countdown.stop();
 			countdown.visible = false;
+			
+			
 			
 			
 			
@@ -96,7 +99,7 @@ package ui
 			sportsMenu.txt_details.text = settings.gui.details;
 			
 			
-			sportsMenu.backBtn.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ goPage(1) });
+			sportsMenu.backBtn.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ showMenuPage(1) });
 			sportsMenu.backBtn.addEventListener(MouseEvent.ROLL_OVER, onOver);
 			sportsMenu.backBtn.text.text = api.getText(settings.gui.confirmation.back);
 			sportsMenu.backBtn.visible = false;
@@ -111,9 +114,9 @@ package ui
 			sportsMenu.exitBtn.text.text = api.getText(settings.gui.confirmation.exit);
 			sportsMenu.exitBtn.visible = true;
 
-			sportsMenu.pg2.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ goPage(2) });
+			sportsMenu.pg2.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ showMenuPage(2) });
 			sportsMenu.pg2.addEventListener(MouseEvent.ROLL_OVER, onOver);
-			sportsMenu.pg1.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ goPage(1) });
+			sportsMenu.pg1.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ showMenuPage(1) });
 			sportsMenu.pg1.addEventListener(MouseEvent.ROLL_OVER, onOver);			
 			sportsMenu.nextWeek.visible = false;
 			
@@ -168,7 +171,7 @@ package ui
 			
 			
 			
-			goPage(1);
+			showMenuPage(1);
 			
 			sportsMenu.instructions.visible = false;
 			sportsMenu.txtClub.visible = false;
@@ -225,9 +228,9 @@ package ui
 			
 		}
 		
-		private function goPage(page:int):void
+		private function showMenuPage(page:int):void
 		{
-
+			audio.fx.play("move");
 			dispatchEvent(new Event(GuiEvents.SHOW_MENU));
 			switch (page){
 				case 1:

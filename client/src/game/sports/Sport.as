@@ -12,10 +12,10 @@ package game.sports
 	import flash.geom.Point;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
+	import flash.utils.setTimeout;
 	
 	import game.Avatar;
 	import game.Background;
-	
 	
 	import ui.GuiEvents;
 	
@@ -39,7 +39,7 @@ package game.sports
 		public static const COMPETITION_START:String = "competitionStart";
 		public static const COMPETITION_END:String = "competitionEnd";
 		public static const COMPETITION_READY:String = "competitionReady";
-		public static const COMPETITION_WIN:String = "competitionWin";
+//		public static const COMPETITION_WIN:String = "competitionWin";
 		public static const COMPETITION_LOST:String = "competitionLost";
 		
 		
@@ -129,11 +129,13 @@ package game.sports
 			
 			if(badge == BADGE_LOOSER){
 				audio.fx.play("bu");
+				audio.fx.play("lose");
 			}else{
 				audio.fx.play("ovacion");
+				audio.fx.play("win");
 			}
 			
-			dispatchEvent(new Event(Sport.COMPETITION_WIN));
+			setTimeout(function():void{ dispatchEvent(new Event(Sport.COMPETITION_END));}, 1000);
 			
 		}
 		

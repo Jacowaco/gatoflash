@@ -112,12 +112,11 @@ package
 		private function settingsLoaded():void
 		{									
 			loadAudio();
-//			audio.fx.loop("estadio");
 			createGui();
+			playAudioScheme("menu");
 			stage.addEventListener(Event.ENTER_FRAME, update);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
-			
+			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);			
 			// ready() le avisa al mmo que ya estoy para jugar (ie. dispatchEvent(MinigameEvent.READY));
 			ready();
 		}		
@@ -131,7 +130,7 @@ package
 			gui.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);
 			gui.addEventListener(GuiEvents.COUNTDOWN_END, onCountDownEnded);
 			gui.addEventListener(GuiEvents.SHOW_MENU, onChangeGui);
-
+		
 			// INTERFASE con el api de clubes
 			// levanto el nombre del club
 			gui.setClub( api.getOlympicTeam() );
@@ -139,17 +138,15 @@ package
 			addChild(gui);						
 		}
 		
-		
-		private var currentScheme:String;
-		
+		// sound schemes: invento para poder tener estados de musica...
+		private var currentScheme:String;		
 		private var soundScheme:Object = {
 			"menu": ["music_rio"],
 			"ingame": ["estadio"],
 			"end": ["end_music"]
-		}
-			
-		public function playAudioScheme(name:String):void{
-			trace(name);
+		}			
+		
+		public function playAudioScheme(name:String):void{			
 			if(name == currentScheme) return;
 			audio.music.stop();			
 			currentScheme = name;
@@ -167,32 +164,34 @@ package
 		{
 			audio = new AudioManager(new PlayableFactory(makeAbsoluteURL("sfx/"),"mp3"));			
 			logger.info("registering audio manager");			
-			// gui
-	
+			// usados en la gui	
 			audio.registerFx("bInstruc", "bInstruc");
 			audio.registerFx("click", "click");			
 			audio.registerFx("rollover", "rollover");			
 			audio.registerFx("move", "correPieza");
 			audio.registerFx("reward", "reward");
 			audio.registerFx("fix", "encajaPieza");
-			audio.registerFx("lose", "perder");
+
+			// end game
+			audio.registerFx("lose", "perder");			
+			audio.registerFx("bu", "bu");
+			
 			audio.registerFx("win", "ganar");
+			audio.registerFx("ovacion", "ovacion");
 			
-			audio.registerMusic("music_rio", "music_rio");
-			audio.registerMusic("estadio", "estadio");
 			
-//			audio.registerMusic("inicio", "music_intro");
+			// in game
+			audio.registerFx("ow", "ow");
 			audio.registerFx("correr", "correr");
 			audio.registerFx("saltoCorto", "saltoCorto");			
-			audio.registerFx("ovacion", "ovacion");
-			audio.registerFx("aplausos", "aplausos");
-			audio.registerFx("ow", "ow");
-			audio.registerFx("bu", "bu");
 			audio.registerFx("valla", "valla");
 			audio.registerFx("lanza", "lanza");
 			
-			
-			
+			// musicas
+			audio.registerMusic("music_rio", "music_rio");
+			audio.registerMusic("estadio", "estadio");
+			audio.registerMusic("end_music", "musica");
+	
 			
 			if(!settings.defaultValue.soundsEnable){
 				audio.gain(null, 0.001);
@@ -201,7 +200,7 @@ package
 				
 		private function update(e:Event):void
 		{
-			// update aprovecho para actualizar la gui con data del juego...
+			// MVC
 			if (currentSport) {
 				currentSport.update();
 				gui.setTime(currentSport.getGameplayTime());
@@ -210,43 +209,44 @@ package
 			}			
 		}
 		
-		// -----------------------------------
 		private function onPause(e:Event):void
 		{
-		
+			// TODO parar la competencia
+			// currentSport.pause();
 		}
 		
 		private function onResume(e:Event):void
 		{
-
+			// currentSport.resume();
 		}
 		
-		private function onSportWin(e:Event):void
+		private function onCompetitionEnd(e:Event):void
 		{			
-			logger.info("level win");			
+			playAudioScheme("end");
 			gui.endgame(currentSport.badge);
 			api.addOlympicTeamReward(currentSport.badgeAsString());				
-		}
-		
-		private function onSportLost(e:Event):void
-		{
-			logger.info("level lost");
-			gui.endgame(currentSport.badge);
-			api.addOlympicTeamReward(currentSport.badgeAsString());
 		}
 		
 		
 		private function onCountDownEnded(e:Event):void
 		{
-			if(currentSport.currentSport == "sport0") currentSport.start(); // esto es lo único que debería hardcodear...
-			if(currentSport.currentSport == "sport1") currentSport.start(); // esto es lo único que debería hardcodear...	
+			if(currentSport.currentSport == "sport0") currentSport.start(); 
+			if(currentSport.currentSport == "sport1") currentSport.start(); 	
 		}
+		
+		private function showCountDown(e:Event):void
+		{			
+			gui.showCountDown();
+			e.currentTarget.removeEventListener(GuiEvents.COUNTDOWN, showCountDown);
+		}
+		
 		
 		
 		private function onNewMatch(e:Event):void
 		{
 			trace("crear el level con ese juego: " + gui.currentSport);
 			playAudioScheme("ingame");
+		
 			PlainRace;
 			LongJump;
 			ShotPut;
@@ -262,8 +262,7 @@ package
 			var sportClass:Class = getDefinitionByName("game.sports." + gui.currentSport) as Class;
 			currentSport = new sportClass();				
 			currentSport.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);				
-			currentSport.addEventListener(Sport.COMPETITION_WIN, onSportWin);
-			currentSport.addEventListener(Sport.COMPETITION_LOST, onSportLost);
+			currentSport.addEventListener(Sport.COMPETITION_END, onCompetitionEnd);
 			currentSport.addEventListener(GuiEvents.COUNTDOWN, showCountDown ); // algunos sports tienen countdown
 			currentSport.init();
 			
@@ -272,21 +271,15 @@ package
 			
 		}
 				
-		private function showCountDown(e:Event):void
-		{			
-			gui.showCountDown();
-			e.currentTarget.removeEventListener(GuiEvents.COUNTDOWN, showCountDown);
-		}
-	
+		
 		private function disposeSport(currentSport:Sport):void
 		{			
-			currentSport.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);				
-			currentSport.addEventListener(Sport.COMPETITION_WIN, onSportWin);
-			currentSport.addEventListener(Sport.COMPETITION_LOST, onSportLost);			
+			currentSport.removeEventListener(GuiEvents.NEW_MATCH, onNewMatch);				
+			currentSport.removeEventListener(Sport.COMPETITION_END, onCompetitionEnd);
 			removeChild(currentSport);
 			currentSport = null;
 		}
-		
+
 		private function onKeyDown(key:KeyboardEvent):void
 		{
 			if (currentSport) currentSport.onKeyDown(key);
@@ -299,16 +292,15 @@ package
 		
 		private function onExitGame(e:Event=null):void
 		{
-			log(e.toString());
-			if(currentSport) disposeSport(currentSport);
 			// TODO VERSION STANDAR CON PUNTOS POR MONEDAS
 			// close(maxSessionScore.value);
 			// por ahora pasa 0 porque da medallas. esto esta implementado en el sport.
-			close(0);
+			close(0); // close llama a dispose();
+
 		}
 		
 		// eliminar bien el juego.
-		// dispose() se llama en baseGame
+		// dispose() se llama en baseGame por medio de close();
 		override public function dispose():void
 		{
 			audio.music.stop();
@@ -317,7 +309,7 @@ package
 			if(currentSport) disposeSport(currentSport);
 			removeChild(gui); gui = null;			
 		}
-
+		
 		public static function taskRunner():TaskRunner
 		{
 			return tasks;			
