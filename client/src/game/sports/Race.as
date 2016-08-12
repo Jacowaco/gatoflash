@@ -110,6 +110,7 @@ package game.sports
 		{
 			if (!playing) return;
 			
+			trace(timer.hms());
 			camera.x += (playerScreenPosition - player.localToGlobal(new Point(0,0)).x);									
 			bg.follow(camera.x);
 			

@@ -26,35 +26,33 @@ package ui
 	
 	public class Gui extends Sprite
 	{
-		private var asset:MovieClip; // gui		
+		private var asset:MovieClip; // la gui completa		
 		
 		private var exitBtn:MovieClip; //	salir en la gui ingame		
-		private var info:MovieClip;    //	muestra la data del juego actual (tiempo/metros)
-		private var power:MovieClip;	//  la barra de power
+		private var meters:MovieClip;    //	muestra la data del juego actual (metros)
+		private var power:MovieClip;	//  la barra de power		
+		private var time:MovieClip;    //	muestra la data del juego actual (tiempo)
+		private var countdown:MovieClip;
 		
-		// menus
+		// menus del juego
+		private var sportSelected:String;
 		private var sportsMenu:MovieClip;
 		private var sportsMenuButtons:Array;
-		private var sportSelected:String;
-
-		private var confirmationPopup:ConfirmationPopup;
-		
-		
 		private var club:int;
 		
-		private var countdown:MovieClip;
 		private var trainer:MovieClip;
 		private var medal:MovieClip;
+		
+
+		// menues standar
+		private var confirmationPopup:ConfirmationPopup;
 		
 		public function Gui(asset:MovieClip)
 		{
 			super();
 			this.asset = asset;
 			
-			trace("creating gui");
-			trace(asset);
-			
-			// boton salir
+			// boton salir ingame
 			exitBtn = asset.getChildByName("exit") as MovieClip;
 			exitBtn.text.text = api.getText(settings.gui.confirmation.exit);
 			exitBtn.mouseEnabled = true;			
@@ -62,12 +60,15 @@ package ui
 			exitBtn.addEventListener(MouseEvent.ROLL_OVER, onOver);
 			exitBtn.visible = false;
 			
-			
-			
 			// score
-			info = asset.getChildByName("display") as MovieClip;
-			info.label.text = api.getText(settings.sports.defaultValue.display.label);
-			info.visible = false;
+			meters = asset.getChildByName("display") as MovieClip;
+			meters.label.text = api.getText(settings.sports.defaultValue.display.label);
+			meters.visible = false;
+			
+			// time
+			time = asset.getChildByName("time") as MovieClip;
+			time.label.text = api.getText(settings.sports.defaultValue.display.label);
+			time.visible = false;
 			
 			// power
 			power = asset.getChildByName("power") as MovieClip;
@@ -80,6 +81,7 @@ package ui
 			countdown.addEventListener(Event.COMPLETE, countdownEnded);
 			countdown.stop();
 			countdown.visible = false;
+			
 			
 			
 			
@@ -238,7 +240,7 @@ package ui
 		private function inGameInfo(show:Boolean):void
 		{
 			power.visible = show;
-			info.visible = show;
+			meters.visible = show;
 			exitBtn.visible = show;			
 		}
 		
@@ -274,37 +276,34 @@ package ui
 		
 	
 		
-		
+		// muestra el menu del deporte con sus instrucciones
 		private function onPlaySportMenu(e:Event):void
 		{						
-			audio.fx.play("bInstruc");
+			ingameData(false);			
 			buttons(false);
 			arrows(false);
+			details(false);
+			sportName(false); 
+			
+						
 			playbtn(true);
 			instructions(true);
-			sportName(true);			
-			details(false);
 			
-			
-//			sportsMenu.txt_sportTitle.text = settings.sports[e.currentTarget.name].name;
-			sportsMenu.txt_sportTitle.visible = false;
-			sportSelected = settings.sports[e.currentTarget.name].classID;
-			
-			sportsMenu.txt_details.text = settings.sports[e.currentTarget.name].name;
-			
+			sportSelected = settings.sports[e.currentTarget.name].classID;			
+			sportsMenu.txt_details.text = settings.sports[e.currentTarget.name].name;			
 			sportsMenu.clubPh.label.text = api.getText(settings.teams[club]);
 			sportsMenu.clubPh.gotoAndStop(club);
-			
-			
 			sportsMenu.instructions.gotoAndStop(settings.sports[e.currentTarget.name].classID);
 			sportsMenu.instructions.txt_inst.text = api.getText(settings.sports[e.currentTarget.name].inst);
-		
-			
-		
-			
 		}
-
 		
+		private function ingameData(show:Boolean):void
+		{
+			time.visible = show;
+			meters.visible = show;
+			power.visible = show;
+			exitBtn.visible = show;
+		}
 		
 		private function instructions(show:Boolean):void
 		{
@@ -313,18 +312,17 @@ package ui
 			sportsMenu.clubPh.visible = show;
 			
 		}
-		
-		
-		
+
 		private function playbtn(show:Boolean):void
 		{
 			sportsMenu.backBtn.visible = show;
 			sportsMenu.playGameBtn.visible = show;
 		}
 				
-		private function sportName(show:Boolean):void
+		private function sportName(show:Boolean, text:String=""):void
 		{			
 			sportsMenu.txt_sportTitle.visible = show;
+			if(text != "") sportsMenu.txt_sportTitle.text = text;
 		}
 		
 		
@@ -358,7 +356,7 @@ package ui
 		
 		public function setScore(score:String):void
 		{
-			this.info.value.text = score;
+			this.meters.value.text = score;
 		}
 		
 		public function endgame(medal:int):void{

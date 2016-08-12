@@ -19,26 +19,24 @@ package utils
 		
 		private var timer:Timer;
 		private var delay:int;
-		private var _pause:Boolean;
+		private var isPaused:Boolean;
 		
 		private var h:int;
 		private var m:int;
 		private var s:int;
 		
 		private var lapTime:int;
-//		private var ticksCount:int = 0; 
-		
-
 		
 		public function Stopwatch( repeatCount:int=0)
 		{
 			delay = 1000;
-			timer = new Timer(delay, repeatCount);
-			
+			if(timer) timer.removeEventListener(TimerEvent.TIMER, onTick);			
+			timer = new Timer(delay, repeatCount);			
 			reset();
-			timer.addEventListener(TimerEvent.TIMER, onClick);
-			_pause = true;
+			timer.addEventListener(TimerEvent.TIMER, onTick);
 			timer.start();
+			isPaused = true;
+			mode = FORWARD;
 			
 		}
 		
@@ -54,11 +52,10 @@ package utils
 		}
 		
 		
-		private function onClick(e:TimerEvent):void{
-
-			if(!_pause){
+		private function onTick(e:TimerEvent):void{
+			if(!isPaused){
 				updateClock();
-			}
+			}			
 		}
 		
 		public function newLap():void {
@@ -72,13 +69,13 @@ package utils
 		
 		public function go():void
 		{
-			_pause = false;
+			isPaused = false;
 		}
 		
 		public function pause():void
 			
 		{
-			_pause = true;
+			isPaused = true;
 		}
 		
 		public function getIntSec():int

@@ -145,17 +145,20 @@ package
 		{
 			audio = new AudioManager(new PlayableFactory(makeAbsoluteURL("sfx/"),"mp3"));			
 			logger.info("registering audio manager");			
+			// gui
+			audio.registerFx("bInstruc", "bInstruc");
+			audio.registerFx("click", "click");			
+			audio.registerFx("rollover", "rollover");			
+			audio.registerFx("move", "correPieza");
+			audio.registerFx("reward", "reward");
+			audio.registerFx("fix", "encajaPieza");
+			audio.registerFx("lose", "perder");
+			audio.registerFx("win", "ganar");
 			
 //			audio.registerMusic("inicio", "music_intro");
 			audio.registerFx("estadio", "estadio");
-			audio.registerFx("bInstruc", "bInstruc");
 			audio.registerFx("correr", "correr");
-			audio.registerFx("saltoCorto", "saltoCorto");
-			
-			audio.registerFx("reward", "reward");
-			audio.registerFx("click", "click");			
-			audio.registerFx("move", "correPieza");
-			audio.registerFx("fix", "encajaPieza");
+			audio.registerFx("saltoCorto", "saltoCorto");			
 			audio.registerFx("ovacion", "ovacion");
 			audio.registerFx("aplausos", "aplausos");
 			audio.registerFx("ow", "ow");
@@ -163,9 +166,6 @@ package
 			audio.registerFx("valla", "valla");
 			audio.registerFx("lanza", "lanza");
 			
-			audio.registerFx("lose", "perder");
-			audio.registerFx("win", "ganar");
-			audio.registerFx("rollover", "rollover");
 			
 //			audio.music.loop("inicio");
 			
@@ -200,14 +200,14 @@ package
 		{			
 			logger.info("level win");			
 			gui.endgame(currentSport.badge);
-			api.addOlympicTeamReward(currentSport.badge);				
+			api.addOlympicTeamReward(currentSport.badgeAsString());				
 		}
 		
 		private function onSportLost(e:Event):void
 		{
 			logger.info("level lost");
 			gui.endgame(currentSport.badge);
-			api.addOlympicTeamReward(currentSport.badge);
+			api.addOlympicTeamReward(currentSport.badgeAsString());
 		}
 		
 		
@@ -246,8 +246,7 @@ package
 			stage.focus = this;
 			
 		}
-		
-		
+				
 		private function showCountDown(e:Event):void
 		{			
 			gui.showCountDown();
@@ -258,8 +257,7 @@ package
 		{			
 			currentSport.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);				
 			currentSport.addEventListener(LevelEvents.LEVEL_WIN, onSportWin);
-			currentSport.addEventListener(LevelEvents.LEVEL_LOST, onSportLost);
-			
+			currentSport.addEventListener(LevelEvents.LEVEL_LOST, onSportLost);			
 			removeChild(currentSport);
 			currentSport = null;
 		}
@@ -276,14 +274,11 @@ package
 		
 		private function onExitGame(e:Event=null):void
 		{
-			audio.fx.play("click");
-			logger.info("scoring: ", maxSessionScore.value);
+			log(e.toString());
 			if(currentSport) disposeSport(currentSport);
-			if(online){
-				// medallas ganadas a los teams		
-			}
-			// TODO
+			// TODO VERSION STANDAR CON PUNTOS POR MONEDAS
 			// close(maxSessionScore.value);
+			// por ahora pasa 0 porque da medallas. esto esta implementado en el sport.
 			close(0);
 		}
 		
@@ -293,7 +288,7 @@ package
 		{
 			audio.music.stop();
 			stage.removeEventListener(Event.ENTER_FRAME, update);
-//			removeChild(level); level = null;			
+			disposeSport(currentSport);
 			removeChild(gui); gui = null;			
 		}
 

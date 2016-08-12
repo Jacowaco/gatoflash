@@ -1,7 +1,6 @@
 package game.sports 
 {
 	import assets.*;
-	import flash.events.MouseEvent;
 	
 	import com.qb9.flashlib.geom.Vector2D;
 	
@@ -9,6 +8,7 @@ package game.sports
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
+	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
@@ -18,6 +18,8 @@ package game.sports
 	import game.LevelEvents;
 	
 	import ui.GuiEvents;
+	
+	import utils.Stopwatch;
 
 	// extiendo de sprite pero en realidad no debería.
 	// ya tengo bastantes DisplayObjects dando vuelta...
@@ -27,6 +29,7 @@ package game.sports
 	public class Sport extends Sprite 
 	{
 	
+		protected var timer:Stopwatch;
 		public static const UNITS_PER_METER:int = 100;		
 		public static const BADGE_LOOSER:int = 0;
 		public static const BADGE_BRONCE:int = 1;
@@ -62,53 +65,38 @@ package game.sports
 		
 		public function Sport() 
 		{
+			timer = new Stopwatch();
 			bg = new Background();
 			addChild(bg);			
 			camera = new Sprite();
 			addChild(camera);
 			playerScreenPosition = Game.SCREEN_WIDTH / 4;
 			
-			
-			/*           BOTON PARA SALIRSE EN EL MEDIO DE UNA PARTIDA             */
-//			registerSoundsToStopAtGameEnd();
-//			exitButton  = new exitButtonAll();
-//			addChild(exitButton);
-//			exitButton.x = 640; //bg.width - exitButton.width / 2;
-//			exitButton.y = 410; //bg.height - exitButton.height / 2;
-//			exitButton.addEventListener(MouseEvent.CLICK, onExitClick);
-			// ****************************************************************** //
 		}
-		
-//		public function onExitClick(e:MouseEvent):void
-//		{
-//			if ( !playing ) return;
-//			
-//			for (var i:int = 0; i < sportSounds.length; i++) {
-//				audio.fx.stop(sportSounds[i]);
-//			}
-//			
-//			badge = BADGE_LOOSER;
-//			lose();
-//		}
-		
 		
 		// esto te obliga a implementar el metodo en todos los sports
 		// no se si es del todo necesario pero creo que te evita algunos quilombos
 		// tendría que pensarlo un cacho mas
+
+		// configuro todo
+		public function init():void
+		{
+			throw new Error("uninplemented");
+		}
+
+		// la competencia arranca
 		public function start():void
 		{
 			throw new Error("uninplemented");
 		}
 		
-		public function init():void
-		{
-			throw new Error("uninplemented");
-		}
+		// actualizo
 		public function update():void
 		{
 			throw new Error("uninplemented");
 		}
 		
+		// los controles
 		public function onKeyDown(key:KeyboardEvent):void
 		{
 			throw new Error("unninplemented");
@@ -118,7 +106,8 @@ package game.sports
 		{
 			throw new Error("unninplemented");
 		}
-		
+
+		// en cada sport se que medalla le corresponde
 		protected function assignBadge():void
 		{
 			throw new Error("unninplemented");
@@ -136,11 +125,6 @@ package game.sports
 			dispatchEvent(new Event(LevelEvents.LEVEL_LOST));
 		}
 		
-//		public function registerSoundsToStopAtGameEnd():void
-//		{
-//			sportSounds = [];
-//		}
-		
 		public function get badge():int
 		{
 			return badgeObtained;
@@ -151,6 +135,34 @@ package game.sports
 			badgeObtained = badge;
 		}
 		
+		public function badgeAsString():String
+		{
+			switch(badgeObtained)
+			{
+				case BADGE_BRONCE:
+				{
+					return "bronce";
+					break;
+				}
+				case BADGE_SILVER:
+				{
+					return "silver";
+					break;
+				}	
+				case BADGE_GOLD:
+				{
+					return "gold";
+					break;
+				}
+				default:
+				{
+					return "";
+					break;
+				}
+			}
+		}
+		
+		
 		private function replay():void
 		{
 			dispatchEvent(new Event(GuiEvents.NEW_MATCH));			
@@ -160,13 +172,16 @@ package game.sports
 		{
 			return 0;
 		}
-		
-		
+			
 		public function getPlayerPower():Number
 		{
 			return player.getPower();	
 		}
 		
+		public function getGameplayTime():Number
+		{
+			return timer.getIntSec();	
+		}
 	}
 
 }
