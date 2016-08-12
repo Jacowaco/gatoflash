@@ -163,7 +163,7 @@ package game.sports
 				audio.fx.play("ovacion");
 			}
 			
-			super.win();
+			super.competitionEnds();
 		}
 		
 //		override protected function assignBadge():void 

@@ -27,7 +27,7 @@ package game.sports
 			throwMeters = 8;
 			
 			create();
-//			start();
+
 		}
 		
 		
@@ -109,7 +109,7 @@ package game.sports
 		public function playerReached(e:Event):void
 		{
 			if (player.x > line.x)
-				win();
+				competitionEnds();
 			else
 				lose();
 		}

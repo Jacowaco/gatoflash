@@ -123,10 +123,18 @@ package game.sports
 			throw new Error("unninplemented");
 		}
 		
-		protected function win():void
+		protected function competitionEnds():void
 		{			
 			playing = false;
+			
+			if(badge == BADGE_LOOSER){
+				audio.fx.play("bu");
+			}else{
+				audio.fx.play("ovacion");
+			}
+			
 			dispatchEvent(new Event(Sport.COMPETITION_WIN));
+			
 		}
 		
 		protected function lose():void

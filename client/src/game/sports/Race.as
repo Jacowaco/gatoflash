@@ -45,7 +45,8 @@ package game.sports
 		{
 			levelDefinition = new assets.racesMC();			
 			createLanes();
-			createPlayers();			
+			createPlayers();	
+			super.init(); // disparo el evento de que ya esta listo todo 
 		}
 		
 		private function createLanes():void 
@@ -104,6 +105,7 @@ package game.sports
 			for each(var lane:Lane in lanes) lane.avatar.start();
 			playing = true;
 			timer.go();
+			super.start(); // disparo el evento de que la carrera inicio
 		}
 		
 		override public function update():void 
@@ -126,7 +128,7 @@ package game.sports
 						trace("enemie "+ cantEnemiesReachedEnd + " reached end");
 					}else{		
 						for each( lane in lanes) lane.avatar.stop();
-						win();
+						competitionEnds();
 					}			
 					lane.avatar.stop();
 				}
@@ -134,17 +136,10 @@ package game.sports
 		}
 		
 		
-		override protected function win():void
+		override protected function competitionEnds():void
 		{
 			assignBadge();
-			if(badge == BADGE_LOOSER){
-				audio.fx.play("bu");
-			}else{
-				audio.fx.play("ovacion");
-			}
-			
-			
-			super.win();
+			super.competitionEnds();
 		}
 		
 		override protected function assignBadge():void 
@@ -157,10 +152,6 @@ package game.sports
 			trace("badge: " + badge);
 		}
 		
-//		override public function registerSoundsToStopAtGameEnd():void 
-//		{
-//			sportSounds = ["bu", "ovacion", "correr"];
-//		}
 		
 		override public function onKeyDown(key:KeyboardEvent):void 
 		{			

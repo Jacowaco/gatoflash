@@ -130,6 +130,7 @@ package
 			gui.addEventListener(GuiEvents.RESUME, onResume);
 			gui.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);
 			gui.addEventListener(GuiEvents.COUNTDOWN_END, onCountDownEnded);
+			gui.addEventListener(GuiEvents.SHOW_MENU, onChangeGui);
 
 			// INTERFASE con el api de clubes
 			// levanto el nombre del club
@@ -147,13 +148,20 @@ package
 			"end": ["end_music"]
 		}
 			
-		public function playAudioScheme(name:String):void{		
+		public function playAudioScheme(name:String):void{
+			trace(name);
 			if(name == currentScheme) return;
 			audio.music.stop();			
+			currentScheme = name;
 			var audios:Array = soundScheme[name];			
 			for each(var s:String in audios) audio.music.loop(s);			
 		}
 		
+		private function onChangeGui(e:Event):void
+		{
+			if(e.type == GuiEvents.SHOW_MENU) playAudioScheme("menu");
+			if(e.type == GuiEvents.INGAME) playAudioScheme("ingame");
+		}
 		
 		private function loadAudio():void
 		{
@@ -169,10 +177,11 @@ package
 			audio.registerFx("fix", "encajaPieza");
 			audio.registerFx("lose", "perder");
 			audio.registerFx("win", "ganar");
-			audio.registerFx("music_rio", "music_rio");
+			
+			audio.registerMusic("music_rio", "music_rio");
+			audio.registerMusic("estadio", "estadio");
 			
 //			audio.registerMusic("inicio", "music_intro");
-			audio.registerFx("estadio", "estadio");
 			audio.registerFx("correr", "correr");
 			audio.registerFx("saltoCorto", "saltoCorto");			
 			audio.registerFx("ovacion", "ovacion");
@@ -237,7 +246,7 @@ package
 		private function onNewMatch(e:Event):void
 		{
 			trace("crear el level con ese juego: " + gui.currentSport);
-			
+			playAudioScheme("ingame");
 			PlainRace;
 			LongJump;
 			ShotPut;

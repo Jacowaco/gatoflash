@@ -227,9 +227,8 @@ package ui
 		
 		private function goPage(page:int):void
 		{
-			audio.fx.stop();
-			audio.fx.play("click");
-				
+
+			dispatchEvent(new Event(GuiEvents.SHOW_MENU));
 			switch (page){
 				case 1:
 					buttons(true);
@@ -279,10 +278,10 @@ package ui
 			sportName(false);	
 			sportsMenu.visible = false;			
 			ingameData(true);
+			
 			dispatchEvent(new Event(GuiEvents.NEW_MATCH));
 			
-			audio.fx.loop("estadio");
-			audio.fx.stop("music_rio");
+	
 			
 		}
 		
