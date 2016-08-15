@@ -21,23 +21,19 @@ package game.sports
 		private var base:MovieClip;
 		
 		public function LongJump() 
-		{
-			super();
-			
-			throwMeters = 8;
-			
+		{			
+			throwMeters = 8;			
 			create();
-
 		}
 		
 		
-		public function create():void 
+		override protected function create():void 
 		{
 			levelDefinition = new assets.throwingMC;
 			base = levelDefinition.base;
 			camera.addChild(base);
 			
-			player = new Avatar(new avatar.corredorMC);			
+			player = new Avatar();			
 			player.x = base.x;
 			player.y = base.y;
 			player.setMode(Avatar.PLAYER);					

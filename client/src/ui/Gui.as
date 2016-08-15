@@ -34,7 +34,7 @@ package ui
 		private var countdown:MovieClip;
 		
 		// menus del juego
-		private var sportSelected:String;
+		private var sportSelected:Object;
 		private var sportsMenu:MovieClip;
 		private var sportsMenuButtons:Array;
 		private var club:int;
@@ -304,7 +304,7 @@ package ui
 			playbtn(true);
 			instructions(true);
 			
-			sportSelected = settings.sports[e.currentTarget.name].classID;			
+			sportSelected = settings.sports[e.currentTarget.name];			
 			sportsMenu.txt_details.text = settings.sports[e.currentTarget.name].name;			
 			sportsMenu.clubPh.label.text = api.getText(settings.teams[club]);
 			sportsMenu.clubPh.gotoAndStop(club);
@@ -469,7 +469,7 @@ package ui
 			dispatchEvent(new Event(GuiEvents.RESUME));
 		}
 
-		public function get currentSport():String
+		public function get currentSport():Object
 		{
 			return sportSelected;
 		}

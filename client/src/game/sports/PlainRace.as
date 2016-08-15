@@ -9,30 +9,29 @@ package game.sports
 	public class PlainRace extends Race 
 	{
 		
-		public function PlainRace() 
+		public function PlainRace(sportDefinition:Object) 
 		{	
-			// TODO habilitar que la carrera pueda levantar settings individuales
-			currentSport = "sport1"; // esto es lo único que debería hardcodear...
-			finalMetres = settings.sports[currentSport].metres;			
-			playersMaxSpeed = 	settings.sports[currentSport].maxSpeed;
-			playersSpeedIncrement  = settings.sports[currentSport].speedIncrement;
-			super.create();
-			
-			
+			super(sportDefinition);
+			finalMetres = currentSport.metres;			
+			playersMaxSpeed = 	currentSport.maxSpeed;
+			playersSpeedIncrement  = currentSport.speedIncrement;
+			super.create();			
 		}
-		override public function init():void
-		{
-			trace("game ready. start");			
-			dispatchEvent(new Event(GuiEvents.COUNTDOWN)); // el countdown me avisa cuando arrancar
+		
+		override public function initialize():void
+		{			
+			// como es una carrera voy a iniciar con cuenta regresiva.
+			// entonces overrideo este metodo a modo de hook.
+			dispatchEvent(new Event(GuiEvents.COUNTDOWN)); // el countdown dispara un evento que me avisa cuando arrancar
 		}
+		
 		override public function onKeyUp(key:KeyboardEvent):void
 		{
 			
 		}
 		
 		override public function onKeyDown(key:KeyboardEvent):void 
-		{			
-//			if (key.keyCode == Keyboard.SPACE) player.jumpHurdle();			
+		{						
 			super.onKeyDown(key);			
 		}
 		

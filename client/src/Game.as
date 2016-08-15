@@ -134,7 +134,6 @@ package
 			// INTERFASE con el api de clubes
 			// levanto el nombre del club
 			gui.setClub( api.getOlympicTeam() );
-			
 			addChild(gui);						
 		}
 		
@@ -178,7 +177,7 @@ package
 			
 			audio.registerFx("win", "win");
 			audio.registerFx("ovacion", "ovacion");
-			
+					
 			
 			// in game
 			audio.registerFx("ow", "ow");
@@ -231,8 +230,7 @@ package
 		
 		private function onCountDownEnded(e:Event):void
 		{
-			if(currentSport.currentSport == "sport0") currentSport.start(); 
-			if(currentSport.currentSport == "sport1") currentSport.start(); 	
+			currentSport.start();
 		}
 		
 		private function showCountDown(e:Event):void
@@ -245,7 +243,8 @@ package
 		
 		private function onNewMatch(e:Event):void
 		{
-			trace("crear el level con ese juego: " + gui.currentSport);
+			trace("crear el level con ese juego: " + gui.currentSport.classID);
+			
 			playAudioScheme("ingame");
 		
 			PlainRace;
@@ -254,18 +253,18 @@ package
 			HighJump;
 			Hurdles;
 			DiscusThrow;
-			PoleVault;
 			JavelinThrow;
 			
 			
 			if(currentSport) disposeSport(currentSport);
 				
-			var sportClass:Class = getDefinitionByName("game.sports." + gui.currentSport) as Class;
-			currentSport = new sportClass();				
+			var sportClass:Class = getDefinitionByName("game.sports." + gui.currentSport.classID) as Class;
+			currentSport = new sportClass(gui.currentSport);
 			currentSport.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);				
 			currentSport.addEventListener(Sport.COMPETITION_END, onCompetitionEnd);
 			currentSport.addEventListener(GuiEvents.COUNTDOWN, showCountDown ); // algunos sports tienen countdown
-			currentSport.init();
+			
+			currentSport.initialize();
 			
 			addChildAt(currentSport, 0);			
 			stage.focus = this;

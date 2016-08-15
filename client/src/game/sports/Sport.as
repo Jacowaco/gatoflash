@@ -66,7 +66,7 @@ package game.sports
 		protected var playing:Boolean;
 		protected var leftKeyPressed:Boolean;
 		// para poder ubicar el setting de este sport en los settings
-		public var currentSport:String; 
+		public var currentSport:Object; 
 //		protected var exitButton:assets.exitButtonAll;
 		protected var sportSounds:Array;
 		
@@ -85,8 +85,13 @@ package game.sports
 		// no se si es del todo necesario pero creo que te evita algunos quilombos
 		// tendría que pensarlo un cacho mas
 
+		protected function create():void
+		{
+			throw new Error("create not implemented");
+		}
+		
 		// configuro todo
-		public function init():void
+		public function initialize():void
 		{
 			dispatchEvent(new Event(Sport.COMPETITION_READY));
 		}

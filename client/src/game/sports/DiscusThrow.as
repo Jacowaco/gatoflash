@@ -23,6 +23,8 @@ package game.sports
 	public class DiscusThrow extends Sport 
 	{
 		private var pizza:Throwie;
+		
+		
 		// TODO esto tendría que estar adentro del Throwie
 		private var screenPoint:Point = new Point();
 		
@@ -30,29 +32,30 @@ package game.sports
 		protected var throwMeters:int;
 		private var base:MovieClip;
 		
-		public function DiscusThrow() 
+		public function DiscusThrow(sportDefinition:Object) 
 		{
-			currentSport = "sport2"; // esto es lo único que debería hardcodear...			
+			currentSport = sportDefinition; // esto es lo único que debería hardcodear...			
 			create();
 		}
 		
-		override public  function init():void
+		override public  function initialize():void
 		{
+			// este juego no usa contdown. inicia aca.
 			start();
 		}
 		
-		protected function create():void 
+		override protected function create():void 
 		{
 			levelDefinition = new assets.throwingMC;
 			base = levelDefinition.base;
 			camera.addChild(base);
 			
-			player = new Avatar(new avatar.corredorMC);			
+			player = new Avatar();			
 			player.x = base.x;
 			player.y = base.y;
 			player.setMode(Avatar.PLAYER);	
-			player.setMaxSpeed(settings.sports[currentSport].maxSpeed);
-			player.setSpeedIncrement(settings.sports[currentSport].speedIncrement);
+			player.setMaxSpeed(currentSport.maxSpeed);
+			player.setSpeedIncrement(currentSport.speedIncrement);
 			camera.addChild(player);
 			
 			
@@ -63,11 +66,6 @@ package game.sports
 			player.addChild(pizza);
 			
 		}
-		
-//		override public function registerSoundsToStopAtGameEnd():void 
-//		{
-//			sportSounds = ["lanza", "bu", "ovacion"];
-//		}
 	    
 		override public function start():void
 		{

@@ -8,18 +8,11 @@ package game.sports
 		
 		public function JavelinThrow() 
 		{
-			super();
+			super("sport5"); // ver setting
 			
-			//ballMovieClip = assets.javelinMC;
-			//rotate = true;
 			
-			throwMeters = 10;
+			
 		}
-		
-		//override protected function startPlayer():void
-		//{
-			//player.start();
-		//}
 	}
 
 }

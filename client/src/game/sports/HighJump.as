@@ -20,19 +20,19 @@ package game.sports
 			create();	
 		}
 		
-		override public function init():void
+		override public function initialize():void
 		{
-			
+			start();	
 		}
 		
-		public function create():void 
+		override protected function create():void 
 		{
 			
 			levelDefinition = new assets.highJump;
 			line = levelDefinition.line;
 			camera.addChild(line);
 			
-			player = new Avatar(new avatar.corredorMC);			
+			player = new Avatar();			
 			player.x = line.x - 100;
 			player.y = line.y;
 			player.setMode(Avatar.PLAYER);					

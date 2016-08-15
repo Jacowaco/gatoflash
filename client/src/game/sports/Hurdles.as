@@ -21,26 +21,27 @@ package game.sports
 		private var numObstacles:Number;
 		private var collisionRange:Number;
 		private var jumpinThreshold:Number;
-		public function Hurdles() 
+		
+		public function Hurdles(sportDefinition:Object) 
 		{
-			currentSport = "sport0"; // esto es lo único que debería hardcodear...
-			finalMetres = settings.sports[currentSport].metres;			
-			numObstacles = settings.sports[currentSport].numObstacles;
+			super(sportDefinition);
+			
+			finalMetres = currentSport.metres;			
+			numObstacles = currentSport.numObstacles;
 			collisionRange =  finalMetres * UNITS_PER_METER / numObstacles / 4 * 3; // 75% de distancia entre las vallas
-			jumpinThreshold =	settings.sports[currentSport].jumpThreshold;
-			playersMaxSpeed = 	settings.sports[currentSport].maxSpeed;
-			playersSpeedIncrement  = settings.sports[currentSport].speedIncrement;
+			jumpinThreshold =	currentSport.jumpThreshold;
+			playersMaxSpeed = 	currentSport.maxSpeed;
+			playersSpeedIncrement  = currentSport.speedIncrement;
 			super.create();
 			createHurdles();
 		
 			
 		}
 		
-		override public function init():void
-		{
-			trace("game ready. start");
-			dispatchEvent(new Event(GuiEvents.COUNTDOWN)); // el countdown me avisa cuando arrancar
-//			audio.fx.loop("correr");
+		override public function initialize():void
+		{		
+			dispatchEvent(new Event(GuiEvents.COUNTDOWN)); 
+
 		}
 		
 		private function createHurdles():void

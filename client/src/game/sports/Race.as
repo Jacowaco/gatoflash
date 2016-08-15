@@ -36,17 +36,17 @@ package game.sports
 		protected var playersMaxSpeed:Number;
 		protected var playersSpeedIncrement:Number;
 		
-		public function Race() 
+		public function Race(currentSport:Object) 
 		{
-			
+			this.currentSport = currentSport;
 		}
 		
-		protected function create():void
+		override protected function create():void
 		{
 			levelDefinition = new assets.racesMC();			
 			createLanes();
 			createPlayers();	
-			super.init(); // disparo el evento de que ya esta listo todo 
+			super.initialize(); // disparo el evento de que ya esta listo todo 
 		}
 		
 		private function createLanes():void 
@@ -79,7 +79,7 @@ package game.sports
 		{			
 			for(var lane:int = 0; lane < lanes.length; lane++){
 				if(lanes[lane].name == "carrilPlayer"){ // si es el corredor...
-					player = new Avatar(new avatar.corredorMC);			
+					player = new Avatar();			
 					player.x = lanes[lane].loc.x;
 					player.y = lanes[lane].loc.y;player.setMode(Avatar.PLAYER);					
 					player.setMaxSpeed(playersMaxSpeed);
@@ -87,7 +87,7 @@ package game.sports
 					player.setMode(Avatar.PLAYER);	// lo creo en modo player
 					lanes[lane].avatar = player;
 				}else{
-					var enemy:Avatar = new Avatar(new avatar.corredorMC ); 
+					var enemy:Avatar = new Avatar(); 
 					enemy.x = lanes[lane].loc.x;
 					enemy.y = lanes[lane].loc.y;					
 					enemy.setMaxSpeed(playersMaxSpeed * 0.95);

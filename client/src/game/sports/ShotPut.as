@@ -8,10 +8,8 @@ package game.sports
 		
 		public function ShotPut() 
 		{
-			super();
-			
-			//ballMovieClip = assets.ballMC;
-			//rotate = false;
+			super("sport4"); // ver settings
+
 		}
 		
 	}

@@ -1,5 +1,7 @@
 package game 
 {
+	import avatar.corredorMC;
+	
 	import com.qb9.flashlib.easing.Tween;
 	import com.qb9.flashlib.geom.Vector2D;
 	import com.qb9.flashlib.tasks.Func;
@@ -18,26 +20,15 @@ package game
 	
 	import utils.Utils;
 	
-	
-	public class Avatar extends Sprite // extends MovingObject 
+	public class Avatar extends Sprite  
 	{
 		
-		private var currentMode:int;
+		private var currentMode:int = ENEMY;
+		
 		public static const ENEMY:int = 0;
 		public static const PLAYER:int = 1;
 		
-		public var asset:MovieClip;
-		
-	
-		private var speed:Number;
-		// TODO externalizar por settings.
-		private var speedDamping:Number = -0.5;
-		private var speedIncrement:Number; 
-		// TODO estos tambien porque van a depender del juego
-		private var MAX_JUMP_DISTANCE:Number = 200;
-		private var MAX_JUMP_HEIGHT:Number = 50;
-		private var maxSpeed:Number = 1;
-		private var spinFactor:Number = 0.3;
+		private var state:int = IDLE;
 		
 		private const IDLE:int = 0;
 		private const RUNNING:int = 1;
@@ -46,12 +37,26 @@ package game
 		private const THROWING:int = 4;
 		private const FALL:int = 5;
 		
-		private var state:int = IDLE;
+		
+		public var asset:MovieClip;
+		// TODO externalizar por settings.
+		private var speedDamping:Number = -0.5;
+		private var speedIncrement:Number; 
+		
+		private var MAX_JUMP_DISTANCE:Number = 200;
+		private var MAX_JUMP_HEIGHT:Number = 50;
+		
+		
+		private var speed:Number;
+		private var maxSpeed:Number = 1;
+		
+		
 		
 		private var currentAnimation:String;
 		
 		public var lookingRight:Boolean;
 		
+		private var spinFactor:Number = 0.3;		
 		private var spinningCont:int;
 		private var spinningTime:int;
 		
@@ -59,18 +64,10 @@ package game
 		private var anim:Parallel;
 		private var to:Timeout;
 		
-		
-		
-		// null como default no. 
-		// no esta bueno porque no arma una interfase. definir las interfases es importante. 
-		// o sea, cada vez que creas un MovingObject tenes que saber que le tenes que pasar un mc.
-		// entonces lo haces siempre igual...
-		//		public function Player(mc:MovieClip=null)		
-		public function Avatar(mc:MovieClip)  
+		public function Avatar()  
 		{
-			asset = mc;
-			
-			addChild(mc);
+			asset = new corredorMC;			
+			addChild(asset);
 			speed = 0;
 			lookingRight = true;
 		}
@@ -277,11 +274,8 @@ package game
 		public function jumpHurdle():void
 		{
 			if (state == JUMPING) return;
-//			if(mode == PLAYER ) trace("jump added: jumping: " , state ==JUMPING);
 			state = JUMPING;
 			audio.fx.play("saltoCorto");
-			
-			
 			asset.gotoAndStop("jump");			
 
 			
