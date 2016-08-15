@@ -15,39 +15,38 @@ package game.sports
 	import flash.utils.setTimeout;
 	
 	import game.Avatar;
-
 	import game.Throwie;
 	
 	import utils.Utils;
 	
 	public class ThrowingGame extends Sport 
 	{
-		private var pizza:Throwie;
-		
-		
+
 		// TODO esto tendría que estar adentro del Throwie
 		private var screenPoint:Point = new Point();
+		private var bullet:Throwie;
 		
-		protected var line:MovieClip;
+		
 		protected var throwMeters:int;
-		private var base:MovieClip;
+		protected var line:MovieClip;
+		protected var base:MovieClip;
+		protected var arena:MovieClip;
 		
 		public function ThrowingGame(sportDefinition:Object) 
 		{
-			currentSport = sportDefinition; // esto es lo único que debería hardcodear...			
+			currentSport = sportDefinition; 			
 			create();
-		}
-		
-		override public  function initialize():void
-		{
-			// este juego no usa contdown. inicia aca.
-			start();
 		}
 		
 		override protected function create():void 
 		{
 			levelDefinition = new assets.throwingMC;
+			arena = levelDefinition.arena;
 			base = levelDefinition.base;
+			line = levelDefinition.line;
+		
+			camera.addChild(arena);
+			camera.addChild(line);
 			camera.addChild(base);
 			
 			player = new Avatar();			
@@ -61,11 +60,20 @@ package game.sports
 			
 			throwMeters = 5;
 			
-			pizza = new Throwie(new assets.discusMC());
-			pizza.addEventListener(Throwie.ON_REACH, onReach);
-			player.addChild(pizza);
+			bullet = new Throwie(new assets.discusMC());
+			bullet.addEventListener(Throwie.ON_REACH, onReach);
+			player.addChild(bullet);
 			
 		}
+		
+		
+		override public  function initialize():void
+		{
+			// este juego no usa contdown. inicia aca.
+			start();
+		}
+		
+	
 	    
 		override public function start():void
 		{
@@ -79,10 +87,10 @@ package game.sports
 			
 			if(player.lookingRight){
 				
-				camera.x = -(pizza.x -screenPoint.x);
+				camera.x = -(bullet.x -screenPoint.x);
 				
 				trace("screenPoin", screenPoint.x);
-				trace("piz", pizza.x);
+				trace("piz", bullet.x);
 				trace("cam",camera.x);
 				bg.follow(camera.x);
 			}
@@ -93,7 +101,7 @@ package game.sports
 		
 		override public function getPlayerMeters():int
 		{
-			if(player.lookingRight) return pizza.x /Sport.UNITS_PER_METER;
+			if(player.lookingRight) return bullet.x /Sport.UNITS_PER_METER;
 			return 0;
 		}
 
@@ -104,7 +112,7 @@ package game.sports
 		}
 		override public function onKeyDown(key:KeyboardEvent):void 
 		{
-			if (pizza.shot) return;
+			if (bullet.shot) return;
 			
 			if (key.keyCode == Keyboard.SPACE)
 			{
@@ -132,27 +140,27 @@ package game.sports
 		private function releasePizza():void
 		{
 			audio.fx.play("lanza");
-			screenPoint = player.localToGlobal(new Point(pizza.x, pizza.y));				
-			camera.addChild(pizza);			
-			pizza.animate();
-			pizza.x = screenPoint.x;
-			pizza.y = screenPoint.y;				
-			pizza.shoot(player.percentage, 0, player.lookingRight);
+			screenPoint = player.localToGlobal(new Point(bullet.x, bullet.y));				
+			camera.addChild(bullet);			
+			bullet.animate();
+			bullet.x = screenPoint.x;
+			bullet.y = screenPoint.y;				
+			bullet.shoot(player.percentage, 0, player.lookingRight);
 		}
 		
 		public function onReach(e:Event):void
 		{
 			trace("onReach");
-			pizza.stop();
+			bullet.stop();
 			setTimeout(checkWin, 1000);			
 		}
 		
 		private function checkWin():void
 		{			
-			trace("distance: ", pizza.x);
-			if(pizza.x > 0 && pizza.x < Throwie.MAX_DISTANCE / 3) badge = BADGE_BRONCE;
-			if(pizza.x > Throwie.MAX_DISTANCE / 3 && pizza.x < Throwie.MAX_DISTANCE / 3 * 2) badge = BADGE_SILVER;
-			if(pizza.x > Throwie.MAX_DISTANCE / 3 * 2) badge = BADGE_GOLD;
+			trace("distance: ", bullet.x);
+			if(bullet.x > 0 && bullet.x < Throwie.MAX_DISTANCE / 3) badge = BADGE_BRONCE;
+			if(bullet.x > Throwie.MAX_DISTANCE / 3 && bullet.x < Throwie.MAX_DISTANCE / 3 * 2) badge = BADGE_SILVER;
+			if(bullet.x > Throwie.MAX_DISTANCE / 3 * 2) badge = BADGE_GOLD;
 			if(!player.lookingRight) badge = BADGE_LOOSER;
 			
 			if(badge != BADGE_LOOSER){

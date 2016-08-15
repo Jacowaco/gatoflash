@@ -273,6 +273,7 @@ package
 			stage.focus = this;
 			
 		}
+		
 				
 		
 		private function disposeSport(currentSport:Sport):void

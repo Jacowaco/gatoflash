@@ -51,7 +51,7 @@
             "id": "pizza",
              "maxSpeed": 200,  
              "speedIncrement": 5,
-            "classID": "DiscusThrow",
+            "classID": "ThrowingGame",
             "inst": "CORRE Y LANZA LEJOS LA PIZZA"
         },
         "sport3": {
