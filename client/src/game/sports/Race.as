@@ -18,7 +18,6 @@ package game.sports
 	import game.Avatar;
 	import game.Lane;
 	
-	
 	import utils.Utils;
 	
 	public class Race extends Sport 
@@ -33,8 +32,9 @@ package game.sports
 		protected var goal:MovieClip;
 		// los lanes estan para poder meter juntos corredores y vallas
 		protected var lanes:Array;		
-		protected var playersMaxSpeed:Number;
-		protected var playersSpeedIncrement:Number;
+		
+//		protected var playerMaxSpeed:Number;
+//		protected var playerSpeedIncrement:Number;
 		
 		public function Race(currentSport:Object) 
 		{
@@ -82,16 +82,18 @@ package game.sports
 					player = new Avatar();			
 					player.x = lanes[lane].loc.x;
 					player.y = lanes[lane].loc.y;player.setMode(Avatar.PLAYER);					
-					player.setMaxSpeed(playersMaxSpeed);
-					player.setSpeedIncrement(playersSpeedIncrement);
+					player.setMaxSpeed(currentSport.player.maxSpeed);
+					player.setSpeedIncrement(currentSport.player.speedIncrement);
 					player.setMode(Avatar.PLAYER);	// lo creo en modo player
 					lanes[lane].avatar = player;
 				}else{
 					var enemy:Avatar = new Avatar(); 
 					enemy.x = lanes[lane].loc.x;
-					enemy.y = lanes[lane].loc.y;					
-					enemy.setMaxSpeed(playersMaxSpeed * 0.95);
-					enemy.setSpeedIncrement(playersSpeedIncrement);
+					enemy.y = lanes[lane].loc.y;
+					var maxSpeed:Number = currentSport.enemies.maxSpeed * Utils.map(Math.random(), 0, 1, currentSport.enemies.speedVariation[0],currentSport.enemies.speedVariation[1]) / 100;  
+					trace(maxSpeed);
+					enemy.setMaxSpeed(maxSpeed);
+					enemy.setSpeedIncrement(currentSport.enemies.speedIncrement);
 					enemy.setMode(Avatar.ENEMY);
 					lanes[lane].avatar = enemy;
 				}				

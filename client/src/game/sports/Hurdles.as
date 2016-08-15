@@ -30,8 +30,7 @@ package game.sports
 			numObstacles = currentSport.numObstacles;
 			collisionRange =  finalMetres * UNITS_PER_METER / numObstacles / 4 * 3; // 75% de distancia entre las vallas
 			jumpinThreshold =	currentSport.jumpThreshold;
-			playersMaxSpeed = 	currentSport.maxSpeed;
-			playersSpeedIncrement  = currentSport.speedIncrement;
+			
 			super.create();
 			createHurdles();
 		
@@ -94,9 +93,9 @@ package game.sports
 		{									
 			var distToObstacle:Number = Math.abs(hurdle.x - avatar.x);
 			if(distToObstacle < jumpinThreshold && ! avatar.isJumping()){
-				var chance:int = 500;			
-				var nounce:int = Math.random() * 1000;	
-				if(nounce < chance) {
+				var chance:int = currentSport.enemies.jumpSkill;			
+				var nounce:int = Math.random() * 100;	
+				if(nounce <= chance) {
 					avatar.jumpHurdle();
 				}
 			}			

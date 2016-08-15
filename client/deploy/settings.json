@@ -1,6 +1,6 @@
 {
     "defaultValue": {
-        "soundsEnable": true
+        "soundsEnable": false
     },
     "teams": [
         "MEGA ELÁSTICO",
@@ -12,15 +12,26 @@
         "sport0": {
             "name": "CARRERA CON PEPINOS",
             "id": "hurdles",
+            "classID": "Hurdles",            
             "metres": 110,
             "numObstacles": 20,
             "jumpThreshold": 40,
-            "maxSpeed": 13,
-            "speedIncrement": 2,
-            "classID": "Hurdles",
+            "player":{
+                "maxSpeed": 13,
+                "speedIncrement": 2                
+            },
+            "enemies":{
+                "maxSpeed": 13,
+                "speedIncrement": 2,
+                "speedVariation": [100, 100],                // minimo y máximo en porcentaje de la velocidad maxima
+                "jumpSkill": 100                          //  máximo en porcentaje: 0 no salta ninguna y 100 las salta todas
+            },
+            
             "inst": "CORRE Y SALTA LOS OBSTÁCULOS",
+            
             "display": {
-                "label": "METROS"
+                "label1": "METROS",
+                "label2": "TIEMPO"
             }            
         },
         "sport1": {

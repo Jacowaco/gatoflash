@@ -141,9 +141,6 @@ package game
 		
 		public function setMode(mode:int):void{
 			this.currentMode = mode;					
-			if(mode == ENEMY){
-				initEnemy();
-			}
 		}
 		public function isJumping():Boolean
 		{
@@ -164,14 +161,7 @@ package game
 		{
 			speedIncrement = speed; 
 		}
-		
-		
-		private function initEnemy():void
-		{
-			maxSpeed = Math.min(maxSpeed / 10 + Math.random() * maxSpeed / 10 * 9, maxSpeed);
-			speed = maxSpeed;
-		}
-		
+	
 		
 		private function setRunning():void
 		{						
@@ -202,19 +192,14 @@ package game
 		
 		private function updateSpeed():void
 		{	
-			if(mode == PLAYER) {
-				speed = Math.max(speed + speedDamping, 0);
-				speed = Math.min(speed, maxSpeed);	
-//				trace("speed: ", speed);
-//				trace("max: ", maxSpeed);
-			}
-			
 			if (mode == ENEMY)
 			{
 				accelerate();
-				speed = Math.max(speed + speedDamping, 0);
-				speed = Math.min(speed, maxSpeed);
+				
 			}
+			
+			speed = Math.max(speed + speedDamping, 0);
+			speed = Math.min(speed, maxSpeed);
 		}
 		
 		

@@ -192,7 +192,7 @@ package
 			audio.registerMusic("estadio", "estadio");
 			audio.registerMusic("end_music", "musica");
 	
-			
+			trace(settings.defaultValue.soundsEnable)
 			if(!settings.defaultValue.soundsEnable){
 				audio.gain(null, 0.001);
 			}
