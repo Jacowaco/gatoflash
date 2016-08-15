@@ -255,7 +255,7 @@ package
 			ShotPut;
 			HighJump;
 			Hurdles;
-			DiscusThrow;
+			ThrowingGame;
 			JavelinThrow;
 			
 			

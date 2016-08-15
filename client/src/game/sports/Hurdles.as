@@ -24,23 +24,19 @@ package game.sports
 		
 		public function Hurdles(sportDefinition:Object) 
 		{
-			super(sportDefinition);
-			
+			super(sportDefinition);			
 			finalMetres = currentSport.metres;			
 			numObstacles = currentSport.numObstacles;
 			collisionRange =  finalMetres * UNITS_PER_METER / numObstacles / 4 * 3; // 75% de distancia entre las vallas
-			jumpinThreshold =	currentSport.jumpThreshold;
-			
-			super.create();
-			createHurdles();
-		
+			jumpinThreshold =	currentSport.jumpThreshold;			
+			super.create(); // crea la carrera
+			createHurdles(); // y ahora le agrego las vayas.
 			
 		}
 		
 		override public function initialize():void
 		{		
 			dispatchEvent(new Event(GuiEvents.COUNTDOWN)); 
-
 		}
 		
 		private function createHurdles():void
@@ -57,6 +53,11 @@ package game.sports
 			}			
 		}
 		
+		override public function update():void
+		{
+			super.update();			//  actualizo la carrera
+			checkColisions();       //  implementa las colisiones.
+		}
 		
 		private function checkColisions():void 
 		{
@@ -81,14 +82,7 @@ package game.sports
 				}				
 			}
 		}
-		
-		override public function update():void
-		{
-			super.update();
-			checkColisions();
-		}
-		
-		
+				
 		private function checkForJump(avatar:Avatar, hurdle:Hurdle):void
 		{									
 			var distToObstacle:Number = Math.abs(hurdle.x - avatar.x);

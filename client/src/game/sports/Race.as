@@ -29,12 +29,8 @@ package game.sports
 		// la carrera tiene todo esto
 		protected var departure:MovieClip;
 		protected var line:MovieClip;
-		protected var goal:MovieClip;
-		// los lanes estan para poder meter juntos corredores y vallas
-		protected var lanes:Array;		
-		
-//		protected var playerMaxSpeed:Number;
-//		protected var playerSpeedIncrement:Number;
+		protected var goal:MovieClip;		
+		protected var lanes:Array;	// los lanes estan para poder meter juntos corredores y vallas + la data de por donde se mueven	
 		
 		public function Race(currentSport:Object) 
 		{
@@ -91,7 +87,6 @@ package game.sports
 					enemy.x = lanes[lane].loc.x;
 					enemy.y = lanes[lane].loc.y;
 					var maxSpeed:Number = currentSport.enemies.maxSpeed * Utils.map(Math.random(), 0, 1, currentSport.enemies.speedVariation[0],currentSport.enemies.speedVariation[1]) / 100;  
-					trace(maxSpeed);
 					enemy.setMaxSpeed(maxSpeed);
 					enemy.setSpeedIncrement(currentSport.enemies.speedIncrement);
 					enemy.setMode(Avatar.ENEMY);
@@ -100,7 +95,6 @@ package game.sports
 				camera.addChild(lanes[lane].avatar);
 			}
 		}
-		
 		
 		override public function start():void
 		{
@@ -127,7 +121,7 @@ package game.sports
 				{					
 					if(lane.avatar.mode == Avatar.ENEMY){
 						if(! lane.avatar.isIdle()) cantEnemiesReachedEnd++;
-						trace("enemie "+ cantEnemiesReachedEnd + " reached end");
+//						trace("enemie "+ cantEnemiesReachedEnd + " reached end");
 					}else{		
 						for each( lane in lanes) lane.avatar.stop();
 						competitionEnds();
@@ -149,9 +143,8 @@ package game.sports
 			if (cantEnemiesReachedEnd == 0) badge = BADGE_GOLD;
 			if (cantEnemiesReachedEnd == 1) badge = BADGE_SILVER;
 			if (cantEnemiesReachedEnd == 2) badge = BADGE_BRONCE;
-			if (cantEnemiesReachedEnd > 2) badge = BADGE_LOOSER;
-			
-			trace("badge: " + badge);
+			if (cantEnemiesReachedEnd > 2) badge = BADGE_LOOSER;			
+//			trace("badge: " + badge);
 		}
 		
 		

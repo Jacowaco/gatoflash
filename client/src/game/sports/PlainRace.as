@@ -13,8 +13,6 @@ package game.sports
 		{	
 			super(sportDefinition);
 			finalMetres = currentSport.metres;			
-//			playerMaxSpeed = 	currentSport.maxSpeed;
-//			playerSpeedIncrement  = currentSport.speedIncrement;
 			super.create();			
 		}
 		

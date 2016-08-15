@@ -101,10 +101,7 @@ package game.sports
 		{
 			dispatchEvent(new Event(Sport.COMPETITION_START));
 		}
-		
-		
-		
-		
+				
 		// actualizo
 		public function update():void
 		{

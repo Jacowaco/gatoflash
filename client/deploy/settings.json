@@ -11,7 +11,7 @@
         "sportsQty": 4,
         "sport0": {
             "name": "CARRERA CON PEPINOS",
-            "id": "hurdles",
+            "id": "hurdles",                        // ID para identificar el boton con thumbnail
             "classID": "Hurdles",            
             "metres": 110,
             "numObstacles": 20,
@@ -31,14 +31,20 @@
         "sport1": {
             "name": "CARRERA DE 100 METROS",
             "id": "fourHundreds",
-            "metres": 15, 
-            "maxSpeed": 13,           
-            "speedIncrement": 2,    
             "classID": "PlainRace",
-            "inst": "CORRE Y LLEGA PRIMERO A LA META",
-            "display": {
-                "label": "METROS"
-            }
+            "metres": 100, 
+            "player":{
+                "maxSpeed": 13,
+                "speedIncrement": 2                
+            },
+            "enemies":{
+                "maxSpeed": 13,
+                "speedIncrement": 2,
+                "speedVariation": [60, 85],                // minimo y máximo en porcentaje de maxSpeed
+                "jumpSkill": 50                          //  máximo en porcentaje: 0 no salta ninguna y 100 las salta todas
+            },         
+
+            "inst": "CORRE Y LLEGA PRIMERO A LA META"
         },
         "sport2": {
             "name": "LANZAMIENTO DE PIZZA",
@@ -46,10 +52,7 @@
              "maxSpeed": 200,  
              "speedIncrement": 5,
             "classID": "DiscusThrow",
-            "inst": "CORRE Y LANZA LEJOS LA PIZZA",
-            "display": {
-                "label": "METROS"
-            }
+            "inst": "CORRE Y LANZA LEJOS LA PIZZA"
         },
         "sport3": {
             "name": "SALTO EN ALTO",

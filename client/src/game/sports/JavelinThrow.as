@@ -3,7 +3,7 @@ package game.sports
 	import assets.*;
 	
 	
-	public class JavelinThrow extends DiscusThrow 
+	public class JavelinThrow extends ThrowingGame 
 	{
 		
 		public function JavelinThrow() 

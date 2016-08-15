@@ -20,7 +20,7 @@ package game.sports
 	
 	import utils.Utils;
 	
-	public class DiscusThrow extends Sport 
+	public class ThrowingGame extends Sport 
 	{
 		private var pizza:Throwie;
 		
@@ -32,7 +32,7 @@ package game.sports
 		protected var throwMeters:int;
 		private var base:MovieClip;
 		
-		public function DiscusThrow(sportDefinition:Object) 
+		public function ThrowingGame(sportDefinition:Object) 
 		{
 			currentSport = sportDefinition; // esto es lo único que debería hardcodear...			
 			create();
