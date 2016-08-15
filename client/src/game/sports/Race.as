@@ -102,7 +102,7 @@ package game.sports
 		
 		override public function start():void
 		{
-			for each(var lane:Lane in lanes) lane.avatar.start();
+			for each(var lane:Lane in lanes) lane.avatar.go();
 			playing = true;
 			timer.go();
 			super.start(); // disparo el evento de que la carrera inicio

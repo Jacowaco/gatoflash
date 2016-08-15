@@ -170,6 +170,7 @@ package
 			audio.registerFx("move", "correPieza");
 			audio.registerFx("reward", "reward");
 			audio.registerFx("fix", "encajaPieza");
+			audio.registerFx("tiempo_fuera", "tiempo_fuera");
 
 			// end game
 			audio.registerFx("lose", "perder");			
@@ -230,6 +231,7 @@ package
 		
 		private function onCountDownEnded(e:Event):void
 		{
+			audio.fx.play("tiempo_fuera");
 			currentSport.start();
 		}
 		

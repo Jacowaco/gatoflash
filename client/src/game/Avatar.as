@@ -1,5 +1,7 @@
 package game 
 {
+	import assets.*;
+	
 	import avatar.corredorMC;
 	
 	import com.qb9.flashlib.easing.Tween;
@@ -15,6 +17,7 @@ package game
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Point;
+	import flash.utils.setTimeout;
 	
 	import game.sports.Sport;
 	
@@ -38,7 +41,9 @@ package game
 		private const FALL:int = 5;
 		
 		
-		public var asset:MovieClip;
+		private var asset:MovieClip;
+		private var playerArrow:MovieClip;
+		
 		// TODO externalizar por settings.
 		private var speedDamping:Number = -0.5;
 		private var speedIncrement:Number; 
@@ -67,10 +72,20 @@ package game
 		public function Avatar()  
 		{
 			asset = new corredorMC;			
+			
+			playerArrow = new flechaYoMc();
+			playerArrow.y = -90;
+			asset.addChild(playerArrow);
+			playerArrow.visible = false;
+			
+			
 			addChild(asset);
 			speed = 0;
 			lookingRight = true;
 		}
+		
+		
+		
 		
 		public function update():void 
 		{
@@ -160,7 +175,6 @@ package game
 		
 		private function setRunning():void
 		{						
-//			if(mode == PLAYER ) trace("set running: ");
 			state = RUNNING;			
 		}
 		
@@ -172,6 +186,18 @@ package game
 		public function setSpinning():void
 		{
 			state = SPINNING;
+		}
+		
+		public function go():void
+		{
+			setRunning();
+			showArrowHint();						
+		}
+		
+		public function stop():void
+		{
+			setIdle();
+			asset.gotoAndPlay("stand");
 		}
 		
 		private function updateSpeed():void
@@ -200,16 +226,8 @@ package game
 			if(speed > maxSpeed / 3 * 2 && speed <= maxSpeed && asset.currentLabel != "run3") asset.gotoAndStop("run3");
 		}
 		
-		public function start():void
-		{
-			state = RUNNING;
-		}
 		
-		public function stop():void
-		{
-			state = IDLE;
-			asset.gotoAndPlay("stand");
-		}
+
 		
 		public function accelerate():void
 		{
@@ -264,6 +282,7 @@ package game
 			}			
 			state = FALL;
 		}
+		
 		public function throwing():void
 		{
 			state = THROWING;
@@ -315,6 +334,15 @@ package game
 		{
 			currentMode = (currentMode == PLAYER) ? ENEMY : PLAYER;
 		}
+		
+		public function showArrowHint():void
+		{
+			if(mode == PLAYER){
+				playerArrow.visible = true;
+				setTimeout(function():void { playerArrow.visible = false}, 3000);	
+			}
+		}
+			
 	}
 	
 }
