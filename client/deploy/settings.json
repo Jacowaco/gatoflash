@@ -23,16 +23,10 @@
             "enemies":{
                 "maxSpeed": 13,
                 "speedIncrement": 2,
-                "speedVariation": [100, 100],                // minimo y máximo en porcentaje de la velocidad maxima
-                "jumpSkill": 100                          //  máximo en porcentaje: 0 no salta ninguna y 100 las salta todas
-            },
-            
-            "inst": "CORRE Y SALTA LOS OBSTÁCULOS",
-            
-            "display": {
-                "label1": "METROS",
-                "label2": "TIEMPO"
-            }            
+                "speedVariation": [60, 85],                // minimo y máximo en porcentaje de maxSpeed
+                "jumpSkill": 50                          //  máximo en porcentaje: 0 no salta ninguna y 100 las salta todas
+            },            
+            "inst": "CORRE Y SALTA LOS OBSTÁCULOS"                      
         },
         "sport1": {
             "name": "CARRERA DE 100 METROS",
@@ -84,12 +78,6 @@
             }
         }
     },
-
-
-    "scoring": {
-        "star": 100,
-        "bonus": 100
-    },
     "gui": {
         "title": "JUEGOS GATULÍMPICOS",
         "details": "JUEGA Y SUMA PUNTOS PARA TU EQUIPO",
@@ -120,14 +108,6 @@
             "retry": "OTRA VEZ",
             "instructions": "INSTRUCCIONES"
         },
-        "noScore": {
-            "exit": "SALIR",
-            "redo": "OTRA VEZ",
-            "txt1": "TXT 1",
-            "txt2": "TXT 2",
-            "txt3": "TXT 4",
-            "txt4": "TXT 5"
-        },
         "win": {
             "title": "¡LO LOGRASTE!",
             "score": "PUNTOS:",
@@ -136,18 +116,7 @@
             "exit": "SALIR",
             "loose": "NO PASA NADA, ¡INTÉNTALO DE NUEVO!",
             "win": "¡MUY BIEN! GANASTE PARA TU EQUIPO",
-            "end2": "ERES UN ARTISTA MAGNÍFICO",
-            "lastRound": "¡LO LOGRASTE!",
-            "lastRound2": "RECLAMA TU HUEVO",
-            "gamePoints": "MEJOR PUNTAJE:",
-            "total": "TOTAL:",
-            "cutscene": "¡FELICIDADES!"
-        },
-        "tooltips": [
-            "TODAVÍA NO: AÚN TE FALTA VISITAR OBJETIVOS",
-            "¡LISTO, VE A LA ÚLTIMA META!",
-            "SI TE ALEJAS DE TUS OBJETIVOS, CHEQUEA EL MAPA"
-        ],
-        "gameOver": {}
+            "total": "TOTAL:"
+        }
     }
 }

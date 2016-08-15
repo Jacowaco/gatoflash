@@ -65,12 +65,12 @@ package ui
 			
 			// score
 			meters = asset.getChildByName("display") as MovieClip;
-			meters.label.text = api.getText(settings.sports.defaultValue.display.label);
+			meters.label.text = api.getText(settings.gui.score);
 			meters.visible = false;
 			
 			// time
 			time = asset.getChildByName("time") as MovieClip;
-			time.label.text = api.getText("TIEMPO");
+			time.label.text = api.getText(settings.gui.time);
 			time.visible = false;
 			
 			
@@ -283,8 +283,7 @@ package ui
 			ingameData(true);
 			
 			dispatchEvent(new Event(GuiEvents.NEW_MATCH));
-			
-	
+		
 			
 		}
 		

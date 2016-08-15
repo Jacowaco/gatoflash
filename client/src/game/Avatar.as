@@ -160,8 +160,7 @@ package game
 		public function setSpeedIncrement(speed:Number):void
 		{
 			speedIncrement = speed; 
-		}
-	
+		}	
 		
 		private function setRunning():void
 		{						
