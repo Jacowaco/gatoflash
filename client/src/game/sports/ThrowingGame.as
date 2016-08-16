@@ -74,7 +74,7 @@ package game.sports
 			
 			var catcherMc:Class = getDefinitionByName("assets." + currentSport.catcher) as Class;
 			catcher = new catcherMc();
-			catcher.x = 1000;
+			catcher.x = currentSport.minMeters * Sport.UNITS_PER_METER;
 			catcher.y = 360;
 			catcher.gotoAndStop("stand");
 			camera.addChild(catcher);
@@ -135,11 +135,8 @@ package game.sports
 			if (key.keyCode == Keyboard.SPACE)
 			{				
 				releasePizza();
-				if(player.lookingRight){
-					player.throwing();	
-				}else{
-					player.collide();
-				}
+				player.lookingRight = true;
+				player.throwing();
 			}
 			
 			else if (key.keyCode == Keyboard.LEFT && !leftKeyPressed)
@@ -162,11 +159,14 @@ package game.sports
 			bullet.animate();
 			bullet.x = screenPoint.x;
 			bullet.y = screenPoint.y;
+			
+			var destX:Number = player.percentage * currentSport.maxMeters; 			
+			trace(destX, catcher.x / Sport.UNITS_PER_METER - 1);
+			var destY:Number =  destX > catcher.x / Sport.UNITS_PER_METER - 1? camera.localToGlobal(new Point(0, catcher.dish.y )).y + currentSport.catchPh.y : currentSport.catchPh.y;
+			
 			// TODO ENGANIA PICHANGA
-//			bullet.shoot(player.percentage, player.lookingRight); //
-			var diff:Number =  currentSport.catchPh.y;
-			trace(currentSport.maxMeters);
-			bullet.shoot(1 * currentSport.maxMeters, camera.localToGlobal(new Point(0, catcher.dish.y )).y + diff, true);
+			bullet.shoot(destX, destY, true); 
+//			bullet.shoot(1 * currentSport.maxMeters, destY, true);
 		}
 		
 		public function onReach(e:Event):void

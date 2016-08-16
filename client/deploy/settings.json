@@ -49,7 +49,8 @@
         "sport2": {
             "name": "LANZAMIENTO DE PIZZA",
             "id": "pizza",
-            "maxMeters": 26,
+            "minMeters": 10,                  // menos de 10 metros banana
+            "maxMeters": 26,                    // medallas repartidas entre minMeters y maxMeters
             "maxPower": 200,
             "powerIncrement": 5,
             "classID": "ThrowingGame",
