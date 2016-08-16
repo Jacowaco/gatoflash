@@ -71,12 +71,12 @@ package game
 //			y = offset.y;
 //		}
 		
-		public function shoot(_power:Number, offsetY:Number, _right:Boolean=true):void
+		public function shoot(_power:Number, _right:Boolean=true):void
 		{
 			if (shot) return;
 			shot = true;
 			trace("SHOOTING");
-			trace(_power, offsetY, _right);
+			trace(_power, _right);
 			distance = (_power * MAX_DISTANCE + MIN_DISTANCE);
 			trace(distance);
 			var time:Number = Math.max(Math.abs(distance), 500);

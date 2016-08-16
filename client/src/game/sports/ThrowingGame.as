@@ -12,6 +12,7 @@ package game.sports
 	import flash.events.KeyboardEvent;
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
+	import flash.utils.getDefinitionByName;
 	import flash.utils.setTimeout;
 	
 	import game.Avatar;
@@ -23,7 +24,7 @@ package game.sports
 	{
 
 		// TODO esto tendría que estar adentro del Throwie
-		private var screenPoint:Point = new Point();
+		private var screenPoint:Point = new Point(-47,0);
 		private var bullet:Throwie;
 		
 		
@@ -53,16 +54,26 @@ package game.sports
 			player.x = base.x;
 			player.y = base.y;
 			player.setMode(Avatar.PLAYER);	
-			player.setMaxSpeed(currentSport.maxSpeed);
-			player.setSpeedIncrement(currentSport.speedIncrement);
+			player.setMaxSpeed(currentSport.maxPower);
+			player.setSpeedIncrement(currentSport.powerIncrement);
 			camera.addChild(player);
 			
 			
-			throwMeters = 5;
+			throwMeters = currentSport.maxMeters;
 			
-			bullet = new Throwie(new assets.discusMC());
+			assets.pizza;
+			
+			var throwieMc:Class = getDefinitionByName("assets." + currentSport.throwable) as Class;
+			bullet = new Throwie(new throwieMc());
 			bullet.addEventListener(Throwie.ON_REACH, onReach);
+
 			player.addChild(bullet);
+			player.setReadyToThrow();
+			// TODO NO INTENTE ESTO EN CASA !!!
+			// solo un programador profesional puede intentarlo
+			bullet.x = -47;
+			bullet.y = -14;			
+			
 			
 		}
 		
@@ -85,19 +96,19 @@ package game.sports
 		{
 			if (!playing) return;
 			
-			if(player.lookingRight){
+			if(true){ //player.lookingRight
 				
-				camera.x = -(bullet.x -screenPoint.x);
-				
-				trace("screenPoin", screenPoint.x);
-				trace("piz", bullet.x);
-				trace("cam",camera.x);
+				camera.x = -(bullet.x -screenPoint.x);				
+//				trace("screenPoin", screenPoint.x);
+//				trace("piz", bullet.x);
+//				trace("cam",camera.x);
 				bg.follow(camera.x);
 			}
 			
 			player.update();
 
 		}
+		
 		
 		override public function getPlayerMeters():int
 		{
@@ -145,7 +156,7 @@ package game.sports
 			bullet.animate();
 			bullet.x = screenPoint.x;
 			bullet.y = screenPoint.y;				
-			bullet.shoot(player.percentage, 0, player.lookingRight);
+			bullet.shoot(player.percentage, true); //player.lookingRight
 		}
 		
 		public function onReach(e:Event):void
@@ -172,12 +183,7 @@ package game.sports
 			super.competitionEnds();
 		}
 		
-//		override protected function assignBadge():void 
-//		{
-////			if (meters >= 0) 						badge = BADGE_BRONCE;
-////			if (meters >= Ball.MAX_DISTANCE * 0.5)  badge = BADGE_SILVER;
-////			if (meters >= Ball.MAX_DISTANCE) 	    badge = BADGE_GOLD;
-//		}
+
 		
 	}
 

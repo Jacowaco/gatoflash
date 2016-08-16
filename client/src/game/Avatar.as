@@ -250,7 +250,26 @@ package game
 			asset.gotoAndStop("fall");
 		}
 		
+		public function setReadyToThrow():void
+		{
+			asset.gotoAndStop("throw_start");
+		}
 		
+		
+		
+//		public function hand():MovieClip
+//		{
+//			
+//			var mc:MovieClip;
+//			asset.addEventListener(Event.ENTER_FRAME, function(e:Event):void
+//			{
+//				mc = asset.gato.arm1 as MovieClip;	
+//			});
+//			
+//			asset.gotoAndStop("throw");
+//				
+//			return mc;
+//		}
 		
 		public function collide():void
 		{
@@ -266,6 +285,12 @@ package game
 			}			
 			state = FALL;
 		}
+		
+		
+		
+
+		
+		
 		
 		public function throwing():void
 		{
