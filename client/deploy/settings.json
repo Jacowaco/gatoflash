@@ -1,6 +1,6 @@
 {
     "defaultValue": {
-        "soundsEnable": false
+        "soundsEnable": true
     },
     "teams": [
         "MEGA ELÁSTICO",
@@ -49,6 +49,7 @@
         "sport2": {
             "name": "LANZAMIENTO DE PIZZA",
             "id": "pizza",
+            "timeOut": 5,
             "minMeters": 10,                  // menos de 10 metros banana
             "maxMeters": 26,                    // medallas repartidas entre minMeters y maxMeters
             "maxPower": 200,
@@ -92,7 +93,7 @@
     "gui": {
         "title": "JUEGOS GATULÍMPICOS",
         "details": "JUEGA Y SUMA PUNTOS PARA TU EQUIPO",
-        "score": "PUNTOS",
+        "score": "METROS",
         "time": "TIEMPO",
         "instructions": {
             "details": [

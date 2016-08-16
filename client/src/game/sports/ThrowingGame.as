@@ -4,7 +4,9 @@ package game.sports
 	
 	import avatar.corredorMC;
 	
+	import com.qb9.flashlib.easing.Tween;
 	import com.qb9.flashlib.geom.Vector2D;
+	import com.qb9.flashlib.tasks.TaskEvent;
 	
 	import flash.display.MovieClip;
 	import flash.display.Scene;
@@ -31,6 +33,8 @@ package game.sports
 		protected var base:MovieClip;
 		protected var arena:MovieClip;
 		protected var catcher:MovieClip;
+		
+		protected var faultAnimation:Tween;
 		
 		public function ThrowingGame(sportDefinition:Object) 
 		{
@@ -107,7 +111,7 @@ package game.sports
 				}
 				bg.follow(camera.x);
 			}
-			
+			player.x += playerMovement;
 			player.update();
 
 		}
@@ -129,12 +133,25 @@ package game.sports
 		{
 			
 		}
+		
+		private var playerMovement:Number = 0;
 		override public function onKeyDown(key:KeyboardEvent):void 
 		{
-			if (bullet.shot) return;			
+			if (bullet.shot) return;
+			
+			if(!faultAnimation){
+				trace("init fault: ",  currentSport.timeOut * 1000 );
+				var offset:Number = base.width/2;  // te sallis del circulo perdes...
+				
+				faultAnimation = new Tween(player, currentSport.timeOut * 1000, {"x": player.x + offset}, { transition:"linear" } );
+				faultAnimation.addEventListener(TaskEvent.COMPLETE, onFault);
+				Game.taskRunner().add(faultAnimation);
+			}
+					
+			
 			if (key.keyCode == Keyboard.SPACE)
 			{				
-				releasePizza();
+				throwSomething();
 				player.lookingRight = true;
 				player.throwing();
 			}
@@ -151,9 +168,10 @@ package game.sports
 			}
 		}
 		
-		private function releasePizza():void
+		private function throwSomething():void
 		{
 			audio.fx.play("lanza");
+			if(faultAnimation.running) faultAnimation.dispose();
 			screenPoint = player.localToGlobal(new Point(bullet.x, bullet.y));// bullet.y				
 			camera.addChild(bullet);			
 			bullet.animate();
@@ -173,25 +191,27 @@ package game.sports
 		{			
 			bullet.stop();
 			catcher.stop();
-			setTimeout(checkWin, 1000);			
+			audio.fx.play("atajaPizza");
+			setTimeout(checkIfWin, 500);			
 		}
 		
-		private function checkWin():void
+		private function onFault(e:Event):void
+		{
+		
+			badge = BADGE_LOOSER;
+			super.competitionEnds();
+		}
+		
+		private function checkIfWin():void
 		{			
 			trace("distance: ", bullet.x);
-			
-			
-			if(bullet.x > 0 && bullet.x < currentSport.maxMeters / 3) badge = BADGE_BRONCE;
-			if(bullet.x > currentSport.maxMeters / 3 && bullet.x < currentSport.maxMeters / 3 * 2) badge = BADGE_SILVER;
-			if(bullet.x > currentSport.maxMeters / 3 * 2) badge = BADGE_GOLD;
-			if(!player.lookingRight) badge = BADGE_LOOSER;
-			
-			if(badge != BADGE_LOOSER){
-				audio.fx.play("bu");
-			}else{
-				audio.fx.play("ovacion");
-			}
-			
+			var value:Number = Utils.map(bullet.x, currentSport.minMeters * Sport.UNITS_PER_METER, currentSport.maxMeters * Sport.UNITS_PER_METER, 0, 1);
+			trace("value:" , value);
+			if(value < 0) badge = BADGE_LOOSER;
+			if(value >= 0 && value < 1/3 ) badge = BADGE_BRONCE;
+			if(value > 1/3 && value < 2/3 ) badge = BADGE_SILVER;
+			if(value > 2/3 ) badge = BADGE_GOLD;
+
 			super.competitionEnds();
 		}
 		

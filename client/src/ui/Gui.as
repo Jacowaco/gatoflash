@@ -132,10 +132,12 @@ package ui
 			medal.stop();
 			medal.visible = false;
 			
-			feedbackMeters = sportsMenu.getChildByName("fb_meters") as MovieClip; 			
+			feedbackMeters = sportsMenu.getChildByName("fb_meters") as MovieClip; 	
+			feedbackMeters.label.text = api.getText(settings.gui.score);
 			feedbackMeters.visible = false;
 			
-			feedbackTime = sportsMenu.getChildByName("fb_time") as MovieClip; 			
+			feedbackTime = sportsMenu.getChildByName("fb_time") as MovieClip;
+			feedbackTime.label.text = api.getText(settings.gui.time);
 			feedbackTime.visible = false;
 			
 			// botones de los juegos
@@ -232,6 +234,10 @@ package ui
 		{
 			audio.fx.play("move");
 			dispatchEvent(new Event(GuiEvents.SHOW_MENU));
+			scoreAndTime(false);
+			ingameData(false);
+			trainerTxt(false);
+			
 			switch (page){
 				case 1:
 					buttons(true);
@@ -240,8 +246,6 @@ package ui
 					playbtn(false);
 					sportName(false);
 					rewards(false);
-					ingameData(false);
-					trainerTxt(false);
 					sportsMenu.nextWeek.visible = false;
 					break;
 				
@@ -373,11 +377,23 @@ package ui
 			this.meters.value.text = score;
 		}
 		
+		private function scoreAndTime(show:Boolean):void
+		{
+		
+			this.feedbackMeters.visible = show;
+			this.feedbackMeters.value.text = this.meters.value.text;
+			this.feedbackTime.visible = show;
+			this.feedbackTime.value.text = this.time.value.text;
+			
+		}
+		
+		
 		public function endgame(medal:int):void{
 			trace("gui endgame", medal);
 			sportsMenu.visible = true;
 		
 			ingameData(false);
+			scoreAndTime(true);
 			
 			switch(medal)
 			{
@@ -455,11 +471,6 @@ package ui
 			audio.fx.play("rollover");
 		}
 		
-//		private function onPlay(e:Event):void
-//		{			
-//			audio.fx.play("click");			
-//			dispatchEvent(new Event(GuiEvents.PLAY));			
-//		}
 
 		private function onResume(e:Event=null):void
 		{

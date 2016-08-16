@@ -93,6 +93,10 @@ package game.sports
 		// configuro todo
 		public function initialize():void
 		{
+//			audio.fx.stop("bu");
+//			audio.fx.stop("lose");
+//			audio.fx.stop("ovacion");
+//			audio.fx.stop("win");
 			dispatchEvent(new Event(Sport.COMPETITION_READY));
 		}
 
@@ -127,7 +131,7 @@ package game.sports
 		
 		protected function competitionEnds():void
 		{			
-			playing = false;
+			playing = false;			
 			
 			if(badge == BADGE_LOOSER){
 				audio.fx.play("bu");

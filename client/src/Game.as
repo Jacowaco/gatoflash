@@ -171,6 +171,8 @@ package
 			audio.registerFx("reward", "reward");
 			audio.registerFx("fix", "encajaPieza");
 			audio.registerFx("tiempo_fuera", "tiempo_fuera");
+			
+			
 
 			// end game
 			audio.registerFx("lose", "perder");			
@@ -186,7 +188,7 @@ package
 			audio.registerFx("saltoCorto", "saltoCorto");			
 			audio.registerFx("valla", "valla");
 			audio.registerFx("lanza", "lanza");
-			
+			audio.registerFx("atajaPizza", "atajaPizza");
 			// musicas
 			audio.registerMusic("music_rio", "music_rio");
 			audio.registerMusic("estadio", "estadio");
