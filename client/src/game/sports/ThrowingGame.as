@@ -94,14 +94,9 @@ package game.sports
 		
 		override public function update():void 
 		{
-			if (!playing) return;
-			
-			if(true){ //player.lookingRight
-				
+			if (!playing) return;			
+			if(true){ 				
 				camera.x = -(bullet.x -screenPoint.x);				
-//				trace("screenPoin", screenPoint.x);
-//				trace("piz", bullet.x);
-//				trace("cam",camera.x);
 				bg.follow(camera.x);
 			}
 			
