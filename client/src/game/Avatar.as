@@ -106,15 +106,12 @@ package game
 				}
 					
 				case JUMPING:
-				{					
-//					trace(">>>>>>>jumping");
-					
+				{										
 					break;	
 				}
 					
 				case FALL:
 				{
-//					trace(">>>>>>> fall");
 					break;
 				}
 				case SPINNING:
@@ -231,7 +228,7 @@ package game
 		
 		public function get percentage():Number
 		{
-			//			trace( speed / MAX_SPEED);
+			
 			return speed / maxSpeed;
 		}
 		

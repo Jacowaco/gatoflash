@@ -49,13 +49,18 @@
         "sport2": {
             "name": "LANZAMIENTO DE PIZZA",
             "id": "pizza",
-            "maxMeters": 50,
+            "maxMeters": 26,
             "maxPower": 200,
             "powerIncrement": 5,
             "classID": "ThrowingGame",
             "throwable": "pizza", // nombre de la clase del mc
+            "catcher": "mozo",
+            "catchPh": {"x": -55, "y": 70},
             "inst": "CORRE Y LANZA LEJOS LA PIZZA"
         },
+
+
+
         "sport3": {
             "name": "SALTO EN ALTO",
             "id": "highJump",

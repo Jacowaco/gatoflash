@@ -17,7 +17,7 @@ package game
 
 		
 		public static const MIN_DISTANCE:int = 2;
-		public static const MAX_DISTANCE:int = 2500;
+//		public static const MAX_DISTANCE:int = 2500;
 		public static const ON_REACH:String = "onReach";
 //		
 //		private const START_ANGLE:int = -40;
@@ -28,7 +28,7 @@ package game
 //		private var onReached:Event;
 		public var shot:Boolean;
 //		private var offset:Point;
-		private var distance:Number;
+//		private var distance:Number;
 		private var reached:Boolean;
 		private var mc:MovieClip;
 		
@@ -71,43 +71,33 @@ package game
 //			y = offset.y;
 //		}
 		
-		public function shoot(_power:Number, _right:Boolean=true):void
+		public function shoot(distance:Number, yoffset:Number, _right:Boolean=true):void
 		{
 			if (shot) return;
 			shot = true;
 			trace("SHOOTING");
-			trace(_power, _right);
-			distance = (_power * MAX_DISTANCE + MIN_DISTANCE);
-			trace(distance);
+			trace(distance, _right);
+			distance = distance * Sport.UNITS_PER_METER; //(_power * MAX_DISTANCE + MIN_DISTANCE);
 			var time:Number = Math.max(Math.abs(distance), 500);
+			
 			if(!_right) {
-				 distance = -MAX_DISTANCE;
-				 time = 250;
+				 distance = -300;
+				 time = 1000;
 			}
 			
 			var startX:Tween = new Tween(this, time, { x: x + distance / 2 }, { transition:"linear" } );
 			var startY:Tween = new Tween(this, time, { y: y - DISTANCE_Y }, { transition:"Quad.easeOut" } );
 			
 			var endX:Tween   = new Tween(this, time, { x: x + distance },     { transition:"linear" } );
-			var endY:Tween   = new Tween(this, time, { y: y },      { transition:"Quad.easeIn" } );
+			var endY:Tween   = new Tween(this, time, { y: y + yoffset },      { transition:"Quad.easeIn" } );
 			
 			var inmov:Parallel = new Parallel(startX, startY);
 			var outmot:Parallel = new Parallel(endX, endY);
 			
 			var seq:Sequence = new Sequence(inmov, outmot);
-			
-//			seq.addEventListener(TaskEvent.UPDATE, function():void {trace("x", x);});;
 			seq.addEventListener(TaskEvent.COMPLETE, function(e:Event):void{dispatchEvent(new Event(ON_REACH));});
 			Game.taskRunner().add(seq);
-			
-			
-//			if (rotate)
-//			{
-//				var startRotate:Tween = new Tween(mc, distance, { rotation:0 },         { transition:"linear" } );
-//				var endRotate:Tween   = new Tween(mc, distance, { rotation:END_ANGLE }, { transition:"linear" } );
-//				var sequenceRotate:Sequence = new Sequence(startRotate, endRotate);
-//				Game.taskRunner().add(sequenceRotate);
-//			}
+
 		}
 		
 		public function animate():void

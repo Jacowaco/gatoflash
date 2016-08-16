@@ -24,14 +24,13 @@ package game.sports
 	{
 
 		// TODO esto tendría que estar adentro del Throwie
-		private var screenPoint:Point = new Point(-47,0);
+		private var screenPoint:Point = new Point(-47,-74);
 		private var bullet:Throwie;
 		
-		
-		protected var throwMeters:int;
 		protected var line:MovieClip;
 		protected var base:MovieClip;
 		protected var arena:MovieClip;
+		protected var catcher:MovieClip;
 		
 		public function ThrowingGame(sportDefinition:Object) 
 		{
@@ -58,10 +57,8 @@ package game.sports
 			player.setSpeedIncrement(currentSport.powerIncrement);
 			camera.addChild(player);
 			
-			
-			throwMeters = currentSport.maxMeters;
-			
 			assets.pizza;
+			assets.mozo;
 			
 			var throwieMc:Class = getDefinitionByName("assets." + currentSport.throwable) as Class;
 			bullet = new Throwie(new throwieMc());
@@ -74,6 +71,13 @@ package game.sports
 			bullet.x = -47;
 			bullet.y = -14;			
 			
+			
+			var catcherMc:Class = getDefinitionByName("assets." + currentSport.catcher) as Class;
+			catcher = new catcherMc();
+			catcher.x = 1000;
+			catcher.y = 360;
+			catcher.gotoAndStop("stand");
+			camera.addChild(catcher);
 			
 		}
 		
@@ -95,8 +99,12 @@ package game.sports
 		override public function update():void 
 		{
 			if (!playing) return;			
-			if(true){ 				
-				camera.x = -(bullet.x -screenPoint.x);				
+			if(player.lookingRight){ 				
+				camera.x = -(bullet.x -screenPoint.x);		
+				if(bullet.x > catcher.x + currentSport.catchPh.x){
+					catcher.x = bullet.x - currentSport.catchPh.x;
+					activateCatcher();
+				}
 				bg.follow(camera.x);
 			}
 			
@@ -104,10 +112,15 @@ package game.sports
 
 		}
 		
+		private function activateCatcher():void
+		{
+			if(catcher.currentLabel != "move") catcher.gotoAndPlay("move");
+		}
+		
 		
 		override public function getPlayerMeters():int
 		{
-			if(player.lookingRight) return bullet.x /Sport.UNITS_PER_METER;
+			if(player.lookingRight) return bullet.x / Sport.UNITS_PER_METER;
 			return 0;
 		}
 
@@ -118,11 +131,9 @@ package game.sports
 		}
 		override public function onKeyDown(key:KeyboardEvent):void 
 		{
-			if (bullet.shot) return;
-			
+			if (bullet.shot) return;			
 			if (key.keyCode == Keyboard.SPACE)
-			{
-				
+			{				
 				releasePizza();
 				if(player.lookingRight){
 					player.throwing();	
@@ -146,27 +157,33 @@ package game.sports
 		private function releasePizza():void
 		{
 			audio.fx.play("lanza");
-			screenPoint = player.localToGlobal(new Point(bullet.x, bullet.y));				
+			screenPoint = player.localToGlobal(new Point(bullet.x, bullet.y));// bullet.y				
 			camera.addChild(bullet);			
 			bullet.animate();
 			bullet.x = screenPoint.x;
-			bullet.y = screenPoint.y;				
-			bullet.shoot(player.percentage, true); //player.lookingRight
+			bullet.y = screenPoint.y;
+			// TODO ENGANIA PICHANGA
+//			bullet.shoot(player.percentage, player.lookingRight); //
+			var diff:Number =  currentSport.catchPh.y;
+			trace(currentSport.maxMeters);
+			bullet.shoot(1 * currentSport.maxMeters, camera.localToGlobal(new Point(0, catcher.dish.y )).y + diff, true);
 		}
 		
 		public function onReach(e:Event):void
-		{
-			trace("onReach");
+		{			
 			bullet.stop();
+			catcher.stop();
 			setTimeout(checkWin, 1000);			
 		}
 		
 		private function checkWin():void
 		{			
 			trace("distance: ", bullet.x);
-			if(bullet.x > 0 && bullet.x < Throwie.MAX_DISTANCE / 3) badge = BADGE_BRONCE;
-			if(bullet.x > Throwie.MAX_DISTANCE / 3 && bullet.x < Throwie.MAX_DISTANCE / 3 * 2) badge = BADGE_SILVER;
-			if(bullet.x > Throwie.MAX_DISTANCE / 3 * 2) badge = BADGE_GOLD;
+			
+			
+			if(bullet.x > 0 && bullet.x < currentSport.maxMeters / 3) badge = BADGE_BRONCE;
+			if(bullet.x > currentSport.maxMeters / 3 && bullet.x < currentSport.maxMeters / 3 * 2) badge = BADGE_SILVER;
+			if(bullet.x > currentSport.maxMeters / 3 * 2) badge = BADGE_GOLD;
 			if(!player.lookingRight) badge = BADGE_LOOSER;
 			
 			if(badge != BADGE_LOOSER){
