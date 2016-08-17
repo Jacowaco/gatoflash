@@ -63,6 +63,8 @@ package game.sports
 			
 			assets.pizza;
 			assets.mozo;
+			assets.torta;
+			assets.payaso;
 			
 			var throwieMc:Class = getDefinitionByName("assets." + currentSport.throwable) as Class;
 			bullet = new Throwie(new throwieMc());
@@ -74,6 +76,7 @@ package game.sports
 			// solo un programador profesional puede intentarlo
 			bullet.x = -47;
 			bullet.y = -14;			
+			
 			
 			
 			var catcherMc:Class = getDefinitionByName("assets." + currentSport.catcher) as Class;
@@ -182,6 +185,7 @@ package game.sports
 			trace(destX, catcher.x / Sport.UNITS_PER_METER - 1);
 			var destY:Number =  destX > catcher.x / Sport.UNITS_PER_METER - 1? camera.localToGlobal(new Point(0, catcher.dish.y )).y + currentSport.catchPh.y : currentSport.catchPh.y;
 			
+			
 			// TODO ENGANIA PICHANGA
 			bullet.shoot(destX, destY, true); 
 //			bullet.shoot(1 * currentSport.maxMeters, destY, true);
@@ -190,10 +194,20 @@ package game.sports
 		public function onReach(e:Event):void
 		{			
 			bullet.stop();
-			catcher.stop();
+			catcher.gotoAndStop("stand");			
+			trace("distance: ", bullet.x);
+			var value:Number = Utils.map(bullet.x, currentSport.minMeters * Sport.UNITS_PER_METER, currentSport.maxMeters * Sport.UNITS_PER_METER, 0, 1);
+			
+			if(currentSport.idMenuButton == "torta_btn"){
+				if(!value < 1/3 ) camera.removeChild(bullet);
+				catcher.gotoAndStop("err");
+			}
+			
 			audio.fx.play("atajaPizza");
-			setTimeout(checkIfWin, 500);			
+			
+			setTimeout(checkIfWin, 500, value);			
 		}
+		
 		
 		private function onFault(e:Event):void
 		{
@@ -202,10 +216,9 @@ package game.sports
 			super.competitionEnds();
 		}
 		
-		private function checkIfWin():void
+		private function checkIfWin(value:Number):void
 		{			
-			trace("distance: ", bullet.x);
-			var value:Number = Utils.map(bullet.x, currentSport.minMeters * Sport.UNITS_PER_METER, currentSport.maxMeters * Sport.UNITS_PER_METER, 0, 1);
+			
 			trace("value:" , value);
 			if(value < 0) badge = BADGE_LOOSER;
 			if(value >= 0 && value < 1/3 ) badge = BADGE_BRONCE;

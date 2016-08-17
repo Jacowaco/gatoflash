@@ -252,11 +252,9 @@ package
 			
 			PlainRace;
 			LongJump;
-			ShotPut;
 			HighJump;
 			Hurdles;
 			ThrowingGame;
-			JavelinThrow;
 			
 			
 			if(currentSport) disposeSport(currentSport);

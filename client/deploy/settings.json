@@ -8,11 +8,12 @@
         "SÚPER ÁGIL"
     ],
     "sports": {
-        "sportsQty": 3,
-        
+        "sportsQty": 8,
+        "sportsPerPage": 3,
+
         "sport0": {
             "name": "CARRERA CON PEPINOS",
-            "id": "hurdles", // ID para identificar el boton con thumbnail
+            "idMenuButton": "hurdles_btn", // ID para identificar el boton con thumbnail
             "classID": "Hurdles",
             "metres": 110,
             "numObstacles": 20,
@@ -29,10 +30,10 @@
             },
             "inst": "CORRE Y SALTA LOS OBSTÁCULOS"
         },
-        
+
         "sport1": {
             "name": "CARRERA DE 100 METROS",
-            "id": "fourHundreds",
+            "idMenuButton": "plainRace_btn",
             "classID": "PlainRace",
             "metres": 100,
             "player": {
@@ -48,24 +49,24 @@
 
             "inst": "CORRE Y LLEGA PRIMERO A LA META"
         },
-        
+
         "sport2": {
             "name": "LANZAMIENTO DE PIZZA",
-            "id": "pizza",
+            "idMenuButton": "pizza_btn",
             "timeOut": 5,
-            "minMeters": 10,                  // menos de 10 metros banana
-            "maxMeters": 26,                    // medallas repartidas entre minMeters y maxMeters
+            "minMeters": 10, // menos de 10 metros banana
+            "maxMeters": 26, // medallas repartidas entre minMeters y maxMeters
             "maxPower": 200,
             "powerIncrement": 5,
             "classID": "ThrowingGame",
             "throwable": "pizza", // nombre de la clase del mc
             "catcher": "mozo",
-            "catchPh": {"x": -55, "y": 70},
+            "catchPh": { "x": -55, "y": 70 },
             "inst": "CORRE Y LANZA LEJOS LA PIZZA"
-        },        
+        },
         "sport3": {
             "name": "SALTO EN ALTO",
-            "id": "highJump",
+            "idMenuButton": "highJump_btn",
             "inst": "CORRE Y SALTA ALTO",
             "classID": "HighJump",
             "display": {
@@ -76,7 +77,7 @@
 
         "sport4": {
             "name": "CARRERA DE 400 METROS",
-            "id": "fourHundreds",
+            "idMenuButton": "plainRace_btn",
             "classID": "PlainRace",
             "metres": 400,
             "player": {
@@ -93,40 +94,41 @@
             "inst": "CORRE Y LLEGA PRIMERO A LA META"
         },
         "sport5": {
+            "name": "LANZAMIENTO DE TORTA",
+            "idMenuButton": "torta_btn",
+            "timeOut": 5,
+            "minMeters": 10, // menos de 10 metros banana
+            "maxMeters": 26, // medallas repartidas entre minMeters y maxMeters
+            "maxPower": 200,
+            "powerIncrement": 5,
+            "classID": "ThrowingGame",
+            "throwable": "torta", // nombre de la clase del mc
+            "catcher": "payaso",
+            "catchPh": { "x": -0, "y": 70 },
+            "inst": "CORRE Y LANZA LEJOS LA TORTA"
+        },
+        "sport6": {
             "name": "SALTO EN LARGO",
-            "id": "longJump",
+            "idMenuButton": "longJump_btn",
             "inst": "CORRE Y SALTA ALTO",
             "classID": "LongJump",
             "display": {
                 "label": "METROS"
             }
         },
-        "sport6": {
-            "name": "LANZAMIENTO DE TORTA",
-            "id": "torta",
-            "timeOut": 5,
-            "minMeters": 10,                  // menos de 10 metros banana
-            "maxMeters": 26,                    // medallas repartidas entre minMeters y maxMeters
-            "maxPower": 200,
-            "powerIncrement": 5,
-            "classID": "ThrowingGame",
-            "throwable": "torta", // nombre de la clase del mc
-            "catcher": "payaso",
-            "catchPh": {"x": -55, "y": 70},
-            "inst": "CORRE Y LANZA LEJOS LA TORTA"
-        },  
-        "sport6": {
+
+        "sport7": {
             "name": "LANZAMIENTO DE AVIONCITO",
-            "id": "avioncito",
+            "idMenuButton": "avioncito_btn",
             "timeOut": 5,
-            "minMeters": 10,                  // menos de 10 metros banana
-            "maxMeters": 26,                    // medallas repartidas entre minMeters y maxMeters
+            "minMeters": 10, // menos de 10 metros banana
+            "maxMeters": 26, // medallas repartidas entre minMeters y maxMeters
             "maxPower": 200,
             "powerIncrement": 5,
             "classID": "ThrowingGame",
             "throwable": "avioncito", // nombre de la clase del mc
             "catcher": "none",
-            "catchPh": {"x": -55, "y": 70},
+            "catchPh": { "x": -55, "y": 70 },
             "inst": "CORRE Y LANZA LEJOS EL AVIONCITO"
         },
 
