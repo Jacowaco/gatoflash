@@ -28,6 +28,7 @@ package game
 			shot = false;
 		}
 		
+		
 		public function shoot(distance:Number, yoffset:Number, _right:Boolean=true):void
 		{
 			if (shot) return;
@@ -56,10 +57,12 @@ package game
 
 		}		
 		
+		
 		public function animate():void
 		{
 			mc.asset.gotoAndPlay(1);
 		}
+		
 		
 		public function stop():void
 		{
