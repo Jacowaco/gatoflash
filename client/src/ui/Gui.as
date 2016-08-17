@@ -14,6 +14,7 @@ package ui
 	import flash.utils.getDefinitionByName;
 	
 	import game.Avatar;
+	import game.sports.PlainRace;
 	import game.sports.Sport;
 	
 	import popups.ConfirmationPopup;
@@ -140,9 +141,11 @@ package ui
 			
 			// botones de los juegos
 			hurdles_btn;
-			fourHundreds_btn;
+			plainRace_btn;
 			pizza_btn;
 			highJump_btn;
+			
+			
 			
 			
 			sportsMenuButtons = new Array();
@@ -160,7 +163,7 @@ package ui
 				var x:int = buttonsLocations[i % 3].x;
 				var y:int = buttonsLocations[i % 3].y;
 				
-				var myClass:Class = getDefinitionByName("assets."+settings.sports["sport"+i].id+"_btn") as Class;
+				var myClass:Class = getDefinitionByName("assets."+settings.sports["sport"+i].idMenuButton) as Class;
 				
 				var newButton:MovieClip = new myClass() as MovieClip;
 				newButton.name = "sport"+i;

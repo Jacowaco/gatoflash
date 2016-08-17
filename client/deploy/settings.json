@@ -12,7 +12,7 @@
         
         "sport0": {
             "name": "CARRERA CON PEPINOS",
-            "id": "hurdles", // ID para identificar el boton con thumbnail
+            "idMenuButton": "hurdles_btn", // ID para identificar el boton con thumbnail
             "classID": "Hurdles",
             "metres": 110,
             "numObstacles": 20,
@@ -32,7 +32,7 @@
         
         "sport1": {
             "name": "CARRERA DE 100 METROS",
-            "id": "fourHundreds",
+            "idMenuButton": "plainRace_btn",
             "classID": "PlainRace",
             "metres": 100,
             "player": {
@@ -51,7 +51,7 @@
         
         "sport2": {
             "name": "LANZAMIENTO DE PIZZA",
-            "id": "pizza",
+            "idMenuButton": "pizza_btn",
             "timeOut": 5,
             "minMeters": 10,                  // menos de 10 metros banana
             "maxMeters": 26,                    // medallas repartidas entre minMeters y maxMeters
@@ -65,7 +65,7 @@
         },        
         "sport3": {
             "name": "SALTO EN ALTO",
-            "id": "highJump",
+            "idMenuButton": "highJump_btn",
             "inst": "CORRE Y SALTA ALTO",
             "classID": "HighJump",
             "display": {
@@ -76,7 +76,7 @@
 
         "sport4": {
             "name": "CARRERA DE 400 METROS",
-            "id": "fourHundreds",
+            "idMenuButton": "plainRace_btn",
             "classID": "PlainRace",
             "metres": 400,
             "player": {
@@ -94,7 +94,7 @@
         },
         "sport5": {
             "name": "SALTO EN LARGO",
-            "id": "longJump",
+            "plainRace": "longJump_btn",
             "inst": "CORRE Y SALTA ALTO",
             "classID": "LongJump",
             "display": {
@@ -103,7 +103,7 @@
         },
         "sport6": {
             "name": "LANZAMIENTO DE TORTA",
-            "id": "torta",
+            "idMenuButton": "torta_btn",
             "timeOut": 5,
             "minMeters": 10,                  // menos de 10 metros banana
             "maxMeters": 26,                    // medallas repartidas entre minMeters y maxMeters
@@ -117,7 +117,7 @@
         },  
         "sport6": {
             "name": "LANZAMIENTO DE AVIONCITO",
-            "id": "avioncito",
+            "idMenuButton": "avioncito_btn",
             "timeOut": 5,
             "minMeters": 10,                  // menos de 10 metros banana
             "maxMeters": 26,                    // medallas repartidas entre minMeters y maxMeters
