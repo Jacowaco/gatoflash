@@ -68,18 +68,8 @@ package ui
 			
 			page(currentMenuPage=0);
 			
-		
-			
-			
-			
-			
-			
 			// confirmation popup
-			confirmationPopup = new ConfirmationPopup();
-			confirmationPopup.visible = false;
-			confirmationPopup.addEventListener(GuiEvents.EXIT, onConfirmationExit);
-			confirmationPopup.addEventListener(GuiEvents.RESUME, onResume);
-			addChild(confirmationPopup);
+			createConfirmationPopup();
 			
 			// asset tiene el marco amarillo
 			addChild(asset);
@@ -220,8 +210,6 @@ package ui
 			trainer.stop();
 			trainer.visible = false;
 			
-			trainerTxt(false);
-			
 			medal = sportsMenu.getChildByName("medal") as MovieClip;
 			medal.stop();
 			medal.visible = false;
@@ -232,9 +220,20 @@ package ui
 			
 			feedbackTime = sportsMenu.getChildByName("fb_time") as MovieClip;
 			feedbackTime.label.text = api.getText(settings.gui.time);
-			feedbackTime.visible = false;
+			feedbackTime.visible = false;		
 			
+			trainerTxt(false);
 		}
+		
+		private function createConfirmationPopup():void
+		{
+			confirmationPopup = new ConfirmationPopup();
+			confirmationPopup.visible = false;
+			confirmationPopup.addEventListener(GuiEvents.EXIT, onConfirmationExit);
+			confirmationPopup.addEventListener(GuiEvents.RESUME, onResume);
+			addChild(confirmationPopup);			
+		}
+		
 		
 		private var currentMenuPage:int = 0;
 		private var maxPages:int = 3;

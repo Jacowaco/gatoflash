@@ -30,6 +30,7 @@ package game
 		
 		public static const ENEMY:int = 0;
 		public static const PLAYER:int = 1;
+		public static const FOREST:int = 2;
 		
 		private var state:int = IDLE;
 		
@@ -188,7 +189,7 @@ package game
 		
 		private function updateSpeed():void
 		{	
-			if (mode == ENEMY)
+			if (mode == ENEMY || mode == FOREST)
 			{
 				accelerate();
 				
@@ -341,7 +342,17 @@ package game
 		
 		public function toggleMode():void
 		{
-			currentMode = (currentMode == PLAYER) ? ENEMY : PLAYER;
+			if(currentMode == PLAYER){
+				currentMode = FOREST;
+				maxSpeed = maxSpeed * 4;
+				speed = maxSpeed;
+			}else{
+				currentMode = PLAYER;
+				maxSpeed = maxSpeed / 4;
+			}
+			 
+			trace("RUN FOREST");
+			
 		}
 		
 		public function showArrowHint():void
