@@ -9,6 +9,7 @@
     ],
     "sports": {
         "sportsQty": 8,
+        "sportsPerPage": 3,
         
         "sport0": {
             "name": "CARRERA CON PEPINOS",
