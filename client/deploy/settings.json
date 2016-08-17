@@ -8,7 +8,8 @@
         "SÚPER ÁGIL"
     ],
     "sports": {
-        "sportsQty": 4,
+        "sportsQty": 3,
+        
         "sport0": {
             "name": "CARRERA CON PEPINOS",
             "id": "hurdles", // ID para identificar el boton con thumbnail
@@ -28,6 +29,7 @@
             },
             "inst": "CORRE Y SALTA LOS OBSTÁCULOS"
         },
+        
         "sport1": {
             "name": "CARRERA DE 100 METROS",
             "id": "fourHundreds",
@@ -46,6 +48,7 @@
 
             "inst": "CORRE Y LLEGA PRIMERO A LA META"
         },
+        
         "sport2": {
             "name": "LANZAMIENTO DE PIZZA",
             "id": "pizza",
@@ -59,10 +62,7 @@
             "catcher": "mozo",
             "catchPh": {"x": -55, "y": 70},
             "inst": "CORRE Y LANZA LEJOS LA PIZZA"
-        },
-
-
-
+        },        
         "sport3": {
             "name": "SALTO EN ALTO",
             "id": "highJump",
@@ -72,16 +72,62 @@
                 "label": "METROS"
             }
         },
+
+
         "sport4": {
-            "name": "LANZAMIENTO DE TORTA",
-            "id": "torta",
-            "maxSpeed": 200,
-            "speedIncrement": 5,
-            "classID": "DiscusThrow",
-            "inst": "LANZA LEJOS LA TORTA",
+            "name": "CARRERA DE 400 METROS",
+            "id": "fourHundreds",
+            "classID": "PlainRace",
+            "metres": 400,
+            "player": {
+                "maxSpeed": 13,
+                "speedIncrement": 2
+            },
+            "enemies": {
+                "maxSpeed": 13,
+                "speedIncrement": 2,
+                "speedVariation": [75, 95], // minimo y máximo en porcentaje de maxSpeed
+                "jumpSkill": 50 //  máximo en porcentaje: 0 no salta ninguna y 100 las salta todas
+            },
+
+            "inst": "CORRE Y LLEGA PRIMERO A LA META"
+        },
+        "sport5": {
+            "name": "SALTO EN LARGO",
+            "id": "longJump",
+            "inst": "CORRE Y SALTA ALTO",
+            "classID": "LongJump",
             "display": {
                 "label": "METROS"
             }
+        },
+        "sport6": {
+            "name": "LANZAMIENTO DE TORTA",
+            "id": "torta",
+            "timeOut": 5,
+            "minMeters": 10,                  // menos de 10 metros banana
+            "maxMeters": 26,                    // medallas repartidas entre minMeters y maxMeters
+            "maxPower": 200,
+            "powerIncrement": 5,
+            "classID": "ThrowingGame",
+            "throwable": "torta", // nombre de la clase del mc
+            "catcher": "payaso",
+            "catchPh": {"x": -55, "y": 70},
+            "inst": "CORRE Y LANZA LEJOS LA TORTA"
+        },  
+        "sport6": {
+            "name": "LANZAMIENTO DE AVIONCITO",
+            "id": "avioncito",
+            "timeOut": 5,
+            "minMeters": 10,                  // menos de 10 metros banana
+            "maxMeters": 26,                    // medallas repartidas entre minMeters y maxMeters
+            "maxPower": 200,
+            "powerIncrement": 5,
+            "classID": "ThrowingGame",
+            "throwable": "avioncito", // nombre de la clase del mc
+            "catcher": "none",
+            "catchPh": {"x": -55, "y": 70},
+            "inst": "CORRE Y LANZA LEJOS EL AVIONCITO"
         },
 
         "defaultValue": {

@@ -74,7 +74,7 @@ package
 		// la gui es la vista (que en general maneja todos los popups y data en pantalla - excepto que un juego requiera una interfase especial)		
 		private var gui:Gui;		
 		private var currentSport:Sport;
-	
+		
 		public function Game()
 		{
 			super();
@@ -124,13 +124,13 @@ package
 		private function createGui():void
 		{
 			gui = new Gui(new assets.guiMc());
-			gui.addEventListener(GuiEvents.CONFIRMATION_EXIT, onExitGame);
+			gui.addEventListener(GuiEvents.EXIT, onExitGame);
 			gui.addEventListener(GuiEvents.PAUSE, onPause);			
 			gui.addEventListener(GuiEvents.RESUME, onResume);
 			gui.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);
 			gui.addEventListener(GuiEvents.COUNTDOWN_END, onCountDownEnded);
 			gui.addEventListener(GuiEvents.SHOW_MENU, onChangeGui);
-		
+			
 			// INTERFASE con el api de clubes
 			// levanto el nombre del club
 			gui.setClub( api.getOlympicTeam() );
@@ -139,12 +139,15 @@ package
 		
 		// sound schemes: invento para poder tener estados de musica...
 		private var currentScheme:String;		
+		
 		private var soundScheme:Object = {
 			"menu": ["music_rio"],
 			"ingame": ["estadio"],
 			"end": ["end_music"]
 		}			
 		
+		// basicamente stopeo todo el audio que este en loop
+		// y activo uno nuevo.
 		public function playAudioScheme(name:String):void{			
 			if(name == currentScheme) return;
 			audio.music.stop();			
@@ -173,14 +176,14 @@ package
 			audio.registerFx("tiempo_fuera", "tiempo_fuera");
 			
 			
-
+			
 			// end game
 			audio.registerFx("lose", "perder");			
 			audio.registerFx("bu", "bu");
 			
 			audio.registerFx("win", "win");
 			audio.registerFx("ovacion", "ovacion");
-					
+			
 			
 			// in game
 			audio.registerFx("ow", "ow");
@@ -193,13 +196,12 @@ package
 			audio.registerMusic("music_rio", "music_rio");
 			audio.registerMusic("estadio", "estadio");
 			audio.registerMusic("end_music", "musica");
-	
+			
 			trace(settings.defaultValue.soundsEnable)
 			if(!settings.defaultValue.soundsEnable){
 				audio.gain(null, 0.001);
 			}
-		}
-				
+		}		
 		
 		private function update(e:Event):void
 		{
@@ -207,7 +209,7 @@ package
 			if (currentSport) {
 				currentSport.update();
 				gui.setTime(currentSport.getGameplayTime());
-				gui.setScore(currentSport.getPlayerMeters().toString());
+				gui.setMeters(currentSport.getPlayerMeters().toString());
 				gui.setPower(currentSport.getPlayerPower());
 			}			
 		}
@@ -226,10 +228,10 @@ package
 		private function onCompetitionEnd(e:Event):void
 		{			
 			playAudioScheme("end");
-			gui.endgame(currentSport.badge);
-			api.addOlympicTeamReward(currentSport.badgeAsString());				
+			gui.setMedal(currentSport.badge);
+			api.addOlympicTeamReward(currentSport.badgeAsString());	
+			trace("added reward: ", currentSport.badgeAsString());
 		}
-		
 		
 		private function onCountDownEnded(e:Event):void
 		{
@@ -243,15 +245,11 @@ package
 			e.currentTarget.removeEventListener(GuiEvents.COUNTDOWN, showCountDown);
 		}
 		
-		
-		
-		
 		private function onNewMatch(e:Event):void
 		{
-			trace("crear el level con ese juego: " + gui.currentSport.classID);
-			
+			trace("crear el level con ese juego: " + gui.currentSport.classID);			
 			playAudioScheme("ingame");
-		
+			
 			PlainRace;
 			LongJump;
 			ShotPut;
@@ -262,7 +260,7 @@ package
 			
 			
 			if(currentSport) disposeSport(currentSport);
-				
+			
 			var sportClass:Class = getDefinitionByName("game.sports." + gui.currentSport.classID) as Class;
 			currentSport = new sportClass(gui.currentSport);
 			currentSport.addEventListener(GuiEvents.NEW_MATCH, onNewMatch);				
@@ -276,8 +274,6 @@ package
 			
 		}
 		
-				
-		
 		private function disposeSport(currentSport:Sport):void
 		{			
 			currentSport.removeEventListener(GuiEvents.NEW_MATCH, onNewMatch);				
@@ -285,7 +281,7 @@ package
 			removeChild(currentSport);
 			currentSport = null;
 		}
-
+		
 		private function onKeyDown(key:KeyboardEvent):void
 		{
 			if (currentSport) currentSport.onKeyDown(key);
@@ -301,8 +297,7 @@ package
 			// TODO VERSION STANDAR CON PUNTOS POR MONEDAS
 			// close(maxSessionScore.value);
 			// por ahora pasa 0 porque da medallas. esto esta implementado en el sport.
-			close(0); // close llama a dispose();
-
+			close(0); // close() llama a dispose();			
 		}
 		
 		// eliminar bien el juego.
@@ -319,8 +314,7 @@ package
 		public static function taskRunner():TaskRunner
 		{
 			return tasks;			
-		}
-		
+		}		
 	}
 }
 

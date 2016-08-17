@@ -38,7 +38,7 @@ package popups
 
 		private function onExit(e:Event):void
 		{
-			dispatchEvent(new Event(GuiEvents.CONFIRMATION_EXIT));
+			dispatchEvent(new Event(GuiEvents.EXIT));
 			audio.fx.play("click");
 		}
 		

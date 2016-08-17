@@ -9,6 +9,7 @@ package ui
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.geom.Point;
 	import flash.net.getClassByAlias;
 	import flash.utils.getDefinitionByName;
 	
@@ -44,7 +45,7 @@ package ui
 		private var feedbackMeters:MovieClip;
 		private var feedbackTime:MovieClip;
 		
-		
+		private var menu1:Object = { }
 
 
 		// menues standar
@@ -89,17 +90,13 @@ package ui
 			countdown.visible = false;
 			
 			
-			
-			
-			
-			
 			// el menu que te deja elegir el juego			
 			sportsMenu = new McMenu();
 			sportsMenu.txt_title.text = settings.gui.title;
 			sportsMenu.txt_details.text = settings.gui.details;
 			
 			
-			sportsMenu.backBtn.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ showMenuPage(1) });
+			sportsMenu.backBtn.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ menuPage(1) });
 			sportsMenu.backBtn.addEventListener(MouseEvent.ROLL_OVER, onOver);
 			sportsMenu.backBtn.text.text = api.getText(settings.gui.confirmation.back);
 			sportsMenu.backBtn.visible = false;
@@ -114,9 +111,9 @@ package ui
 			sportsMenu.exitBtn.text.text = api.getText(settings.gui.confirmation.exit);
 			sportsMenu.exitBtn.visible = true;
 
-			sportsMenu.pg2.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ showMenuPage(2) });
+			sportsMenu.pg2.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ menuPage(2) });
 			sportsMenu.pg2.addEventListener(MouseEvent.ROLL_OVER, onOver);
-			sportsMenu.pg1.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ showMenuPage(1) });
+			sportsMenu.pg1.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ menuPage(1) });
 			sportsMenu.pg1.addEventListener(MouseEvent.ROLL_OVER, onOver);			
 			sportsMenu.nextWeek.visible = false;
 			
@@ -140,19 +137,28 @@ package ui
 			feedbackTime.label.text = api.getText(settings.gui.time);
 			feedbackTime.visible = false;
 			
+			
 			// botones de los juegos
 			hurdles_btn;
 			fourHundreds_btn;
 			pizza_btn;
 			highJump_btn;
 			
-			// armo los botones para los primeros 4
+			
 			sportsMenuButtons = new Array();
 			
+			var buttonsLocations:Array = new Array();
+			for(var i:int = 0; i < 3; i ++){
+				buttonsLocations.push( new Point(sportsMenu["sport"+i].x,sportsMenu["sport"+i].y)); ;		
+				sportsMenu.removeChild(sportsMenu["sport"+i]);	
+			}
+			
+				
+			
 			for(var i:int = 0; i < settings.sports.sportsQty; i ++){
-				var buttonToReplace:MovieClip = sportsMenu["sport"+i]; 		
-				var x:int = buttonToReplace.x;
-				var y:int = buttonToReplace.y;
+ 		
+				var x:int = buttonsLocations[i % 3].x;
+				var y:int = buttonsLocations[i % 3].y;
 				
 				var myClass:Class = getDefinitionByName("assets."+settings.sports["sport"+i].id+"_btn") as Class;
 				
@@ -166,14 +172,14 @@ package ui
 				newButton.addEventListener(MouseEvent.ROLL_OVER, onOver);
 				
 				sportsMenuButtons.push(newButton);		
-				sportsMenu.removeChild(buttonToReplace);				
+							
 				sportsMenu.addChild(newButton);	
 			}
 			
 			
 			
 			
-			showMenuPage(1);
+			menuPage(1);
 			
 			sportsMenu.instructions.visible = false;
 			sportsMenu.txtClub.visible = false;
@@ -190,7 +196,7 @@ package ui
 			// confirmation popup
 			confirmationPopup = new ConfirmationPopup();
 			confirmationPopup.visible = false;
-			confirmationPopup.addEventListener(GuiEvents.CONFIRMATION_EXIT, onConfirmationExit);
+			confirmationPopup.addEventListener(GuiEvents.EXIT, onConfirmationExit);
 			confirmationPopup.addEventListener(GuiEvents.RESUME, onResume);
 			addChild(confirmationPopup);
 			
@@ -213,7 +219,6 @@ package ui
 					clubINT = 2;
 					break;
 			}
-			//TODO parsear el nombre del club al int
 			this.club = clubINT;
 		}
 		
@@ -222,18 +227,50 @@ package ui
 			countdown.gotoAndPlay(2);
 			countdown.visible = true;			
 		}
+				
+		public function reset():void
+		{
+			exitBtn.visible = true;
+		}
+		
+		public function setTime(currenttime:String):void
+		{
+			time.value.text = currenttime;
+		}
+		
+		public function setPower(pow:Number):void
+		{
+			this.power.gotoAndStop( Math.floor(Utils.map(pow, 0, 1, 1, this.power.totalFrames)));	
+		}
+				
+		public function setMeters(score:String):void
+		{
+			this.meters.value.text = score;
+		}
+		
+		public function setMedal(medal:int):void{
+			endgameMenu(medal);
+		}
+		
+		
 		
 		private function countdownEnded(e:Event):void
 		{
 			countdown.visible = false;
-			dispatchEvent(new Event(GuiEvents.COUNTDOWN_END));			
-			
+			dispatchEvent(new Event(GuiEvents.COUNTDOWN_END));						
 		}
-		
-		private function showMenuPage(page:int):void
+			
+		private function menuPage(page:int):void
 		{
 			audio.fx.play("move");
 			dispatchEvent(new Event(GuiEvents.SHOW_MENU));
+			
+			var menu1:Object = {
+				"ingameData": false,
+				"scoreAndTime":false, 
+				"trainerTxt": false,
+				"buttons": true}; 
+				
 			scoreAndTime(false);
 			ingameData(false);
 			trainerTxt(false);
@@ -253,10 +290,7 @@ package ui
 					buttons(false);
 					sportsMenu.nextWeek.visible = true;
 					break;
-			}
-			
-			
-			
+			}		
 		}
 		
 		private function rewards(show:Boolean):void
@@ -279,20 +313,73 @@ package ui
 			}			
 		}
 		
-		private function onPlaySport(e:Event):void
+		private function ingameData(show:Boolean):void
 		{
-			instructions(false);
-			sportName(false);	
-			sportsMenu.visible = false;			
-			ingameData(true);
-			
-			dispatchEvent(new Event(GuiEvents.NEW_MATCH));
+			time.visible = show;
+			meters.visible = show;
+			power.visible = show;
+			exitBtn.visible = show;
+		}
 		
+		private function instructions(show:Boolean):void
+		{
+			sportsMenu.instructions.visible = show;
+			sportsMenu.txtClub.visible = show;
+			sportsMenu.clubPh.visible = show;
 			
 		}
 		
-	
+		private function playbtn(show:Boolean):void
+		{
+			sportsMenu.backBtn.visible = show;
+			sportsMenu.playGameBtn.visible = show;
+		}
 		
+		private function sportName(show:Boolean, text:String=""):void
+		{			
+			sportsMenu.txt_sportTitle.visible = show;
+			if(text != "") sportsMenu.txt_sportTitle.text = text;
+		}
+				
+		private function trainerTxt(show:Boolean, text:String=""):void
+		{			
+			sportsMenu.txt_trainer.visible = show;
+			if(text != "") sportsMenu.txt_trainer.text = text;
+		}
+		
+		private function details(show:Boolean, text:String=""):void
+		{			
+			sportsMenu.txt_details.visible = show;
+			if(text != "") sportsMenu.txt_details.text = text;
+		}
+
+		private function scoreAndTime(show:Boolean):void
+		{	
+			this.feedbackMeters.visible = show;
+			this.feedbackMeters.value.text = this.meters.value.text;
+			this.feedbackTime.visible = show;
+			this.feedbackTime.value.text = this.time.value.text;
+			
+		}
+		
+		private function showTrainer(frame:String):void
+		{
+			trainer.visible = true;
+			trainer.gotoAndStop(frame);
+		}
+		
+		private function showMedal(frame:int):void
+		{
+			if(frame == 0){ 
+				medal.visible = false;
+				return;
+			}
+			medal.visible = true;
+			medal.gotoAndStop(frame);
+		}
+		
+
+		// callbacks
 		// muestra el menu del deporte con sus instrucciones
 		private function onPlaySportMenu(e:Event):void
 		{						
@@ -315,81 +402,21 @@ package ui
 			sportsMenu.instructions.txt_inst.text = api.getText(settings.sports[e.currentTarget.name].inst);
 		}
 		
-		private function ingameData(show:Boolean):void
+		private function onPlaySport(e:Event):void
 		{
-			time.visible = show;
-			meters.visible = show;
-			power.visible = show;
-			exitBtn.visible = show;
+			instructions(false);
+			sportName(false);	
+			sportsMenu.visible = false;			
+			ingameData(true);
+			
+			dispatchEvent(new Event(GuiEvents.NEW_MATCH));		
 		}
 		
-		private function instructions(show:Boolean):void
-		{
-			sportsMenu.instructions.visible = show;
-			sportsMenu.txtClub.visible = show;
-			sportsMenu.clubPh.visible = show;
-			
-		}
+		
 
-		private function playbtn(show:Boolean):void
-		{
-			sportsMenu.backBtn.visible = show;
-			sportsMenu.playGameBtn.visible = show;
-		}
-				
-		private function sportName(show:Boolean, text:String=""):void
-		{			
-			sportsMenu.txt_sportTitle.visible = show;
-			if(text != "") sportsMenu.txt_sportTitle.text = text;
-		}
 		
-		
-		private function trainerTxt(show:Boolean, text:String=""):void
-		{			
-			sportsMenu.txt_trainer.visible = show;
-			if(text != "") sportsMenu.txt_trainer.text = text;
-		}
-		
-		private function details(show:Boolean, text:String=""):void
-		{			
-			sportsMenu.txt_details.visible = show;
-			if(text != "") sportsMenu.txt_details.text = text;
-		}
-		
-		public function reset():void
-		{
-			exitBtn.visible = true;
-		}
-		
-		public function setTime(currenttime:String):void
-		{
-			time.value.text = currenttime;
-		}
-		
-		public function setPower(pow:Number):void
-		{
-			this.power.gotoAndStop( Math.floor(Utils.map(pow, 0, 1, 1, this.power.totalFrames)));	
-		}
-		
-		
-		public function setScore(score:String):void
-		{
-			this.meters.value.text = score;
-		}
-		
-		private function scoreAndTime(show:Boolean):void
-		{
-		
-			this.feedbackMeters.visible = show;
-			this.feedbackMeters.value.text = this.meters.value.text;
-			this.feedbackTime.visible = show;
-			this.feedbackTime.value.text = this.time.value.text;
-			
-		}
-		
-		
-		public function endgame(medal:int):void{
-			trace("gui endgame", medal);
+		private function endgameMenu(medal:int):void{
+
 			sportsMenu.visible = true;
 		
 			ingameData(false);
@@ -433,24 +460,13 @@ package ui
 				{
 					break;
 				}
-			}
-			
+			}			
 		}
 
-		private function showTrainer(frame:String):void
+
+		private function onOver(e:Event):void
 		{
-			trainer.visible = true;
-			trainer.gotoAndStop(frame);
-		}
-		
-		private function showMedal(frame:int):void
-		{
-			if(frame == 0){ 
-				medal.visible = false;
-				return;
-			}
-			medal.visible = true;
-			medal.gotoAndStop(frame);
+			audio.fx.play("rollover");
 		}
 		
 		private function onExitBtn(e:Event):void
@@ -462,16 +478,10 @@ package ui
 		
 		private function onConfirmationExit(e:Event):void 
 		{
-			dispatchEvent(new Event(GuiEvents.CONFIRMATION_EXIT));
+			audio.fx.play("click");
+			dispatchEvent(new Event(GuiEvents.EXIT));
 		}
 		
-		
-		private function onOver(e:Event):void
-		{
-			audio.fx.play("rollover");
-		}
-		
-
 		private function onResume(e:Event=null):void
 		{
 			audio.fx.play("click");
@@ -479,6 +489,7 @@ package ui
 			dispatchEvent(new Event(GuiEvents.RESUME));
 		}
 
+		// esto es feo pero práctico. la gui le pasa el objeto del juego al game
 		public function get currentSport():Object
 		{
 			return sportSelected;

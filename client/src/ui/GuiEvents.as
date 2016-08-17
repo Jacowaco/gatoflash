@@ -8,7 +8,7 @@ package ui
 		public static const SHOW_MENU:String = "showMenu";
 		public static const INGAME:String = "ingame";
 		
-		public static const CONFIRMATION_EXIT:String = "onConfirmationExit";
+		public static const EXIT:String = "onConfirmationExit";
 		public static const PAUSE:String = "onExit";
 		public static const RESUME:String = "onResume";
 		public static const PLAY:String = "onPlay";
