@@ -69,59 +69,13 @@ package ui
 			page(currentMenuPage=0);
 			
 			// confirmation popup
-			createConfirmationPopup();
-			
+			createConfirmationPopup();			
 			// asset tiene el marco amarillo
 			addChild(asset);
 		
 		}
 		
-		public function setClub(club:String):void
-		{
-			var clubINT:int;
-			switch (club) {
-				case "megaElastico":
-					clubINT = 0;
-					break;
-				case "ultraRapido":
-					clubINT = 1;
-					break;
-				case "superAgil":
-					clubINT = 2;
-					break;
-			}
-			this.club = clubINT;
-		}
-		
-		public function showCountDown():void
-		{
-			countdown.gotoAndPlay(2);
-			countdown.visible = true;			
-		}
-				
-		public function reset():void
-		{
-			exitBtn.visible = true;
-		}
-		
-		public function setTime(currenttime:String):void
-		{
-			time.value.text = currenttime;
-		}
-		
-		public function setPower(pow:Number):void
-		{
-			this.power.gotoAndStop( Math.floor(Utils.map(pow, 0, 1, 1, this.power.totalFrames)));	
-		}
-				
-		public function setMeters(score:String):void
-		{
-			this.meters.value.text = score;
-		}
-		
-		public function setMedal(medal:int):void{
-			endgameMenu(medal);
-		}
+
 		
 		
 		
@@ -248,37 +202,26 @@ package ui
 		{
 			currentMenuPage = currentMenuPage - 1 < 0 ? maxPages - 1 : currentMenuPage - 1;
 			page(currentMenuPage);
-//			trace(currentMenuPage);
 		}
 		
 		private function page(page:int):void
 		{
 			audio.fx.play("move");
 			dispatchEvent(new Event(GuiEvents.SHOW_MENU));
-			
-			
+		
 			arrows(true);
+			
 			instructions(false);
-			playbtn(false);
-			sportName(false);
+			backAndPlay(false);
+//			sportName(false);
 			rewards(false);
-			
-			
-			
-			var menu1:Object = {
-				"ingameData": false,
-				"scoreAndTime":false, 
-				"trainerTxt": false,
-				"buttons": true}; 
-				
 			scoreAndTime(false);
 			ingameData(false);
 			trainerTxt(false);
 			
 			switch (page){
 				case 0:
-					buttons([0,1,2]);
-					
+					buttons([0,1,2]);					
 					break;
 				
 				case 1:
@@ -305,10 +248,6 @@ package ui
 			highJump_btn;
 			longJump_btn;
 			
-			
-			
-			
-			
 			sportsMenuButtons = new Array();
 			
 			var buttonsLocations:Array = new Array();
@@ -316,7 +255,6 @@ package ui
 				buttonsLocations.push( new Point(sportsMenu["sport"+i].x,sportsMenu["sport"+i].y)); ;		
 				sportsMenu.removeChild(sportsMenu["sport"+i]);	
 			}
-			
 			
 			
 			for(var i:int = 0; i < settings.sports.sportsQty; i ++){
@@ -332,6 +270,7 @@ package ui
 				newButton.y = y;
 				newButton.visible = false;
 				newButton.label.text = api.getText(settings.sports["sport"+i].name);
+			
 				newButton.addEventListener(MouseEvent.CLICK, onPlaySportMenu);
 				newButton.addEventListener(MouseEvent.ROLL_OVER, onOver);
 				
@@ -360,10 +299,6 @@ package ui
 			if(wichOnes){
 				for each(var id:int in wichOnes) sportsMenuButtons[id].visible = true;
 			}
-//			
-//			for(var i:int = 0; i < settings.sports.sportsQty; i ++){
-//				sportsMenuButtons[i].visible = show;											
-//			}			
 		}
 		
 		private function ingameData(show:Boolean):void
@@ -382,17 +317,12 @@ package ui
 			
 		}
 		
-		private function playbtn(show:Boolean):void
+		private function backAndPlay(show:Boolean):void
 		{
 			sportsMenu.backBtn.visible = show;
 			sportsMenu.playGameBtn.visible = show;
 		}
 		
-		private function sportName(show:Boolean, text:String=""):void
-		{			
-			sportsMenu.txt_sportTitle.visible = show;
-			if(text != "") sportsMenu.txt_sportTitle.text = text;
-		}
 				
 		private function trainerTxt(show:Boolean, text:String=""):void
 		{			
@@ -437,14 +367,15 @@ package ui
 		private function onPlaySportMenu(e:Event):void
 		{						
 			audio.fx.play("click");
+			
 			ingameData(false);			
 			buttons(null);
 			arrows(false);
 			details(false);
-			sportName(false); 
+ 
 			
 						
-			playbtn(true);
+			backAndPlay(true);
 			instructions(true);
 			
 			sportSelected = settings.sports[e.currentTarget.name];			
@@ -457,8 +388,7 @@ package ui
 		
 		private function onPlaySport(e:Event):void
 		{
-			instructions(false);
-			sportName(false);	
+			instructions(false);	
 			sportsMenu.visible = false;			
 			ingameData(true);
 			
@@ -542,10 +472,58 @@ package ui
 			dispatchEvent(new Event(GuiEvents.RESUME));
 		}
 
+		// public:
 		// esto es feo pero práctico. la gui le pasa el objeto del juego al game
 		public function get currentSport():Object
 		{
 			return sportSelected;
+		}
+		
+		public function setClub(club:String):void
+		{
+			var clubINT:int;
+			switch (club) {
+				case "megaElastico":
+					clubINT = 0;
+					break;
+				case "ultraRapido":
+					clubINT = 1;
+					break;
+				case "superAgil":
+					clubINT = 2;
+					break;
+			}
+			this.club = clubINT;
+		}
+		
+		public function showCountDown():void
+		{
+			countdown.gotoAndPlay(2);
+			countdown.visible = true;			
+		}
+		
+		public function reset():void
+		{
+			exitBtn.visible = true;
+		}
+		
+		public function setTime(currenttime:String):void
+		{
+			time.value.text = currenttime;
+		}
+		
+		public function setPower(pow:Number):void
+		{
+			this.power.gotoAndStop( Math.floor(Utils.map(pow, 0, 1, 1, this.power.totalFrames)));	
+		}
+		
+		public function setMeters(score:String):void
+		{
+			this.meters.value.text = score;
+		}
+		
+		public function setMedal(medal:int):void{
+			endgameMenu(medal);
 		}
 	}
 }
