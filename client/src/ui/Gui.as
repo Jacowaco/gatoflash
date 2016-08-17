@@ -2,6 +2,8 @@ package ui
 {
 	import assets.*;
 	
+	import avatar_fla.fall_32;
+	
 	import com.adobe.serialization.json.JSON;
 	import com.qb9.flashlib.lang.AbstractMethodError;
 	import com.qb9.flashlib.movieclip.actions.GotoAndStopAction;
@@ -48,8 +50,8 @@ package ui
 		private var feedbackTime:MovieClip;
 		
 		private var menu1:Object = { }
-
-
+		
+		
 		// menues standar
 		private var confirmationPopup:ConfirmationPopup;
 		
@@ -72,10 +74,10 @@ package ui
 			createConfirmationPopup();			
 			// asset tiene el marco amarillo
 			addChild(asset);
-		
+			
 		}
 		
-
+		
 		
 		
 		
@@ -84,7 +86,7 @@ package ui
 			countdown.visible = false;
 			dispatchEvent(new Event(GuiEvents.COUNTDOWN_END));						
 		}
-			
+		
 		
 		private function createIngameGui():void
 		{
@@ -126,7 +128,7 @@ package ui
 			sportsMenu = new McMenu();
 			sportsMenu.txt_title.text = settings.gui.title;
 			sportsMenu.txt_details.text = settings.gui.details;
-						
+			
 			sportsMenu.backBtn.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ page(1) });
 			sportsMenu.backBtn.addEventListener(MouseEvent.ROLL_OVER, onOver);
 			sportsMenu.backBtn.text.text = api.getText(settings.gui.confirmation.back);
@@ -152,7 +154,7 @@ package ui
 			sportsMenu.instructions.visible = false;
 			sportsMenu.txtClub.visible = false;
 			addChild(sportsMenu);
-
+			
 			
 		}
 		
@@ -207,17 +209,22 @@ package ui
 		private function page(page:int):void
 		{
 			audio.fx.play("move");
-			dispatchEvent(new Event(GuiEvents.SHOW_MENU));
 		
-			arrows(true);
+			dispatchEvent(new Event(GuiEvents.SHOW_MENU));
+			
+			
 			
 			instructions(false);
 			backAndPlay(false);
-//			sportName(false);
-			rewards(false);
-			scoreAndTime(false);
+			ingameData(false);
+			
+			endGame(false);
+			
 			ingameData(false);
 			trainerTxt(false);
+			
+			sportsMenu.visible = true;
+			arrows(true);
 			
 			switch (page){
 				case 0:
@@ -270,7 +277,7 @@ package ui
 				newButton.y = y;
 				newButton.visible = false;
 				newButton.label.text = api.getText(settings.sports["sport"+i].name);
-			
+				
 				newButton.addEventListener(MouseEvent.CLICK, onPlaySportMenu);
 				newButton.addEventListener(MouseEvent.ROLL_OVER, onOver);
 				
@@ -280,10 +287,16 @@ package ui
 				newButton.visible = false;
 			}
 		}
-		private function rewards(show:Boolean):void
+		
+		private function endGame(show:Boolean):void
 		{
+			sportsMenu.visible = show;
 			trainer.visible = show;
-			medal.visible = show;			
+			medal.visible = show;	
+			this.feedbackMeters.visible = show;
+			this.feedbackMeters.value.text = this.meters.value.text;
+			this.feedbackTime.visible = show;
+			this.feedbackTime.value.text = this.time.value.text;	
 		}
 		
 		private function arrows(show:Boolean):void
@@ -323,7 +336,7 @@ package ui
 			sportsMenu.playGameBtn.visible = show;
 		}
 		
-				
+		
 		private function trainerTxt(show:Boolean, text:String=""):void
 		{			
 			sportsMenu.txt_trainer.visible = show;
@@ -335,15 +348,11 @@ package ui
 			sportsMenu.txt_details.visible = show;
 			if(text != "") sportsMenu.txt_details.text = text;
 		}
-
-		private function scoreAndTime(show:Boolean):void
-		{	
-			this.feedbackMeters.visible = show;
-			this.feedbackMeters.value.text = this.meters.value.text;
-			this.feedbackTime.visible = show;
-			this.feedbackTime.value.text = this.time.value.text;
-			
-		}
+		
+		//		private function scoreAndTime(show:Boolean):void
+		//		{	
+		//		
+		//		}
 		
 		private function showTrainer(frame:String):void
 		{
@@ -361,7 +370,7 @@ package ui
 			medal.gotoAndStop(frame);
 		}
 		
-
+		
 		// callbacks
 		// muestra el menu del deporte con sus instrucciones
 		private function onPlaySportMenu(e:Event):void
@@ -372,9 +381,9 @@ package ui
 			buttons(null);
 			arrows(false);
 			details(false);
- 
 			
-						
+			
+			
 			backAndPlay(true);
 			instructions(true);
 			
@@ -396,14 +405,11 @@ package ui
 		}
 		
 		
-
+		
 		
 		private function endgameMenu(medal:int):void{
-
-			sportsMenu.visible = true;
-		
-			ingameData(false);
-			scoreAndTime(true);
+			
+//			scoreAndTime(true);
 			
 			switch(medal)
 			{
@@ -413,7 +419,7 @@ package ui
 					showMedal(Sport.BADGE_LOOSER);
 					trainerTxt(true, api.getText(settings.gui.win.loose));
 					
-							
+					
 					break;
 				}
 				case Sport.BADGE_BRONCE:
@@ -438,15 +444,15 @@ package ui
 					trainerTxt(true, api.getText(settings.gui.win.win));
 					break;
 				}
-				
+					
 				default:
 				{
 					break;
 				}
 			}			
 		}
-
-
+		
+		
 		private function onOver(e:Event):void
 		{
 			audio.fx.play("rollover");
@@ -471,7 +477,7 @@ package ui
 			confirmationPopup.visible = false;
 			dispatchEvent(new Event(GuiEvents.RESUME));
 		}
-
+		
 		// public:
 		// esto es feo pero práctico. la gui le pasa el objeto del juego al game
 		public function get currentSport():Object
@@ -523,6 +529,8 @@ package ui
 		}
 		
 		public function setMedal(medal:int):void{
+			ingameData(false);
+			endGame(true);			
 			endgameMenu(medal);
 		}
 	}
