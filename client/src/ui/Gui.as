@@ -140,10 +140,17 @@ package ui
 			
 			
 			// botones de los juegos
-			hurdles_btn;
 			plainRace_btn;
+			
+			hurdles_btn;
+			
 			pizza_btn;
+			torta_btn;
+			avioncito_btn;
+			
 			highJump_btn;
+			longJump_btn;
+			
 			
 			
 			
@@ -176,7 +183,8 @@ package ui
 				
 				sportsMenuButtons.push(newButton);		
 							
-				sportsMenu.addChild(newButton);	
+				sportsMenu.addChild(newButton);
+				newButton.visible = false;
 			}
 			
 			
@@ -268,6 +276,7 @@ package ui
 			audio.fx.play("move");
 			dispatchEvent(new Event(GuiEvents.SHOW_MENU));
 			
+			
 			var menu1:Object = {
 				"ingameData": false,
 				"scoreAndTime":false, 
@@ -280,7 +289,8 @@ package ui
 			
 			switch (page){
 				case 1:
-					buttons(true);
+//					buttons([0,1,2]);
+					buttons([3,4,5]);
 					arrows(true);
 					instructions(false);
 					playbtn(false);
@@ -290,7 +300,7 @@ package ui
 					break;
 				
 				case 2:
-					buttons(false);
+					buttons(null);
 					sportsMenu.nextWeek.visible = true;
 					break;
 			}		
@@ -309,11 +319,16 @@ package ui
 			sportsMenu.exitBtn.visible = show;
 		}
 		
-		private function buttons(show:Boolean):void
+		private function buttons(wichOnes:Array=null):void
 		{
-			for(var i:int = 0; i < settings.sports.sportsQty; i ++){
-				sportsMenuButtons[i].visible = show;											
-			}			
+			for each(var btn:MovieClip in sportsMenuButtons) btn.visible = false; 
+			if(wichOnes){
+				for each(var id:int in wichOnes) sportsMenuButtons[id].visible = true;
+			}
+//			
+//			for(var i:int = 0; i < settings.sports.sportsQty; i ++){
+//				sportsMenuButtons[i].visible = show;											
+//			}			
 		}
 		
 		private function ingameData(show:Boolean):void
@@ -388,7 +403,7 @@ package ui
 		{						
 			audio.fx.play("click");
 			ingameData(false);			
-			buttons(false);
+			buttons(null);
 			arrows(false);
 			details(false);
 			sportName(false); 

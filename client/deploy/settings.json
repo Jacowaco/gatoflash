@@ -8,7 +8,7 @@
         "SÚPER ÁGIL"
     ],
     "sports": {
-        "sportsQty": 3,
+        "sportsQty": 8,
         
         "sport0": {
             "name": "CARRERA CON PEPINOS",
@@ -94,7 +94,7 @@
         },
         "sport5": {
             "name": "SALTO EN LARGO",
-            "plainRace": "longJump_btn",
+            "idMenuButton": "longJump_btn",
             "inst": "CORRE Y SALTA ALTO",
             "classID": "LongJump",
             "display": {
@@ -115,7 +115,7 @@
             "catchPh": {"x": -55, "y": 70},
             "inst": "CORRE Y LANZA LEJOS LA TORTA"
         },  
-        "sport6": {
+        "sport7": {
             "name": "LANZAMIENTO DE AVIONCITO",
             "idMenuButton": "avioncito_btn",
             "timeOut": 5,
