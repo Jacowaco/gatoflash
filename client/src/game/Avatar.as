@@ -40,6 +40,7 @@ package game
 		private const SPINNING:int = 3;
 		private const THROWING:int = 4;
 		private const FALL:int = 5;
+		private const MOON:int = 6;  // camina pero no se mueve 
 		
 		
 		private var asset:MovieClip;
@@ -106,6 +107,13 @@ package game
 					break;	
 				}
 					
+				case MOON:
+				{
+					updateSpeed();	
+					checkSpeedForAnimation();
+					break;	
+				}
+					
 				case JUMPING:
 				{										
 					break;	
@@ -160,15 +168,22 @@ package game
 			speedIncrement = speed; 
 		}	
 		
-		private function setRunning():void
+		public function setRunning():void
 		{						
 			state = RUNNING;			
 		}
 		
-		private function setIdle():void
+		public function setIdle():void
 		{
 			state = IDLE;
 		}
+		
+		public function setMoonWalk():void
+		{
+			state = MOON;
+			setReadyToThrow();
+		}
+		
 		
 		public function setSpinning():void
 		{
@@ -191,8 +206,7 @@ package game
 		{	
 			if (mode == ENEMY || mode == FOREST)
 			{
-				accelerate();
-				
+				increasePower();				
 			}
 			
 			speed = Math.max(speed + speedDamping, 0);
@@ -218,15 +232,15 @@ package game
 		
 
 		
-		public function accelerate():void
+		public function increasePower():void
 		{
 			speed += speedIncrement;
 		}
 		
-		public function accelerateSpin():void
-		{
-			speed += speedIncrement;
-		}
+//		public function accelerateSpin():void
+//		{
+//			speed += speedIncrement;
+//		}
 		
 		private function spin():void
 		{
@@ -262,11 +276,9 @@ package game
 		
 		public function collide():void
 		{
-			if(! mode==ENEMY) audio.fx.play("valla");
-			
+			if(! mode==ENEMY) audio.fx.play("valla");			
 			asset.gotoAndStop("fall");
-			speed = 0;
-			
+			speed = 0;			
 			if(to && to.running) to.dispose() ;
 			if(!isJumping()){ // ENGANIA PICHANGA... si vengo saltando, por mas que choque me voy a poner en running eso caga la fruta
 				 to = new Timeout(setRunning, 600);

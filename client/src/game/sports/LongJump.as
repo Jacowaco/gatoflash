@@ -93,12 +93,12 @@ package game.sports
 			else if (key.keyCode == Keyboard.LEFT && !leftKeyPressed)
 			{
 				leftKeyPressed = true;
-				player.accelerate();
+				player.increasePower();
 			}
 			else if (key.keyCode == Keyboard.RIGHT && leftKeyPressed)
 			{
 				leftKeyPressed = false;
-				player.accelerate();
+				player.increasePower();
 			}
 		}
 		

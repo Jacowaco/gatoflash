@@ -127,7 +127,7 @@
             "powerIncrement": 5,
             "classID": "ThrowingGame",
             "throwable": "avioncito", // nombre de la clase del mc
-            "catcher": "none",
+            "catcher": "invisiblecatcher",
             "catchPh": { "x": -55, "y": 70 },
             "inst": "CORRE Y LANZA LEJOS EL AVIONCITO"
         },

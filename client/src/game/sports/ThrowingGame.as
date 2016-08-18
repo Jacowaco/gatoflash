@@ -53,6 +53,7 @@ package game.sports
 			camera.addChild(line);
 			camera.addChild(base);
 			
+			
 			player = new Avatar();			
 			player.x = base.x;
 			player.y = base.y;
@@ -65,7 +66,8 @@ package game.sports
 			assets.mozo;
 			assets.torta;
 			assets.payaso;
-			
+			assets.avioncito;
+			assets.invisiblecatcher;
 			var throwieMc:Class = getDefinitionByName("assets." + currentSport.throwable) as Class;
 			bullet = new Throwie(new throwieMc());
 			bullet.addEventListener(Throwie.ON_REACH, onReach);
@@ -99,8 +101,17 @@ package game.sports
 	    
 		override public function start():void
 		{
-			player.setSpinning();
 			playing = true;
+			
+			if(currentSport.idMenuButton == "avioncito_btn"){
+				player.setMoonWalk();
+				player.setReadyToThrow();
+				return;
+			}
+			
+			player.setSpinning();
+			
+			
 		}
 		
 		override public function update():void 
@@ -144,8 +155,7 @@ package game.sports
 			
 			if(!faultAnimation){
 				trace("init fault: ",  currentSport.timeOut * 1000 );
-				var offset:Number = base.width/2;  // te sallis del circulo perdes...
-				
+				var offset:Number = base.width/2;  // te sallis del circulo perdes...				
 				faultAnimation = new Tween(player, currentSport.timeOut * 1000, {"x": player.x + offset}, { transition:"linear" } );
 				faultAnimation.addEventListener(TaskEvent.COMPLETE, onFault);
 				Game.taskRunner().add(faultAnimation);
@@ -162,12 +172,12 @@ package game.sports
 			else if (key.keyCode == Keyboard.LEFT && !leftKeyPressed)
 			{
 				leftKeyPressed = true;
-				player.accelerateSpin();
+				player.increasePower();
 			}
 			else if (key.keyCode == Keyboard.RIGHT && leftKeyPressed)
 			{
 				leftKeyPressed = false;
-				player.accelerateSpin();
+				player.increasePower();
 			}
 		}
 		
@@ -182,13 +192,8 @@ package game.sports
 			bullet.y = screenPoint.y;
 			
 			var destX:Number = player.percentage * currentSport.maxMeters; 			
-			trace(destX, catcher.x / Sport.UNITS_PER_METER - 1);
 			var destY:Number =  destX > catcher.x / Sport.UNITS_PER_METER - 1? camera.localToGlobal(new Point(0, catcher.dish.y )).y + currentSport.catchPh.y : currentSport.catchPh.y;
-			
-			
-			// TODO ENGANIA PICHANGA
 			bullet.shoot(destX, destY, true); 
-//			bullet.shoot(1 * currentSport.maxMeters, destY, true);
 		}
 		
 		public function onReach(e:Event):void
@@ -203,9 +208,14 @@ package game.sports
 				catcher.gotoAndStop("err");
 			}
 			
-			audio.fx.play("atajaPizza");
+			if(currentSport.idMenuButton == "avioncito_btn"){
+				bullet.asset.gotoAndStop("err");
+			}
 			
-			setTimeout(checkIfWin, 500, value);			
+			audio.fx.play("atajaPizza");
+			assingBadge(value);
+			super.competitionEnds();
+						
 		}
 		
 		
@@ -216,7 +226,7 @@ package game.sports
 			super.competitionEnds();
 		}
 		
-		private function checkIfWin(value:Number):void
+		private function assingBadge(value:Number):void
 		{			
 			
 			trace("value:" , value);
@@ -225,7 +235,7 @@ package game.sports
 			if(value > 1/3 && value < 2/3 ) badge = BADGE_SILVER;
 			if(value > 2/3 ) badge = BADGE_GOLD;
 
-			super.competitionEnds();
+			
 		}
 		
 

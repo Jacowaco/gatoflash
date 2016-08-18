@@ -142,12 +142,6 @@ package game.sports
 			
 		}
 		
-//		protected function lose():void
-//		{
-//			playing = false;
-//			dispatchEvent(new Event(Sport.COMPETITION_LOST));
-//		}
-		
 		public function get badge():int
 		{
 			return badgeObtained;

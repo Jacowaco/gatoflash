@@ -27,7 +27,11 @@ package game
 			mc.asset.stop();			
 			shot = false;
 		}
-		
+
+		public function get asset():MovieClip
+		{
+			return mc.asset;
+		}
 		
 		public function shoot(distance:Number, yoffset:Number, _right:Boolean=true):void
 		{
