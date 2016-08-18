@@ -9,7 +9,7 @@
     ],
     "sports": {
         "sportsQty": 8,
-        "pages": 3,
+        "pages": 2,
         "sport0": {
             "name": "CARRERA CON PEPINOS",
             "idMenuButton": "hurdles_btn", // ID para identificar el boton con thumbnail
