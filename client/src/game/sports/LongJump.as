@@ -2,6 +2,8 @@ package game.sports
 {
 	import assets.*;
 	
+	import avatar.corredorMC;
+	
 	import com.qb9.flashlib.geom.Vector2D;
 	
 	import flash.display.MovieClip;
@@ -10,54 +12,54 @@ package game.sports
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 	
-	import game.Throwie;
-
 	import game.Avatar;
-	import avatar.corredorMC;
+	import game.Throwie;
+	
+	
 	public class LongJump extends Sport 
 	{
+		protected var departure:MovieClip;
 		protected var line:MovieClip;
-		protected var throwMeters:int;
-		private var base:MovieClip;
+		protected var goal:MovieClip;		
 		
-		public function LongJump() 
+		
+		
+		public function LongJump(currentSport:Object) 
 		{			
-			throwMeters = 8;			
-			create();
+			this.currentSport = currentSport;
+			create(); // en este caso llamo yo a create
 		}
 		
 		
 		override protected function create():void 
 		{
-			levelDefinition = new assets.throwingMC;
-			base = levelDefinition.base;
-			camera.addChild(base);
+			levelDefinition = new assets.jumpsMC;
 			
-			player = new Avatar();			
-			player.x = base.x;
-			player.y = base.y;
-			player.setMode(Avatar.PLAYER);					
-			addChild(player);
+			departure = levelDefinition.getChildByName("start") as MovieClip;
+			line = levelDefinition.getChildByName("line") as MovieClip;
+			goal = levelDefinition.getChildByName("goal") as MovieClip;
 			
-			player.addEventListener("reached", playerReached);
-//			player.setJumpVariables(150, 200, 1000);
+			camera.addChild(departure);
+			camera.addChild(line);
+			camera.addChild(goal);
+			
+			createPlayer();
+			
+			
+//			player.addEventListener("reached", playerReached);
 		}
 		
-//		 protected function addThingsBeforePlayer():void 
-//		{
-//			line = new MovingObject(new assets.lineMC);
-////			line.debug(false);
-//			line.loc = new Vector2D(start.loc.x + throwMeters * UNITS_PER_METER, start.loc.y);
-////			line.run();
-//			camera.addChild(line.asset);
-//		}
+		private function createPlayer():void
+		{
+			player = new Avatar();			
+			player.x = departure.x;
+			player.y = departure.y;
+			player.setMode(Avatar.PLAYER);					
+			player.setMaxSpeed(currentSport.player.maxSpeed);
+			player.setSpeedIncrement(currentSport.player.speedIncrement);			
+			camera.addChild(player);
+		}
 		
-//		protected function start():void
-//		{
-//			player.start();
-//			playing = true;
-//		}
-//		
 		override public function update():void 
 		{
 			if (!playing) return;
@@ -66,29 +68,15 @@ package game.sports
 			
 			camera.x += ((Game.SCREEN_WIDTH / 2) - player.localToGlobal(new Point(0, 0)).x);
 			camera.x = Math.min(0, camera.x);
-			
-//			if (!player.jumped && player.loc.x > line.loc.x)
-//			{
-//				player.stop();
-//				lose();
-//			}
-			
-//			speedBar.percentage = player.percentage;
-			
-//			meters = player.getMeters();
-//			hud.updateMeters(meters);
 		}
 		
 		override public function onKeyDown(key:KeyboardEvent):void 
 		{
 			super.onKeyDown(key);
 			
-//			if (player.jumped) return;
 			
 			if (key.keyCode == Keyboard.SPACE)
 			{
-//				speedBar.stop();
-//				player.jump(speedBar.percentage, 0);
 			}
 			else if (key.keyCode == Keyboard.LEFT && !leftKeyPressed)
 			{

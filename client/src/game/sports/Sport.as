@@ -81,19 +81,16 @@ package game.sports
 		// esto te obliga a implementar el metodo en todos los sports
 		// no se si es del todo necesario pero creo que te evita algunos quilombos
 		// tendría que pensarlo un cacho mas
-
 		protected function create():void
 		{
 			throw new Error("create not implemented");
 		}
 		
-		// configuro todo
+		// configuro todo lo que haga falta en ese sport particular
+		// te crea assets y los ubica
+		// siempre llamar a super para tirar este evento.
 		public function initialize():void
 		{
-//			audio.fx.stop("bu");
-//			audio.fx.stop("lose");
-//			audio.fx.stop("ovacion");
-//			audio.fx.stop("win");
 			dispatchEvent(new Event(Sport.COMPETITION_READY));
 		}
 
@@ -103,13 +100,11 @@ package game.sports
 			dispatchEvent(new Event(Sport.COMPETITION_START));
 		}
 				
-		// actualizo
 		public function update():void
 		{
 			throw new Error("uninplemented");
 		}
 		
-		// los controles
 		public function onKeyDown(key:KeyboardEvent):void
 		{
 			throw new Error("unninplemented");
@@ -120,7 +115,8 @@ package game.sports
 			throw new Error("unninplemented");
 		}
 
-		// en cada sport se que medalla le corresponde
+		// en cada sport se determina que medalla le corresponde
+		// esto es una cuestión que depende del deporte actual
 		protected function assignBadge():void
 		{
 			throw new Error("unninplemented");

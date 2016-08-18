@@ -20,7 +20,9 @@ package game.sports
 		{			
 			// como es una carrera voy a iniciar con cuenta regresiva.
 			// entonces overrideo este metodo a modo de hook.
-			dispatchEvent(new Event(GuiEvents.COUNTDOWN)); // el countdown dispara un evento que me avisa cuando arrancar
+			dispatchEvent(new Event(GuiEvents.COUNTDOWN)); 
+			// el countdown dispara un evento que me avisa cuando arrancar
+			// y es ahí donde se llama a Sport.initialize(); ;)
 		}
 		
 		override public function onKeyUp(key:KeyboardEvent):void

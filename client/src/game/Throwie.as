@@ -12,7 +12,7 @@ package game
 	import game.sports.Sport;
 	
 	
-	public class Throwie extends Sprite // MovingObject 
+	public class Throwie extends Sprite  
 	{
 
 		public static const ON_REACH:String = "onReach";
@@ -37,7 +37,6 @@ package game
 		{
 			if (shot) return;
 			shot = true;
-			trace("SHOOTING: " + distance, _right);
 			distance = distance * Sport.UNITS_PER_METER - 1; 
 			var time:Number = Math.max(Math.abs(distance), 500);
 			

@@ -227,21 +227,12 @@ package game
 			if(speed > maxSpeed / 3 && speed < maxSpeed / 3 * 2 && asset.currentLabel != "run2") asset.gotoAndStop("run2");
 			if(speed > maxSpeed / 3 * 2 && speed <= maxSpeed && asset.currentLabel != "run3") asset.gotoAndStop("run3");
 		}
-		
-		
-		
-
-		
+	
 		public function increasePower():void
 		{
 			speed += speedIncrement;
 		}
-		
-//		public function accelerateSpin():void
-//		{
-//			speed += speedIncrement;
-//		}
-		
+
 		private function spin():void
 		{
 			lookingRight = !lookingRight;

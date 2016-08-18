@@ -25,6 +25,7 @@ package game.sports
 		
 		protected var finalMetres:int;		
 		protected var cantEnemiesReachedEnd:int;
+		protected var boredCrowdMeters:int = 200;
 		
 		// la carrera tiene todo esto
 		protected var departure:MovieClip;
@@ -112,6 +113,9 @@ package game.sports
 			bg.follow(camera.x);			
 			for each(var lane:Lane in lanes) lane.avatar.update();						
 			checkIfWin();
+			
+			if(currentSport.metres >= boredCrowdMeters) crowdGetsBored();
+			
 		}
 		
 		private function checkIfWin():void
@@ -121,7 +125,6 @@ package game.sports
 				{					
 					if(lane.avatar.mode == Avatar.ENEMY){
 						if(! lane.avatar.isIdle()) cantEnemiesReachedEnd++;
-//						trace("enemie "+ cantEnemiesReachedEnd + " reached end");
 					}else{		
 						for each( lane in lanes) lane.avatar.stop();
 						competitionEnds();
@@ -131,6 +134,11 @@ package game.sports
 			}			
 		}
 		
+		private function crowdGetsBored():void
+		{
+			trace(player.getMeters(), boredCrowdMeters, currentSport.metres);
+			bg.setDeadBodiesChance(Utils.map(player.getMeters(), boredCrowdMeters, currentSport.metres, 0, 1.1));
+		}
 		
 		override protected function competitionEnds():void
 		{
@@ -144,7 +152,7 @@ package game.sports
 			if (cantEnemiesReachedEnd == 1) badge = BADGE_SILVER;
 			if (cantEnemiesReachedEnd == 2) badge = BADGE_BRONCE;
 			if (cantEnemiesReachedEnd > 2) badge = BADGE_LOOSER;			
-//			trace("badge: " + badge);
+
 		}
 		
 		override public function pause():void
@@ -162,7 +170,7 @@ package game.sports
 		}
 		
 		
-		var easeterEgg:String = "";
+		private var easeterEgg:String = "";
 		override public function onKeyDown(key:KeyboardEvent):void 
 		{			
 			if (!playing) return;
@@ -180,8 +188,6 @@ package game.sports
 			}
 			
 			easeterEgg += String.fromCharCode(key.charCode);
-			trace(easeterEgg);
-			trace(easeterEgg.match("forest"));
 			// forest			
 			if(easeterEgg.match("forest") && !Game.easterEggUsed){
 				Game.easterEggUsed = true;

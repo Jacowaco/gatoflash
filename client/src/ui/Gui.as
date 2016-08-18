@@ -43,7 +43,7 @@ package ui
 		private var sportsMenu:MovieClip;
 		private var sportsMenuButtons:Array;		
 		private var currentMenuPage:int = 0;
-		private var maxPages:int = 2;		
+		private var maxPages:int;		
 		private var club:int;
 		
 		private var trainer:MovieClip;
@@ -58,13 +58,12 @@ package ui
 		{
 			super();
 			this.asset = asset;
-			
-			// ingame GUI			
+			maxPages = settings.sports.pages;
+				
 			createIngameGui();
 			// el menu que te deja elegir el juego			
 			createSportsMenu();
 			createSportsMenuButtons();
-			// endGameMenu/PopUp
 			createEndGameMenu();
 			
 			page(currentMenuPage=0);
@@ -245,6 +244,8 @@ package ui
 			longJump_btn;
 			
 			sportsMenuButtons = new Array();
+			
+			
 			
 			var buttonsLocations:Array = new Array();
 			for(var i:int = 0; i < 3; i ++){

@@ -78,6 +78,7 @@ package game.sports
 			// solo un programador profesional puede intentarlo
 			bullet.x = -47;
 			bullet.y = -14;			
+		
 			
 			
 			
@@ -125,11 +126,13 @@ package game.sports
 			player.x += playerMovement;
 			player.update();
 
+			
+			
 		}
 		
 		private function activateCatcher():void
 		{
-			if(catcher.currentLabel != "move") catcher.gotoAndPlay("move");
+			if(catcher.currentLabel != "move") catcher.gotoAndStop("move");
 		}
 		
 		

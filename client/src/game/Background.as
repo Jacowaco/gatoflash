@@ -7,6 +7,8 @@ package game
 	import flash.geom.Point;
 	import flash.utils.getQualifiedClassName;
 	
+	import mx.charts.chartClasses.DualStyleObject;
+	
 	public class Background extends Sprite 
 	{
 		private var obj1:MovieClip;
@@ -22,6 +24,14 @@ package game
 			hincha6,
 			hincha8,
 			]
+
+		private var deadGuys:Array = [	
+			botHuesitos1,
+			botHuesitos2,
+			botHuesitos3,
+			botHuesitos4
+			
+		]
 			
 		public function Background() 
 		{
@@ -48,6 +58,11 @@ package game
 			hincha6;
 			hincha8;
 			
+			botHuesitos1;
+			botHuesitos2;
+			botHuesitos3;
+			botHuesitos4;
+			
 		}
 		
 		public function reset():void
@@ -72,6 +87,7 @@ package game
 				obj2 = tmp;
 				obj2.x = obj1.x + bgwidth - offset;
 				randomizeSign(obj2);
+				randomizeFans(obj2);
 			}
 		}
 		
@@ -80,20 +96,33 @@ package game
 			obj.sign.gotoAndStop(1 + Math.floor(Math.random() * obj.sign.totalFrames));
 		}
 		
+		private var deadGuysChance:Number = 0;
+		
 		private function randomizeFans(obj:MovieClip):void{
+			
 			for(var ph:int = 0 ; ph < obj.numChildren; ph++){
 				if(getQualifiedClassName(obj.getChildAt(ph)) == "assets::hinchaPh"){
 					var reference:MovieClip = obj.getChildAt(ph) as MovieClip;
 					while(reference.numChildren > 0 ) reference.removeChildAt(0);
-					var someGuy:MovieClip = newRandomGuy();
-					reference.addChild(someGuy);
+					var newGuy:MovieClip = Math.random() < deadGuysChance ? newRandomDeadGuy() : newRandomGuy();
+					reference.addChild(newGuy);
 					 
 				}
 			}
 		}
 		
+		public function setDeadBodiesChance(chance:Number):Number
+		{
+			trace(deadGuysChance);
+			return deadGuysChance = chance;
+		}
+		
 		private function newRandomGuy():MovieClip{			
 			return new guys[Math.floor(Math.random() *guys.length)];
+		}
+		
+		private function newRandomDeadGuy():MovieClip{			
+			return new deadGuys[Math.floor(Math.random() *deadGuys.length)];
 		}
 		
 	}
