@@ -43,7 +43,7 @@ package ui
 		private var sportsMenu:MovieClip;
 		private var sportsMenuButtons:Array;		
 		private var currentMenuPage:int = 0;
-		private var maxPages:int = 3;		
+		private var maxPages:int = 2;		
 		private var club:int;
 		
 		private var trainer:MovieClip;

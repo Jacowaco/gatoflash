@@ -104,17 +104,12 @@ package game.sports
 		
 		public function playerReached(e:Event):void
 		{
-//			if (player.x > line.x)
-//				competitionEnds();
-//			else
-//				lose();
+
 		}
 		
 		override protected function assignBadge():void 
 		{
-//			if (meters >= 0) 						  badge = BADGE_BRONCE;
-//			if (meters >= Player.MAX_DISTANCE * 0.5)  badge = BADGE_SILVER;
-//			if (meters >= Player.MAX_DISTANCE) 	      badge = BADGE_GOLD;
+
 		}
 		
 	}

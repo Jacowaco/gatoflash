@@ -74,7 +74,7 @@ package
 		// la gui es la vista (que en general maneja todos los popups y data en pantalla - excepto que un juego requiera una interfase especial)		
 		private var gui:Gui;		
 		private var currentSport:Sport;
-		
+		public static var easterEggUsed:Boolean = false;
 		public function Game()
 		{
 			super();

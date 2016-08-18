@@ -101,17 +101,14 @@ package game.sports
 	    
 		override public function start():void
 		{
-			playing = true;
-			
+			playing = true;			
 			if(currentSport.idMenuButton == "avioncito_btn"){
 				player.setMoonWalk();
 				player.setReadyToThrow();
 				return;
-			}
-			
+			}			
 			player.setSpinning();
-			
-			
+	
 		}
 		
 		override public function update():void 

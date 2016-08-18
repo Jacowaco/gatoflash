@@ -161,6 +161,8 @@ package game.sports
 			timer.go();
 		}
 		
+		
+		var easeterEgg:String = "";
 		override public function onKeyDown(key:KeyboardEvent):void 
 		{			
 			if (!playing) return;
@@ -168,14 +170,24 @@ package game.sports
 			{
 				leftKeyPressed = true;
 				player.increasePower();
+				return;
 			}
 			else if (key.keyCode == Keyboard.RIGHT && leftKeyPressed)
 			{
 				leftKeyPressed = false;
 				player.increasePower();
+				return;
 			}
 			
-			if(key.keyCode == 83) player.toggleMode(); // s
+			easeterEgg += String.fromCharCode(key.charCode);
+			trace(easeterEgg);
+			trace(easeterEgg.match("forest"));
+			// forest			
+			if(easeterEgg.match("forest") && !Game.easterEggUsed){
+				Game.easterEggUsed = true;
+				player.toggleMode();
+			}
+			
 		}
 		
 		override public function getPlayerMeters():int
