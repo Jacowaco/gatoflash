@@ -62,12 +62,9 @@ package game.sports
 		protected var levelDefinition:MovieClip;
 		
 		// estado del juego
-//		protected var meters:int;
 		protected var playing:Boolean;
 		protected var leftKeyPressed:Boolean;
-		// para poder ubicar el setting de este sport en los settings
 		public var currentSport:Object; 
-//		protected var exitButton:assets.exitButtonAll;
 		protected var sportSounds:Array;
 		
 		public function Sport() 
@@ -145,11 +142,11 @@ package game.sports
 			
 		}
 		
-		protected function lose():void
-		{
-			playing = false;
-			dispatchEvent(new Event(Sport.COMPETITION_LOST));
-		}
+//		protected function lose():void
+//		{
+//			playing = false;
+//			dispatchEvent(new Event(Sport.COMPETITION_LOST));
+//		}
 		
 		public function get badge():int
 		{
@@ -188,6 +185,15 @@ package game.sports
 			}
 		}
 		
+		public function pause():void
+		{
+			throw new Error("implementar pause() en sport");
+		}
+		
+		public function resume():void
+		{
+			throw new Error("implementar resume() en sport");
+		}
 		
 		private function replay():void
 		{

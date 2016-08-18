@@ -339,14 +339,11 @@ package ui
 		
 		private function showMedal(frame:int):void
 		{
-			if(frame == 0){ 
-				medal.visible = false;
-				return;
-			}
 			medal.visible = true;
-			medal.gotoAndStop(frame);
+			medal.gotoAndStop(frame + 1);
 		}
 				
+		
 		// callbacks
 		// muestra el menu del deporte con sus instrucciones
 		private function onPlaySportMenu(e:Event):void

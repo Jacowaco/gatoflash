@@ -257,42 +257,20 @@ package game
 			asset.gotoAndStop("throw_start");
 		}
 		
-		
-		
-//		public function hand():MovieClip
-//		{
-//			
-//			var mc:MovieClip;
-//			asset.addEventListener(Event.ENTER_FRAME, function(e:Event):void
-//			{
-//				mc = asset.gato.arm1 as MovieClip;	
-//			});
-//			
-//			asset.gotoAndStop("throw");
-//				
-//			return mc;
-//		}
-		
 		public function collide():void
 		{
-			trace("collided")
-			audio.fx.play("valla");
-			speed = 0;
-			trace("speed: ", speed);
+			if(! mode==ENEMY) audio.fx.play("valla");
+			
 			asset.gotoAndStop("fall");
+			speed = 0;
+			
 			if(to && to.running) to.dispose() ;
 			if(!isJumping()){ // ENGANIA PICHANGA... si vengo saltando, por mas que choque me voy a poner en running eso caga la fruta
 				 to = new Timeout(setRunning, 600);
 				Game.taskRunner().add(to);	
 			}			
 			state = FALL;
-		}
-		
-		
-		
-
-		
-		
+		}		
 		
 		public function throwing():void
 		{
@@ -304,11 +282,11 @@ package game
 		{
 			if (state == JUMPING) return;
 			state = JUMPING;
-			audio.fx.play("saltoCorto");
+			if (! mode == ENEMY) audio.fx.play("saltoCorto");
 			asset.gotoAndStop("jump");			
 
 			
-			var time:Number = 250; //Math.max(Math.abs(distance), 500);
+			var time:Number = 250; 
 			var distance:Number = MAX_JUMP_DISTANCE;
 			var height:Number = MAX_JUMP_HEIGHT;
 			

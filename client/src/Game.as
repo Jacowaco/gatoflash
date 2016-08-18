@@ -216,13 +216,15 @@ package
 		
 		private function onPause(e:Event):void
 		{
+			trace("pause game: ");
 			// TODO parar la competencia
-			// currentSport.pause();
+			if(currentSport) currentSport.pause();
 		}
 		
 		private function onResume(e:Event):void
 		{
-			// currentSport.resume();
+			trace("resume game: ");
+			if(currentSport) currentSport.resume();
 		}
 		
 		private function onCompetitionEnd(e:Event):void

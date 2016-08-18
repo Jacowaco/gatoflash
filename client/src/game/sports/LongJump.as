@@ -104,10 +104,10 @@ package game.sports
 		
 		public function playerReached(e:Event):void
 		{
-			if (player.x > line.x)
-				competitionEnds();
-			else
-				lose();
+//			if (player.x > line.x)
+//				competitionEnds();
+//			else
+//				lose();
 		}
 		
 		override protected function assignBadge():void 

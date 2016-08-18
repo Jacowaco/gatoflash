@@ -32,6 +32,7 @@ package game.sports
 		protected var goal:MovieClip;		
 		protected var lanes:Array;	// los lanes estan para poder meter juntos corredores y vallas + la data de por donde se mueven	
 		
+		
 		public function Race(currentSport:Object) 
 		{
 			this.currentSport = currentSport;
@@ -108,8 +109,7 @@ package game.sports
 		{
 			if (!playing) return;
 			camera.x += (playerScreenPosition - player.localToGlobal(new Point(0,0)).x);									
-			bg.follow(camera.x);
-			
+			bg.follow(camera.x);			
 			for each(var lane:Lane in lanes) lane.avatar.update();						
 			checkIfWin();
 		}
@@ -147,6 +147,19 @@ package game.sports
 //			trace("badge: " + badge);
 		}
 		
+		override public function pause():void
+		{
+			playing = false;
+			for each( var lane:Lane in lanes) lane.avatar.stop();
+			timer.pause();
+		}
+		
+		override public function resume():void
+		{
+			playing = true;
+			for each( var lane:Lane in lanes) lane.avatar.go();
+			timer.go();
+		}
 		
 		override public function onKeyDown(key:KeyboardEvent):void 
 		{			
