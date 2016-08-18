@@ -28,7 +28,7 @@
                 "speedVariation": [60, 85], // minimo y máximo en porcentaje de maxSpeed
                 "jumpSkill": 50 //  máximo en porcentaje: 0 no salta ninguna y 100 las salta todas
             },
-            "inst": "CORRE Y SALTA LOS OBSTÁCULOS"
+            "inst": "CORRE Y SALTA LOS PEPINOS"
         },
 
         "sport1": {
@@ -110,7 +110,7 @@
         "sport6": {
             "name": "SALTO EN LARGO",
             "idMenuButton": "longJump_btn",
-            "inst": "CORRE Y SALTA ALTO",
+            "inst": "CORRE Y SALTA LEJOS",
             "classID": "LongJump",
             "display": {
                 "label": "METROS"

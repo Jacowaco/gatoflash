@@ -203,9 +203,12 @@ package game
 		private function checkSpeedForAnimation():void
 		{
 			if(speed == 0){				
-				if(asset.currentLabel != "stand" ) asset.gotoAndStop("stand");
-//				trace("speed zero: ", asset.currentLabel);
+				if(asset.currentLabel != "stand" ) asset.gotoAndStop("stand");				 
+				audio.fx.stop("correr");
 			}
+			
+			if(! mode == ENEMY) if( !speed == 0 && Math.random() < 0.20 && !audio.fx.retrieve("correr").playing) audio.fx.play("correr");
+			
 			if(speed > 0 && speed < maxSpeed / 3 && asset.currentLabel != "run1") asset.gotoAndStop("run1");
 			if(speed > maxSpeed / 3 && speed < maxSpeed / 3 * 2 && asset.currentLabel != "run2") asset.gotoAndStop("run2");
 			if(speed > maxSpeed / 3 * 2 && speed <= maxSpeed && asset.currentLabel != "run3") asset.gotoAndStop("run3");

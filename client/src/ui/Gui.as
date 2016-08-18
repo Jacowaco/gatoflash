@@ -122,7 +122,7 @@ package ui
 			sportsMenu.txt_title.text = settings.gui.title;
 			sportsMenu.txt_details.text = settings.gui.details;
 			
-			sportsMenu.backBtn.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ page(1) });
+			sportsMenu.backBtn.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void{ currentPage(); });
 			sportsMenu.backBtn.addEventListener(MouseEvent.ROLL_OVER, onOver);
 			sportsMenu.backBtn.text.text = api.getText(settings.gui.confirmation.back);
 			sportsMenu.backBtn.visible = false;
@@ -179,11 +179,17 @@ package ui
 			addChild(confirmationPopup);			
 		}
 		
+		private function currentPage():void
+		{
+			page(currentMenuPage);
+		}
+		
 		private function nextPage():void
 		{
 			currentMenuPage = (currentMenuPage + 1) % maxPages;					
 			page(currentMenuPage);
 		}
+		
 		
 		private function prevPage():void
 		{
@@ -344,6 +350,7 @@ package ui
 		}
 				
 		
+		
 		// callbacks
 		// muestra el menu del deporte con sus instrucciones
 		private function onPlaySportMenu(e:Event):void
@@ -359,11 +366,11 @@ package ui
 			instructions(true);
 			
 			sportSelected = settings.sports[e.currentTarget.name];			
-			sportsMenu.txt_details.text = settings.sports[e.currentTarget.name].name;			
+			sportsMenu.txt_details.text = sportSelected.name;			
 			sportsMenu.clubPh.label.text = api.getText(settings.teams[club]);
 			sportsMenu.clubPh.gotoAndStop(club);
-			sportsMenu.instructions.gotoAndStop(settings.sports[e.currentTarget.name].classID);
-			sportsMenu.instructions.txt_inst.text = api.getText(settings.sports[e.currentTarget.name].inst);
+			sportsMenu.instructions.gotoAndStop(sportSelected.idMenuButton);
+			sportsMenu.instructions.txt_inst.text = api.getText(sportSelected.inst);
 		}
 		
 		private function onPlaySport(e:Event):void
