@@ -113,7 +113,6 @@ package game
 		
 		public function setDeadBodiesChance(chance:Number):Number
 		{
-			trace(deadGuysChance);
 			return deadGuysChance = chance;
 		}
 		

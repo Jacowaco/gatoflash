@@ -159,6 +159,7 @@ package game.sports
 				faultAnimation = new Tween(player, currentSport.timeOut * 1000, {"x": player.x + offset}, { transition:"linear" } );
 				faultAnimation.addEventListener(TaskEvent.COMPLETE, onFault);
 				Game.taskRunner().add(faultAnimation);
+				timer.go();
 			}
 					
 			
@@ -198,6 +199,7 @@ package game.sports
 		
 		public function onReach(e:Event):void
 		{			
+			timer.pause();
 			bullet.stop();
 			catcher.gotoAndStop("stand");			
 			trace("distance: ", bullet.x);

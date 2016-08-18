@@ -34,6 +34,7 @@ package game.sports
 		protected var lanes:Array;	// los lanes estan para poder meter juntos corredores y vallas + la data de por donde se mueven	
 		
 		
+		
 		public function Race(currentSport:Object) 
 		{
 			this.currentSport = currentSport;
@@ -114,7 +115,7 @@ package game.sports
 			for each(var lane:Lane in lanes) lane.avatar.update();						
 			checkIfWin();
 			
-			if(currentSport.metres >= boredCrowdMeters) crowdGetsBored();
+			if(player.getMeters() >= boredCrowdMeters) crowdGetsBored();
 			
 		}
 		
@@ -136,7 +137,7 @@ package game.sports
 		
 		private function crowdGetsBored():void
 		{
-			trace(player.getMeters(), boredCrowdMeters, currentSport.metres);
+
 			bg.setDeadBodiesChance(Utils.map(player.getMeters(), boredCrowdMeters, currentSport.metres, 0, 1.1));
 		}
 		
