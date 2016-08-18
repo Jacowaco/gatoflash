@@ -138,7 +138,7 @@ package game.sports
 		private function crowdGetsBored():void
 		{
 
-			bg.setDeadBodiesChance(Utils.map(player.getMeters(), boredCrowdMeters, currentSport.metres, 0, 1.1));
+			bg.setSleepingGuysChance(Utils.map(player.getMeters(), boredCrowdMeters, currentSport.metres, 0, 1.1));
 		}
 		
 		override protected function competitionEnds():void

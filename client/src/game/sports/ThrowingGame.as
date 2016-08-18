@@ -197,6 +197,7 @@ package game.sports
 			bullet.shoot(destX, destY, true); 
 		}
 		
+		
 		public function onReach(e:Event):void
 		{			
 			timer.pause();

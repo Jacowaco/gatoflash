@@ -32,6 +32,16 @@ package game
 			botHuesitos4
 			
 		]
+		
+		private var sleepingGuys:Array = [	
+			hinchaDormido1,
+			hinchaDormido2,
+			hinchaDormido3,
+			hinchaDormido4
+			
+		]
+			
+		
 			
 		public function Background() 
 		{
@@ -62,6 +72,11 @@ package game
 			botHuesitos2;
 			botHuesitos3;
 			botHuesitos4;
+			
+			hinchaDormido1;
+			hinchaDormido2;
+			hinchaDormido3;
+			hinchaDormido4;
 			
 		}
 		
@@ -96,7 +111,7 @@ package game
 			obj.sign.gotoAndStop(1 + Math.floor(Math.random() * obj.sign.totalFrames));
 		}
 		
-		private var deadGuysChance:Number = 0;
+		private var sleepingGuysChance:Number = 0;
 		
 		private function randomizeFans(obj:MovieClip):void{
 			
@@ -104,16 +119,16 @@ package game
 				if(getQualifiedClassName(obj.getChildAt(ph)) == "assets::hinchaPh"){
 					var reference:MovieClip = obj.getChildAt(ph) as MovieClip;
 					while(reference.numChildren > 0 ) reference.removeChildAt(0);
-					var newGuy:MovieClip = Math.random() < deadGuysChance ? newRandomDeadGuy() : newRandomGuy();
+					var newGuy:MovieClip = Math.random() < sleepingGuysChance ? newSleepingGuy() : newRandomGuy();
 					reference.addChild(newGuy);
 					 
 				}
 			}
 		}
 		
-		public function setDeadBodiesChance(chance:Number):Number
+		public function setSleepingGuysChance(chance:Number):Number
 		{
-			return deadGuysChance = chance;
+			return sleepingGuysChance = chance;
 		}
 		
 		private function newRandomGuy():MovieClip{			
@@ -122,6 +137,11 @@ package game
 		
 		private function newRandomDeadGuy():MovieClip{			
 			return new deadGuys[Math.floor(Math.random() *deadGuys.length)];
+		}
+		
+		private function newSleepingGuy():MovieClip
+		{
+			return new sleepingGuys[Math.floor(Math.random() *sleepingGuys.length)];
 		}
 		
 	}
