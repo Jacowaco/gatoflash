@@ -23,6 +23,7 @@ package game.sports
 		protected var departure:MovieClip;
 		protected var limit:MovieClip;
 		protected var goal:MovieClip;		
+		protected var arena:MovieClip;
 		
 		
 		public function JumpingGame(currentSport:Object) 
@@ -40,8 +41,10 @@ package game.sports
 			departure = levelDefinition.getChildByName("start") as MovieClip;
 			limit = levelDefinition.getChildByName("line") as MovieClip;
 			goal = levelDefinition.getChildByName("goal") as MovieClip;
+			arena = levelDefinition.getChildByName("arena") as MovieClip;
 			
 			camera.addChild(departure);
+			camera.addChild(arena);
 			camera.addChild(limit);
 			camera.addChild(goal);
 			
