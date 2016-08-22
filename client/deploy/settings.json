@@ -1,6 +1,6 @@
 {
     "defaultValue": {
-        "soundsEnable": true
+        "soundsEnable": false
     },
     "teams": [
         "MEGA ELÁSTICO",
