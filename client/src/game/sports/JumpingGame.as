@@ -17,12 +17,14 @@ package game.sports
 	
 	import ui.GuiEvents;
 	
+	import utils.Utils;
+	
 	
 	public class JumpingGame extends Sport 
 	{
 		protected var departure:MovieClip;
-		protected var limit:MovieClip;
-		protected var goal:MovieClip;		
+		protected var line:MovieClip;
+		protected var limit:MovieClip;		
 		protected var arena:MovieClip;
 		protected var gatulongo:MovieClip;
 		
@@ -43,8 +45,8 @@ package game.sports
 			levelDefinition = new assets.jumpsMC;
 			
 			departure = levelDefinition.getChildByName("start") as MovieClip;
-			limit = levelDefinition.getChildByName("line") as MovieClip;
-			goal = levelDefinition.getChildByName("goal") as MovieClip;
+			line = levelDefinition.getChildByName("line") as MovieClip;
+			limit = levelDefinition.getChildByName("goal") as MovieClip;
 			arena = levelDefinition.getChildByName("arena") as MovieClip;
 			
 			if(currentSport.idMenuButton == "highJump_btn"){
@@ -55,8 +57,8 @@ package game.sports
 			
 			camera.addChild(departure);
 			camera.addChild(arena);			
-			camera.addChild(limit);			
-			camera.addChild(goal);
+			camera.addChild(line);			
+			camera.addChild(limit);
 			
 			if(mode == HIGH_JUMP){
 				gatulongo = levelDefinition.getChildByName("longo") as MovieClip;
@@ -83,7 +85,9 @@ package game.sports
 			player.y = departure.y;
 			player.setMode(Avatar.PLAYER);					
 			player.setMaxSpeed(currentSport.maxPower);
+			player.setSpeedDamping(currentSport.damping);
 			player.setSpeedIncrement(currentSport.powerIncrement);			
+			player.addEventListener(Avatar.ON_LANDING, onLanding);
 			camera.addChild(player);
 		}
 		
@@ -109,7 +113,8 @@ package game.sports
 		
 		private function checkIfWin():void
 		{
-			if(!player.isJumping() && player.x >= goal.x){
+			
+			if(!player.isIdle() && !player.isJumping() && player.x >= limit.x){
 				onFault(null);
 			}
 		}
@@ -145,14 +150,29 @@ package game.sports
 			}
 		}
 		
-		public function playerReached(e:Event):void
+		private function onLanding(e:Event):void
 		{
+			var value:Number = Utils.map((player.x - limit.x), currentSport.jump.minx * Sport.UNITS_PER_METER, currentSport.jump.maxx * Sport.UNITS_PER_METER, 0.0, 1.0);
+			trace(value);
+			setbadge(value);
+			competitionEnds();
+		}
+		
+		private function setbadge(value:Number):void
+		{			
+			
+			if(value < 0) badge = BADGE_LOOSER;
+			if(value >= 0 && value < 1/3 ) badge = BADGE_BRONCE;
+			if(value > 1/3 && value < 2/3 ) badge = BADGE_SILVER;
+			if(value > 2/3 ) badge = BADGE_GOLD;
 
 		}
 		
-		override protected function assignBadge():void 
+		override public function getPlayerMeters():int
 		{
-
+			trace(player.x, limit.x); 
+			if(player.x > ( limit.x)) return (player.x - limit.x) / Sport.UNITS_PER_METER;
+			return 0;
 		}
 		
 	}

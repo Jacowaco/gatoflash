@@ -26,6 +26,8 @@ package game
 	public class Avatar extends Sprite  
 	{
 		
+		public static const ON_LANDING:String = "onLanding";
+		
 		private var currentMode:int = ENEMY;
 		
 		public static const ENEMY:int = 0;
@@ -168,6 +170,11 @@ package game
 		{
 			speedIncrement = speed; 
 		}	
+		
+		public function setSpeedDamping(speed:Number):void
+		{
+			speedDamping = -1 * speed; 
+		}
 		
 		public function setRunning():void
 		{						
@@ -329,18 +336,11 @@ package game
 			asset.gotoAndStop("jump");			
 			
 			
-			
-			
-			
-			
-			var distance:Number = Utils.map(getPower(), 0,1,jump.minx,jump.maxx);
+			var distance:Number = Utils.map(getPower(), 0.,1.0 , jump.minx * Sport.UNITS_PER_METER,jump.maxx * Sport.UNITS_PER_METER);
 			var height:Number = Utils.map(getPower(), 0,1,jump.miny,jump.maxy);;
 			
 			var time:Number = Point.distance(new  Point(), new Point(distance, height));
-//			var time:Number = 3800; // hardcodeado al tiempo que dura la animacion
-			trace(time, distance, height);
-			trace(x, x+distance/2, x + distance);
-			trace(y, y - height, y)
+
 			var startX:Tween = new Tween(this, time, { x: x + distance/2 }, { transition:"linear" } );
 			var startY:Tween = new Tween(this, time, { y: y - height}, { transition:"Quad.easeOut" } );
 			
@@ -359,15 +359,11 @@ package game
 			anim.addEventListener(TaskEvent.COMPLETE, function(e:Event):void{
 				setIdle();
 				e.currentTarget.removeEventListener(e.type, arguments.callee);
+				dispatchEvent(new Event(Avatar.ON_LANDING));
 			});	
 			
 			var animation:MovieClip = asset.animation;
 			
-//			anim.addEventListener(TaskEvent.UPDATE, function(e:Event):void{
-//				trace(x, y);
-//				var frame:int = Utils.map(anim.elapsed, 0, time, 1, animation.totalFrames);
-//				animation.gotoAndStop(frame);	
-//			});	
 			Game.taskRunner().add(anim);
 		}
 		

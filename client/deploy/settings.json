@@ -117,14 +117,15 @@
             "name": "SALTO EN LARGO",
             "idMenuButton": "longJump_btn",
             "timeOut": 5,
-            "minMeters": 2, // menos de 10 metros banana
-            "maxMeters": 15, // medallas repartidas entre minMeters y maxMeters
-            "maxPower": 13,
-            "powerIncrement": 2,
+            "minMeters": 3, // menos de 10 metros banana
+            "maxMeters": 30, // medallas repartidas entre minMeters y maxMeters
+            "maxPower": 20.0,
+            "powerIncrement": 1.0,
+            "damping": 0.2,
             "classID": "JumpingGame",
             "jump": {
-                "minx": 15,
-                "maxx": 1000,
+                "minx": 1,
+                "maxx": 30,
                 "miny": 3,
                 "maxy": 50                  
             },
