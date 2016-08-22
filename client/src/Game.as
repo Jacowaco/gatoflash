@@ -187,7 +187,8 @@ package
 			// in game
 			audio.registerFx("ow", "ow");
 			audio.registerFx("correr", "correr");
-			audio.registerFx("saltoCorto", "saltoCorto");			
+			audio.registerFx("saltoCorto", "saltoCorto");
+			audio.registerFx("saltoLargo", "saltoLargo");
 			audio.registerFx("valla", "valla");
 			audio.registerFx("lanza", "lanza");
 			audio.registerFx("atajaPizza", "atajaPizza");

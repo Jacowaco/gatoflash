@@ -109,7 +109,7 @@ package game.sports
 		
 		private function checkIfWin():void
 		{
-			if(player.x >= goal.x){
+			if(!player.isJumping() && player.x >= goal.x){
 				onFault(null);
 			}
 		}
@@ -124,6 +124,13 @@ package game.sports
 		override public function onKeyDown(key:KeyboardEvent):void 
 		{
 			if(!playing) return;
+			
+			if (key.keyCode == Keyboard.SPACE )
+			{
+//				if(mode == HIGH_JUMP) player.jumpHigh();
+				if(mode == LONG_JUMP) player.jumpLong(currentSport.jump);
+			}
+			
 			
 			if (key.keyCode == Keyboard.LEFT && !leftKeyPressed)
 			{

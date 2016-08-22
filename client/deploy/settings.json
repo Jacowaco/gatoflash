@@ -122,7 +122,14 @@
             "maxPower": 13,
             "powerIncrement": 2,
             "classID": "JumpingGame",
+            "jump": {
+                "minx": 15,
+                "maxx": 1000,
+                "miny": 3,
+                "maxy": 50                  
+            },
             "inst": "CORRE Y SALTA LEJOS"
+            
         },
    "sport7": {
             "name": "SALTO EN ALTO",

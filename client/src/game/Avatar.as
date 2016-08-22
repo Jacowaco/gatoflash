@@ -54,7 +54,7 @@ package game
 		private var MAX_JUMP_HEIGHT:Number = 50;
 		
 		
-		private var speed:Number;
+		private var power:Number;
 		private var maxSpeed:Number = 1;
 		
 		
@@ -82,7 +82,7 @@ package game
 			
 			
 			addChild(asset);
-			speed = 0;
+			power = 0;
 			lookingRight = true;
 		}
 		
@@ -91,7 +91,7 @@ package game
 		
 		public function update():void 
 		{
-			if(mode != ENEMY) trace(speed, speedIncrement, x);
+			
 			switch(state)
 			{
 				case IDLE:
@@ -104,7 +104,7 @@ package game
 				{
 					updateSpeed();	
 					checkSpeedForAnimation();
-					x += speed;
+					x += power;
 					break;	
 				}
 					
@@ -127,7 +127,7 @@ package game
 				case SPINNING:
 				{
 					updateSpeed();
-					if (speed > maxSpeed * 0.1)
+					if (power > maxSpeed * 0.1)
 					{
 						spinningCont++;
 						if (spinningCont > spinningTime)
@@ -176,6 +176,7 @@ package game
 		
 		public function setIdle():void
 		{
+			trace("setIdle");
 			state = IDLE;
 		}
 		
@@ -210,28 +211,28 @@ package game
 				increasePower();				
 			}
 			
-			speed = Math.max(speed + speedDamping, 0);
-			speed = Math.min(speed, maxSpeed);
+			power = Math.max(power + speedDamping, 0);
+			power = Math.min(power, maxSpeed);
 		}
 		
 		
 		private function checkSpeedForAnimation():void
 		{
-			if(speed == 0){				
+			if(power == 0){				
 				if(asset.currentLabel != "stand" ) asset.gotoAndStop("stand");				 
 				audio.fx.stop("correr");
 			}
 			
-			if(! mode == ENEMY) if( !speed == 0 && Math.random() < 0.20 && !audio.fx.retrieve("correr").playing) audio.fx.play("correr");
+			if(! mode == ENEMY) if( !power == 0 && Math.random() < 0.20 && !audio.fx.retrieve("correr").playing) audio.fx.play("correr");
 			
-			if(speed > 0 && speed < maxSpeed / 3 && asset.currentLabel != "run1") asset.gotoAndStop("run1");
-			if(speed > maxSpeed / 3 && speed < maxSpeed / 3 * 2 && asset.currentLabel != "run2") asset.gotoAndStop("run2");
-			if(speed > maxSpeed / 3 * 2 && speed <= maxSpeed && asset.currentLabel != "run3") asset.gotoAndStop("run3");
+			if(power > 0 && power < maxSpeed / 3 && asset.currentLabel != "run1") asset.gotoAndStop("run1");
+			if(power > maxSpeed / 3 && power < maxSpeed / 3 * 2 && asset.currentLabel != "run2") asset.gotoAndStop("run2");
+			if(power > maxSpeed / 3 * 2 && power <= maxSpeed && asset.currentLabel != "run3") asset.gotoAndStop("run3");
 		}
 	
 		public function increasePower():void
 		{
-			speed += speedIncrement;
+			power += speedIncrement;
 		}
 
 		private function spin():void
@@ -243,7 +244,7 @@ package game
 		public function get percentage():Number
 		{
 			
-			return speed / maxSpeed;
+			return power / maxSpeed;
 		}
 		
 		public function getMeters():int
@@ -253,7 +254,7 @@ package game
 		
 		public function getPower():Number
 		{
-			return Utils.map(speed, 0, maxSpeed, 0, 1);
+			return Utils.map(power, 0, maxSpeed, 0, 1);
 		}
 		
 		public function crash():void
@@ -270,7 +271,7 @@ package game
 		{
 			if(! mode==ENEMY) audio.fx.play("valla");			
 			asset.gotoAndStop("fall");
-			speed = 0;			
+			power = 0;			
 			if(to && to.running) to.dispose() ;
 			if(!isJumping()){ // ENGANIA PICHANGA... si vengo saltando, por mas que choque me voy a poner en running eso caga la fruta
 				 to = new Timeout(setRunning, 600);
@@ -319,6 +320,56 @@ package game
 			Game.taskRunner().add(anim);
 		}
 		
+		public function jumpLong(jump:Object):void
+		{
+			trace("longJump", jump);
+			if (state == JUMPING) return;
+			state = JUMPING;
+			if (! mode == ENEMY) audio.fx.play("saltoLargo");
+			asset.gotoAndStop("jump");			
+			
+			
+			
+			
+			
+			var distance:Number = Utils.map(getPower(), 0,1,jump.minx,jump.maxx);
+			var height:Number = Utils.map(getPower(), 0,1,jump.miny,jump.maxy);;
+			
+			var time:Number = Point.distance(new  Point(), new Point(distance, height));
+//			var time:Number = 3800; // hardcodeado al tiempo que dura la animacion
+			trace(time, distance, height);
+			trace(x, x+distance/2, x + distance);
+			trace(y, y - height, y)
+			var startX:Tween = new Tween(this, time, { x: x + distance/2 }, { transition:"linear" } );
+			var startY:Tween = new Tween(this, time, { y: y - height}, { transition:"Quad.easeOut" } );
+			
+			var endX:Tween   = new Tween(this, time, { x: x + distance },     { transition:"linear" } );
+			var endY:Tween   = new Tween(this, time, { y: y  },      { transition:"Quad.easeIn" } );
+			
+			var xtw:Sequence = new Sequence(startX, endX);
+			var ytw:Sequence = new Sequence(startY, endY);
+			
+			if(anim && anim.running){
+				anim.dispose();
+			}
+					
+			anim = new Parallel(xtw, ytw);
+			
+			anim.addEventListener(TaskEvent.COMPLETE, function(e:Event):void{
+				setIdle();
+				e.currentTarget.removeEventListener(e.type, arguments.callee);
+			});	
+			
+			var animation:MovieClip = asset.animation;
+			
+//			anim.addEventListener(TaskEvent.UPDATE, function(e:Event):void{
+//				trace(x, y);
+//				var frame:int = Utils.map(anim.elapsed, 0, time, 1, animation.totalFrames);
+//				animation.gotoAndStop(frame);	
+//			});	
+			Game.taskRunner().add(anim);
+		}
+		
 		public function get mode():int
 		{
 			return currentMode;
@@ -330,7 +381,7 @@ package game
 			if(currentMode == PLAYER){
 				currentMode = FOREST;
 				maxSpeed = maxSpeed * 4;
-				speed = maxSpeed;
+				power = maxSpeed;
 			}else{
 				currentMode = PLAYER;
 				maxSpeed = maxSpeed / 4;
