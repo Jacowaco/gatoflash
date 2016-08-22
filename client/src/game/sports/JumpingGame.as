@@ -60,7 +60,7 @@ package game.sports
 			
 			if(mode == HIGH_JUMP){
 				gatulongo = levelDefinition.getChildByName("longo") as MovieClip;
-				gatulongo.gotoAndStop(3);			
+				gatulongo.gotoAndStop(Math.random() * 3 + 1);			
 				camera.addChild(gatulongo);					
 			}
 			
@@ -103,12 +103,28 @@ package game.sports
 			player.update();
 			camera.x += (playerScreenPosition - player.localToGlobal(new Point(0,0)).x);									
 			bg.follow(camera.x);			
-//			checkIfWin();
+			checkIfWin();
 			
+		}
+		
+		private function checkIfWin():void
+		{
+			if(player.x >= goal.x){
+				onFault(null);
+			}
+		}
+		
+		private function onFault(e:Event):void
+		{
+			player.stop();
+			badge = BADGE_LOOSER;
+			super.competitionEnds();
 		}
 		
 		override public function onKeyDown(key:KeyboardEvent):void 
 		{
+			if(!playing) return;
+			
 			if (key.keyCode == Keyboard.LEFT && !leftKeyPressed)
 			{
 				leftKeyPressed = true;
