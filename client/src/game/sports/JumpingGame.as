@@ -19,9 +19,8 @@ package game.sports
 	public class JumpingGame extends Sport 
 	{
 		protected var departure:MovieClip;
-		protected var line:MovieClip;
+		protected var limit:MovieClip;
 		protected var goal:MovieClip;		
-		
 		
 		
 		public function JumpingGame(currentSport:Object) 
@@ -31,16 +30,17 @@ package game.sports
 		}
 		
 		
+		
 		override protected function create():void 
 		{
 			levelDefinition = new assets.jumpsMC;
 			
 			departure = levelDefinition.getChildByName("start") as MovieClip;
-			line = levelDefinition.getChildByName("line") as MovieClip;
+			limit = levelDefinition.getChildByName("line") as MovieClip;
 			goal = levelDefinition.getChildByName("goal") as MovieClip;
 			
 			camera.addChild(departure);
-			camera.addChild(line);
+			camera.addChild(limit);
 			camera.addChild(goal);
 			
 			createPlayer();
@@ -55,8 +55,8 @@ package game.sports
 			player.x = departure.x;
 			player.y = departure.y;
 			player.setMode(Avatar.PLAYER);					
-			player.setMaxSpeed(currentSport.player.maxSpeed);
-			player.setSpeedIncrement(currentSport.player.speedIncrement);			
+			player.setMaxSpeed(currentSport.maxPower);
+			player.setSpeedIncrement(currentSport.powerIncrement);			
 			camera.addChild(player);
 		}
 		
@@ -72,18 +72,13 @@ package game.sports
 		
 		override public function onKeyDown(key:KeyboardEvent):void 
 		{
-			super.onKeyDown(key);
-			
-			
-			if (key.keyCode == Keyboard.SPACE)
-			{
-			}
-			else if (key.keyCode == Keyboard.LEFT && !leftKeyPressed)
+			if (key.keyCode == Keyboard.LEFT && !leftKeyPressed)
 			{
 				leftKeyPressed = true;
 				player.increasePower();
 			}
-			else if (key.keyCode == Keyboard.RIGHT && leftKeyPressed)
+			
+			if (key.keyCode == Keyboard.RIGHT && leftKeyPressed)
 			{
 				leftKeyPressed = false;
 				player.increasePower();

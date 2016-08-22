@@ -104,12 +104,7 @@ package game.sports
 			}
 		}
 		
-		
-		override public function onKeyUp(key:KeyboardEvent):void
-		{
-			
-		}
-		
+
 		override public function onKeyDown(key:KeyboardEvent):void 
 		{			
 			if (key.keyCode == Keyboard.SPACE) player.jumpHurdle();			

@@ -110,10 +110,10 @@ package game.sports
 			throw new Error("unninplemented");
 		}
 		
-		public function onKeyUp(key:KeyboardEvent):void
-		{
-			throw new Error("unninplemented");
-		}
+//		public function onKeyUp(key:KeyboardEvent):void
+//		{
+//			throw new Error("unninplemented");
+//		}
 
 		// en cada sport se determina que medalla le corresponde
 		// esto es una cuestión que depende del deporte actual

@@ -24,11 +24,7 @@ package game.sports
 			// el countdown dispara un evento que me avisa cuando arrancar
 			// y es ahí donde se llama a Sport.initialize(); ;)
 		}
-		
-		override public function onKeyUp(key:KeyboardEvent):void
-		{
-			
-		}
+
 		
 		override public function onKeyDown(key:KeyboardEvent):void 
 		{						

@@ -142,11 +142,7 @@ package game.sports
 			return 0;
 		}
 
-		
-		override public function onKeyUp(key:KeyboardEvent):void 
-		{
-			
-		}
+
 		
 		private var playerMovement:Number = 0;
 		override public function onKeyDown(key:KeyboardEvent):void 
