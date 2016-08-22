@@ -332,6 +332,7 @@ package game
 			
 			
 			
+			
 			var distance:Number = Utils.map(getPower(), 0,1,jump.minx,jump.maxx);
 			var height:Number = Utils.map(getPower(), 0,1,jump.miny,jump.maxy);;
 			
