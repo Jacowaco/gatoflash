@@ -253,8 +253,7 @@ package
 			playAudioScheme("ingame");
 			
 			PlainRace;
-			LongJump;
-			HighJump;
+			JumpingGame;
 			Hurdles;
 			ThrowingGame;
 			

@@ -16,7 +16,7 @@ package game.sports
 	import game.Throwie;
 	
 	
-	public class LongJump extends Sport 
+	public class JumpingGame extends Sport 
 	{
 		protected var departure:MovieClip;
 		protected var line:MovieClip;
@@ -24,7 +24,7 @@ package game.sports
 		
 		
 		
-		public function LongJump(currentSport:Object) 
+		public function JumpingGame(currentSport:Object) 
 		{			
 			this.currentSport = currentSport;
 			create(); // en este caso llamo yo a create
