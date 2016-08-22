@@ -91,6 +91,7 @@ package game
 		
 		public function update():void 
 		{
+			if(mode != ENEMY) trace(speed, speedIncrement, x);
 			switch(state)
 			{
 				case IDLE:

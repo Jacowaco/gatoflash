@@ -119,8 +119,8 @@
             "timeOut": 5,
             "minMeters": 2, // menos de 10 metros banana
             "maxMeters": 15, // medallas repartidas entre minMeters y maxMeters
-            "maxPower": 200,
-            "powerIncrement": 20,
+            "maxPower": 13,
+            "powerIncrement": 2,
             "classID": "JumpingGame",
             "inst": "CORRE Y SALTA LEJOS"
         },
@@ -130,8 +130,8 @@
             "timeOut": 5,
             "minMeters": 2, // menos de 10 metros banana
             "maxMeters": 15, // medallas repartidas entre minMeters y maxMeters
-            "maxPower": 200,
-            "powerIncrement": 20,
+            "maxPower": 13,
+            "powerIncrement": 2,
             "classID": "JumpingGame",
             "inst": "CORRE Y SALTA LEJOS"
         },

@@ -15,6 +15,8 @@ package game.sports
 	import game.Avatar;
 	import game.Throwie;
 	
+	import ui.GuiEvents;
+	
 	
 	public class JumpingGame extends Sport 
 	{
@@ -44,9 +46,15 @@ package game.sports
 			camera.addChild(goal);
 			
 			createPlayer();
-			
-			
-//			player.addEventListener("reached", playerReached);
+		}
+		
+		override public function initialize():void
+		{			
+			// como es una carrera voy a iniciar con cuenta regresiva.
+			// entonces overrideo este metodo a modo de hook.
+			dispatchEvent(new Event(GuiEvents.COUNTDOWN)); 
+			// el countdown dispara un evento que me avisa cuando arrancar
+			// y es ahí donde se llama a Sport.initialize(); ;)
 		}
 		
 		private function createPlayer():void
@@ -60,14 +68,24 @@ package game.sports
 			camera.addChild(player);
 		}
 		
+		override public function start():void
+		{
+			trace("jumping start");
+			playing = true;
+			player.go();
+			timer.go();
+			super.start(); // disparo el evento de que la carrera inicio
+		}
+
+		
 		override public function update():void 
 		{
-			if (!playing) return;
+			if (!playing) return;	
+			player.update();
+			camera.x += (playerScreenPosition - player.localToGlobal(new Point(0,0)).x);									
+			bg.follow(camera.x);			
+//			checkIfWin();
 			
-			super.update();
-			
-			camera.x += ((Game.SCREEN_WIDTH / 2) - player.localToGlobal(new Point(0, 0)).x);
-			camera.x = Math.min(0, camera.x);
 		}
 		
 		override public function onKeyDown(key:KeyboardEvent):void 
