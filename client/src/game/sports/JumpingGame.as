@@ -24,7 +24,11 @@ package game.sports
 		protected var limit:MovieClip;
 		protected var goal:MovieClip;		
 		protected var arena:MovieClip;
+		protected var gatulongo:MovieClip;
 		
+		protected var mode:int = 0;
+		public static const LONG_JUMP:int = 1;
+		public static const HIGH_JUMP:int = 2;
 		
 		public function JumpingGame(currentSport:Object) 
 		{			
@@ -43,10 +47,22 @@ package game.sports
 			goal = levelDefinition.getChildByName("goal") as MovieClip;
 			arena = levelDefinition.getChildByName("arena") as MovieClip;
 			
+			if(currentSport.idMenuButton == "highJump_btn"){
+				mode = HIGH_JUMP;
+			}else{
+				mode = LONG_JUMP;
+			}
+			
 			camera.addChild(departure);
-			camera.addChild(arena);
-			camera.addChild(limit);
+			camera.addChild(arena);			
+			camera.addChild(limit);			
 			camera.addChild(goal);
+			
+			if(mode == HIGH_JUMP){
+				gatulongo = levelDefinition.getChildByName("longo") as MovieClip;
+				gatulongo.gotoAndStop(3);			
+				camera.addChild(gatulongo);					
+			}
 			
 			createPlayer();
 		}
@@ -73,7 +89,7 @@ package game.sports
 		
 		override public function start():void
 		{
-			trace("jumping start");
+
 			playing = true;
 			player.go();
 			timer.go();
