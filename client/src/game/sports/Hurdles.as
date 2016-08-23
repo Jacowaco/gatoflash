@@ -90,7 +90,7 @@ package game.sports
 				var chance:int = currentSport.enemies.jumpSkill;			
 				var nounce:int = Math.random() * 100;	
 				if(nounce <= chance) {
-					avatar.jumpHurdle();
+					avatar.jump(currentSport.jump);
 				}
 			}			
 		}
@@ -107,7 +107,7 @@ package game.sports
 
 		override public function onKeyDown(key:KeyboardEvent):void 
 		{			
-			if (key.keyCode == Keyboard.SPACE) player.jumpHurdle();			
+			if (key.keyCode == Keyboard.SPACE) player.jump(currentSport.jump);			
 			super.onKeyDown(key);			
 		}
 		

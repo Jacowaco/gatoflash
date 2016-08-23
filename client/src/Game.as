@@ -75,6 +75,8 @@ package
 		private var gui:Gui;		
 		private var currentSport:Sport;
 		public static var easterEggUsed:Boolean = false;
+		public static var attempts:int = 0;
+		
 		public function Game()
 		{
 			super();

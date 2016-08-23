@@ -6,6 +6,7 @@ package game
 	
 	import com.qb9.flashlib.easing.Tween;
 	import com.qb9.flashlib.geom.Vector2D;
+	import com.qb9.flashlib.movieclip.actions.GotoAndStopAction;
 	import com.qb9.flashlib.tasks.Func;
 	import com.qb9.flashlib.tasks.Parallel;
 	import com.qb9.flashlib.tasks.Sequence;
@@ -49,7 +50,7 @@ package game
 		private var playerArrow:MovieClip;
 		
 		// TODO externalizar por settings.
-		private var speedDamping:Number = -0.5;
+		private var speedDamping:Number = 0.5;
 		private var speedIncrement:Number; 
 		
 		private var MAX_JUMP_DISTANCE:Number = 200;
@@ -173,7 +174,7 @@ package game
 		
 		public function setSpeedDamping(speed:Number):void
 		{
-			speedDamping = -1 * speed; 
+			speedDamping = speed; 
 		}
 		
 		public function setRunning():void
@@ -184,6 +185,7 @@ package game
 		public function setIdle():void
 		{
 			trace("setIdle");
+			asset.gotoAndStop("idle");
 			state = IDLE;
 		}
 		
@@ -218,7 +220,7 @@ package game
 				increasePower();				
 			}
 			
-			power = Math.max(power + speedDamping, 0);
+			power = Math.max(power - speedDamping, 0);
 			power = Math.min(power, maxSpeed);
 		}
 		
@@ -293,54 +295,32 @@ package game
 			asset.gotoAndPlay("throw");			
 		}
 		
-		public function jumpHurdle():void
+		
+		public function jump(jump:Object):void
 		{
 			if (state == JUMPING) return;
 			state = JUMPING;
-			if (! mode == ENEMY) audio.fx.play("saltoCorto");
-			asset.gotoAndStop("jump");			
-
-			
-			var time:Number = 250; 
-			var distance:Number = MAX_JUMP_DISTANCE;
-			var height:Number = MAX_JUMP_HEIGHT;
-			
-			var startX:Tween = new Tween(this, time, { x: x + distance/2 }, { transition:"linear" } );
-			var startY:Tween = new Tween(this, time, { y: y - height}, { transition:"Quad.easeOut" } );
-			
-			var endX:Tween   = new Tween(this, time, { x: x + distance },     { transition:"linear" } );
-			var endY:Tween   = new Tween(this, time, { y: y  },      { transition:"Quad.easeOut" } );
-			
-			var xtw:Sequence = new Sequence(startX, endX);
-			var ytw:Sequence = new Sequence(startY, endY);
-
-			if(anim && anim.running){
-				anim.dispose();
+			if (!mode == ENEMY) {
+				switch (jump.mode){
+					case "hurdle":
+						audio.fx.play("saltoCorto");
+						break;
+					case "long":
+						audio.fx.play("saltoLargo");
+						break;
+					case "high":
+						audio.fx.play("saltoLargo");
+						break;
+				}
+				
 			}
 			
-			anim = new Parallel(xtw, ytw);
+			asset.gotoAndStop("jump");		
 			
-			anim.addEventListener(TaskEvent.COMPLETE, function(e:Event):void{
-				setRunning();
-				e.currentTarget.removeEventListener(e.type, arguments.callee);
-			});			
-			Game.taskRunner().add(anim);
-		}
-		
-		public function jumpLong(jump:Object):void
-		{
-			trace("longJump", jump);
-			if (state == JUMPING) return;
-			state = JUMPING;
-			if (! mode == ENEMY) audio.fx.play("saltoLargo");
-			asset.gotoAndStop("jump");			
-			
-			
-			var distance:Number = Utils.map(getPower(), 0.,1.0 , jump.minx * Sport.UNITS_PER_METER,jump.maxx * Sport.UNITS_PER_METER);
-			var height:Number = Utils.map(getPower(), 0,1,jump.miny,jump.maxy);;
-			
+			var distance:Number = Utils.map(getPower(), 0.0, 1.0, jump.minx * Sport.UNITS_PER_METER, jump.maxx * Sport.UNITS_PER_METER);
+			var height:Number = Utils.map(getPower(), 0,1,jump.miny,jump.maxy);;			
 			var time:Number = Point.distance(new  Point(), new Point(distance, height));
-
+			
 			var startX:Tween = new Tween(this, time, { x: x + distance/2 }, { transition:"linear" } );
 			var startY:Tween = new Tween(this, time, { y: y - height}, { transition:"Quad.easeOut" } );
 			
@@ -353,19 +333,28 @@ package game
 			if(anim && anim.running){
 				anim.dispose();
 			}
-					
+			
 			anim = new Parallel(xtw, ytw);
 			
 			anim.addEventListener(TaskEvent.COMPLETE, function(e:Event):void{
-				setIdle();
+				
 				e.currentTarget.removeEventListener(e.type, arguments.callee);
-				dispatchEvent(new Event(Avatar.ON_LANDING));
+				
+				if (jump.mode != "hurdle") {
+					dispatchEvent(new Event(Avatar.ON_LANDING));
+					setIdle();
+				}else{
+					setRunning();
+				}
+				
 			});	
 			
 			var animation:MovieClip = asset.animation;
 			
 			Game.taskRunner().add(anim);
+
 		}
+
 		
 		public function get mode():int
 		{
@@ -396,6 +385,10 @@ package game
 			}
 		}
 			
+		public function get target():MovieClip{
+			return asset; 
+		}
+		
 	}
 	
 }

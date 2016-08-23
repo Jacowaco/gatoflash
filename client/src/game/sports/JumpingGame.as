@@ -63,7 +63,12 @@ package game.sports
 			if(mode == HIGH_JUMP){
 				gatulongo = levelDefinition.getChildByName("longo") as MovieClip;
 				gatulongo.gotoAndStop(Math.random() * 3 + 1);			
-				camera.addChild(gatulongo);					
+				camera.addChild(gatulongo);		
+				if( Game.attempts <  3 ) {
+					gatulongo.gotoAndStop(Game.attempts + 1);
+				}else{
+					gatulongo.gotoAndStop(3);
+				}
 			}
 			
 			createPlayer();
@@ -113,10 +118,22 @@ package game.sports
 		
 		private function checkIfWin():void
 		{
-			
-			if(!player.isIdle() && !player.isJumping() && player.x >= limit.x){
-				onFault(null);
+			switch(mode){
+				case LONG_JUMP:
+					if(!player.isIdle() && !player.isJumping() && player.x >= limit.x){
+						onFault(null);
+					}	
+					break;
+				case HIGH_JUMP:
+					if(!player.isIdle() && player.target.hitTestObject(gatulongo) ){
+						trace("choque");
+						onFault(null);
+					}
+					break;	
 			}
+			
+			
+			
 		}
 		
 		private function onFault(e:Event):void
@@ -132,8 +149,7 @@ package game.sports
 			
 			if (key.keyCode == Keyboard.SPACE )
 			{
-//				if(mode == HIGH_JUMP) player.jumpHigh();
-				if(mode == LONG_JUMP) player.jumpLong(currentSport.jump);
+				player.jump(currentSport.jump);
 			}
 			
 			
@@ -152,8 +168,8 @@ package game.sports
 		
 		private function onLanding(e:Event):void
 		{
+			
 			var value:Number = Utils.map((player.x - limit.x), currentSport.jump.minx * Sport.UNITS_PER_METER, currentSport.jump.maxx * Sport.UNITS_PER_METER, 0.0, 1.0);
-			trace(value);
 			setbadge(value);
 			competitionEnds();
 		}
@@ -161,16 +177,27 @@ package game.sports
 		private function setbadge(value:Number):void
 		{			
 			
-			if(value < 0) badge = BADGE_LOOSER;
-			if(value >= 0 && value < 1/3 ) badge = BADGE_BRONCE;
-			if(value > 1/3 && value < 2/3 ) badge = BADGE_SILVER;
-			if(value > 2/3 ) badge = BADGE_GOLD;
-
+			if(mode == LONG_JUMP){
+				if(value < 0) badge = BADGE_LOOSER;
+				if(value >= 0 && value < 1/3 ) badge = BADGE_BRONCE;
+				if(value > 1/3 && value < 2/3 ) badge = BADGE_SILVER;
+				if(value > 2/3 ) badge = BADGE_GOLD;
+	
+			}
+			
+			if(mode == HIGH_JUMP){
+				if(Game.attempts == 0) badge = BADGE_BRONCE;
+				if(Game.attempts == 1) badge = BADGE_SILVER;
+				if(Game.attempts == 2) badge = BADGE_GOLD;
+				Game.attempts += 1;
+			}
+			
+			
 		}
 		
 		override public function getPlayerMeters():int
 		{
-			trace(player.x, limit.x); 
+//			trace(player.x, limit.x); 
 			if(player.x > ( limit.x)) return (player.x - limit.x) / Sport.UNITS_PER_METER;
 			return 0;
 		}

@@ -27,6 +27,13 @@
                 "speedVariation": [60, 85], // minimo y máximo en porcentaje de maxSpeed
                 "jumpSkill": 50 //  máximo en porcentaje: 0 no salta ninguna y 100 las salta todas
             },
+            "jump": {
+                "mode": "hurdle",
+                "minx": 2, // multiplica por Sport.UNITS_
+                "maxx": 2,
+                "miny": 50,
+                "maxy": 50                  
+            },
             "inst": "CORRE Y SALTA LOS PEPINOS"
         },
 
@@ -117,15 +124,16 @@
             "name": "SALTO EN LARGO",
             "idMenuButton": "longJump_btn",
             "timeOut": 5,
-            "minMeters": 3, // menos de 10 metros banana
-            "maxMeters": 30, // medallas repartidas entre minMeters y maxMeters
+            "minMeters": 0, // menos de 10 metros banana
+            "maxMeters": 20, // medallas repartidas entre minMeters y maxMeters
             "maxPower": 20.0,
-            "powerIncrement": 1.0,
-            "damping": 0.2,
+            "powerIncrement": 2.0,
+            "damping": 0.75,
             "classID": "JumpingGame",
             "jump": {
+                "mode": "long",
                 "minx": 1,
-                "maxx": 30,
+                "maxx": 20,
                 "miny": 3,
                 "maxy": 50                  
             },
@@ -136,12 +144,20 @@
             "name": "SALTO EN ALTO",
             "idMenuButton": "highJump_btn",
             "timeOut": 5,
-            "minMeters": 2, // menos de 10 metros banana
-            "maxMeters": 15, // medallas repartidas entre minMeters y maxMeters
-            "maxPower": 13,
-            "powerIncrement": 2,
+            "minMeters": 3, // menos de 10 metros banana
+            "maxMeters": 30, // medallas repartidas entre minMeters y maxMeters
+            "maxPower": 20.0,
+            "powerIncrement": 3.0,
+            "damping": 1.2,
             "classID": "JumpingGame",
-            "inst": "CORRE Y SALTA LEJOS"
+            "jump": {
+                "mode": "high",
+                "minx": 0,
+                "maxx": 5,
+                "miny": 0,
+                "maxy": 250                  
+            },
+            "inst": "CORRE Y SALTA A GATULONGO"
         },
         "defaultValue": {
             "display": {
