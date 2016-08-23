@@ -148,6 +148,7 @@ package game.sports
 			badgeObtained = badge;
 		}
 		
+		
 		public function badgeAsString():String
 		{
 			switch(badgeObtained)

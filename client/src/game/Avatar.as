@@ -44,6 +44,7 @@ package game
 		private const THROWING:int = 4;
 		private const FALL:int = 5;
 		private const MOON:int = 6;  // camina pero no se mueve 
+		private const JUMP_RUN:int = 7; // corre hacia el salto.
 		
 		
 		private var asset:MovieClip;
@@ -118,6 +119,12 @@ package game
 					break;	
 				}
 					
+				case JUMP_RUN:
+					updateSpeed();	
+					x += power;
+					break;
+				
+					
 				case JUMPING:
 				{										
 					break;	
@@ -182,6 +189,11 @@ package game
 			state = RUNNING;			
 		}
 		
+		public function setJumpRunning():void
+		{						
+			state = JUMP_RUN;
+			asset.gotoAndStop("run2");
+		}
 		public function setIdle():void
 		{
 			trace("setIdle");
@@ -212,6 +224,8 @@ package game
 			setIdle();
 			asset.gotoAndPlay("stand");
 		}
+		
+		
 		
 		private function updateSpeed():void
 		{	
@@ -295,6 +309,15 @@ package game
 			asset.gotoAndPlay("throw");			
 		}
 		
+		public function killJump():void
+		{
+			if(anim && anim.running){
+				anim.stop();
+				anim.dispose();
+					
+			}
+			
+		}
 		
 		public function jump(jump:Object):void
 		{
@@ -342,7 +365,7 @@ package game
 				
 				if (jump.mode != "hurdle") {
 					dispatchEvent(new Event(Avatar.ON_LANDING));
-					setIdle();
+					
 				}else{
 					setRunning();
 				}

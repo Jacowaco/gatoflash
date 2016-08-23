@@ -100,7 +100,7 @@ package game.sports
 		{
 
 			playing = true;
-			player.go();
+			player.setJumpRunning();
 			timer.go();
 			super.start(); // disparo el evento de que la carrera inicio
 		}
@@ -124,11 +124,21 @@ package game.sports
 						onFault(null);
 					}	
 					break;
-				case HIGH_JUMP:
-					if(!player.isIdle() && player.target.hitTestObject(gatulongo) ){
-						trace("choque");
+				case HIGH_JUMP:					
+					var minx:Number = gatulongo.x - gatulongo.width/2 ;
+					var maxx:Number = gatulongo.x + gatulongo.width/2 ;
+					var top:Number = gatulongo.y - (gatulongo.height * 0.9);
+					
+					
+//					trace("y:" , player.y , top);
+//					trace("x: ", player.x , minx, maxx);
+//					!player.isIdle() && !player.isJumping() 
+					if(player.x >= minx && player.x < maxx && player.y > top){  // si me lo llevo puesto
+						trace("choque frontal");
 						onFault(null);
 					}
+					
+					
 					break;	
 			}
 			
@@ -138,7 +148,9 @@ package game.sports
 		
 		private function onFault(e:Event):void
 		{
-			player.stop();
+			player.crash();
+			player.killJump();
+			player.removeEventListener(Avatar.ON_LANDING, onLanding);
 			badge = BADGE_LOOSER;
 			super.competitionEnds();
 		}
@@ -149,6 +161,7 @@ package game.sports
 			
 			if (key.keyCode == Keyboard.SPACE )
 			{
+				trace(">>>>>>>>>> jump");
 				player.jump(currentSport.jump);
 			}
 			
@@ -168,9 +181,10 @@ package game.sports
 		
 		private function onLanding(e:Event):void
 		{
-			
+			trace("onLanding");
 			var value:Number = Utils.map((player.x - limit.x), currentSport.jump.minx * Sport.UNITS_PER_METER, currentSport.jump.maxx * Sport.UNITS_PER_METER, 0.0, 1.0);
 			setbadge(value);
+			player.setIdle();
 			competitionEnds();
 		}
 		
