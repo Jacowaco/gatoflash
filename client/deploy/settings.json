@@ -1,6 +1,6 @@
 {
     "defaultValue": {
-        "soundsEnable": false
+        "soundsEnable": true
     },
     "teams": [
         "MEGA ELÁSTICO",
@@ -32,29 +32,30 @@
                 "minx": 2, // multiplica por Sport.UNITS_
                 "maxx": 2,
                 "miny": 50,
-                "maxy": 50                  
+                "maxy": 50
             },
             "inst": "CORRE Y SALTA LOS PEPINOS"
         },
 
-
         "sport1": {
-            "name": "CARRERA DE 100 METROS",
-            "idMenuButton": "plainRace_btn",
-            "classID": "PlainRace",
-            "metres": 100,
-            "player": {
-                "maxSpeed": 13,
-                "speedIncrement": 2
+            "name": "SALTO EN LARGO",
+            "idMenuButton": "longJump_btn",
+            "timeOut": 5,
+            "minMeters": 0, // menos de 10 metros banana
+            "maxMeters": 20, // medallas repartidas entre minMeters y maxMeters
+            "maxPower": 20.0,
+            "powerIncrement": 2.0,
+            "damping": 0.75,
+            "classID": "JumpingGame",
+            "jump": {
+                "mode": "long",
+                "minx": 1,
+                "maxx": 20,
+                "miny": 3,
+                "maxy": 50
             },
-            "enemies": {
-                "maxSpeed": 13,
-                "speedIncrement": 2,
-                "speedVariation": [60, 85], // minimo y máximo en porcentaje de maxSpeed
-                "jumpSkill": 50 //  máximo en porcentaje: 0 no salta ninguna y 100 las salta todas
-            },
+            "inst": "CORRE Y SALTA LEJOS"
 
-            "inst": "CORRE Y LLEGA PRIMERO A LA META"
         },
 
         "sport2": {
@@ -104,43 +105,7 @@
             "catchPh": { "x": -0, "y": 70 },
             "inst": "CORRE Y LANZA LEJOS LA TORTA"
         },
-
-
         "sport5": {
-            "name": "LANZAMIENTO DE AVIONCITO",
-            "idMenuButton": "avioncito_btn",
-            "timeOut": 5,
-            "minMeters": 10, // menos de 10 metros banana
-            "maxMeters": 26, // medallas repartidas entre minMeters y maxMeters
-            "maxPower": 200,
-            "powerIncrement": 5,
-            "classID": "ThrowingGame",
-            "throwable": "avioncito", // nombre de la clase del mc
-            "catcher": "invisiblecatcher",
-            "catchPh": { "x": -55, "y": 70 },
-            "inst": "CORRE Y LANZA LEJOS EL AVIONCITO"
-        },
-   "sport6": {
-            "name": "SALTO EN LARGO",
-            "idMenuButton": "longJump_btn",
-            "timeOut": 5,
-            "minMeters": 0, // menos de 10 metros banana
-            "maxMeters": 20, // medallas repartidas entre minMeters y maxMeters
-            "maxPower": 20.0,
-            "powerIncrement": 2.0,
-            "damping": 0.75,
-            "classID": "JumpingGame",
-            "jump": {
-                "mode": "long",
-                "minx": 1,
-                "maxx": 20,
-                "miny": 3,
-                "maxy": 50                  
-            },
-            "inst": "CORRE Y SALTA LEJOS"
-            
-        },
-   "sport7": {
             "name": "SALTO EN ALTO",
             "idMenuButton": "highJump_btn",
             "timeOut": 5,
@@ -155,10 +120,46 @@
                 "minx": 0,
                 "maxx": 5,
                 "miny": 0,
-                "maxy": 250                  
+                "maxy": 250
             },
             "inst": "CORRE Y SALTA A GATULONGO"
         },
+
+        "sport6": {
+            "name": "CARRERA DE 100 METROS",
+            "idMenuButton": "plainRace_btn",
+            "classID": "PlainRace",
+            "metres": 100,
+            "player": {
+                "maxSpeed": 13,
+                "speedIncrement": 2
+            },
+            "enemies": {
+                "maxSpeed": 13,
+                "speedIncrement": 2,
+                "speedVariation": [60, 85], // minimo y máximo en porcentaje de maxSpeed
+                "jumpSkill": 50 //  máximo en porcentaje: 0 no salta ninguna y 100 las salta todas
+            },
+
+            "inst": "CORRE Y LLEGA PRIMERO A LA META"
+        },
+
+        "sport7": {
+            "name": "LANZAMIENTO DE AVIONCITO",
+            "idMenuButton": "avioncito_btn",
+            "timeOut": 5,
+            "minMeters": 10, // menos de 10 metros banana
+            "maxMeters": 26, // medallas repartidas entre minMeters y maxMeters
+            "maxPower": 200,
+            "powerIncrement": 5,
+            "classID": "ThrowingGame",
+            "throwable": "avioncito", // nombre de la clase del mc
+            "catcher": "invisiblecatcher",
+            "catchPh": { "x": -55, "y": 70 },
+            "inst": "CORRE Y LANZA LEJOS EL AVIONCITO"
+        },
+
+
         "defaultValue": {
             "display": {
                 "label": "METROS"
